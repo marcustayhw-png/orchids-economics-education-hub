@@ -11,7 +11,12 @@ export const modelEssays = [
       "Well-balanced discussion of both policies with real-world examples",
       "Clear evaluation with well-justified conclusion"
     ],
-   
+    keyStrengths: [
+      "Clear definition and explanation of both fiscal and monetary policy mechanisms",
+      "Effective use of AD-AS framework to analyze policy impacts",
+      "Strong evaluation considering time lags, political constraints, and economic contexts",
+      "Well-structured argument with logical flow from analysis to evaluation"
+    ],
     structureNotes: "Introduction → Define policies → Explain fiscal policy effectiveness → Explain monetary policy effectiveness → Evaluation comparing contexts → Conclusion"
   },
   {
@@ -26,7 +31,12 @@ export const modelEssays = [
       "Balanced consideration of potential costs and limitations",
       "Strong use of examples from developed and developing economies"
     ],
-   
+    keyStrengths: [
+      "Comprehensive coverage of both benefits (efficiency gains, economies of scale) and costs (structural unemployment, infant industries)",
+      "Strong use of comparative advantage theory with numerical examples",
+      "Nuanced evaluation distinguishing between developed and developing country contexts",
+      "Excellent real-world examples from Singapore, China, and African economies"
+    ],
     structureNotes: "Introduction → Theory of comparative advantage → Benefits of free trade → Limitations and costs → Evaluation based on country characteristics → Conclusion"
   },
   {
@@ -41,7 +51,12 @@ export const modelEssays = [
       "Balanced discussion of price control pros and cons",
       "Appropriate real-world examples"
     ],
-    
+    keyStrengths: [
+      "Clear step-by-step explanation of how demand and supply determine equilibrium price",
+      "Well-labeled diagrams showing market equilibrium and price ceiling effects",
+      "Balanced discussion of both benefits (affordability) and drawbacks (shortages) of price controls",
+      "Relevant examples such as rental controls and essential goods pricing"
+    ],
     structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
   }
 ];
