@@ -73,7 +73,7 @@ export default function TuitionPage() {
               </div>
               <div classname="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-              <p className="!w-[179px] !h-3/6">Unlimited consultations</p>
+              <p className="!w-[179px] !h-3/6"></p>
               </div> 
 
             </CardContent>
