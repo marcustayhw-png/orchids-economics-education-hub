@@ -65,9 +65,10 @@ const modelEssays = [
   "Consideration of alternative government interventions"],
 
   structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
-}];
+}
 
-id: "e3",
+{
+id: "e4",
   question: "Explain how market forces determine prices and discuss whether governments should intervene when prices are too high.",
   level: "Secondary",
   marks: "12",
@@ -84,8 +85,8 @@ id: "e3",
   "Consideration of alternative government interventions"],
 
   structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
-
-
+}
+];
 
 
 
