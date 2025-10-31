@@ -205,23 +205,6 @@ export default function EssaysPage() {
                       </AccordionContent>
                     </AccordionItem>
 
-                    {/* Key Strengths */}
-                    <AccordionItem value="strengths">
-                      <AccordionTrigger className="text-base font-semibold !whitespace-pre-line">Key Strenths of This Answer
-
-                    </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-2 pt-2">
-                          {essay.keyStrengths.map((strength, idx) =>
-                        <div key={idx} className="flex gap-3 items-start">
-                              <Award className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                              <p className="text-sm text-muted-foreground">{strength}</p>
-                            </div>
-                        )}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-
                     {/* Full Model Answer */}
                     <AccordionItem value="answer">
                       <AccordionTrigger className="text-base font-semibold">
