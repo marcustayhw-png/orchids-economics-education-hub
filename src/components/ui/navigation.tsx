@@ -8,6 +8,7 @@ const navItems = [
   { href: "/notes", label: "Notes" },
   { href: "/essays", label: "Essays & CSQ" },
   { href: "/practice", label: "Practice Questions" },
+  { href: "/tuition", label: "Private Tuition" },
   { href: "/about", label: "About" },
 ];
 
