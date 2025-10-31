@@ -67,6 +67,28 @@ const modelEssays = [
   structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
 }];
 
+id: "e3",
+  question: "Explain how market forces determine prices and discuss whether governments should intervene when prices are too high.",
+  level: "Secondary",
+  marks: "12",
+  examinerComments: [
+  "Clear explanation of demand and supply interaction",
+  "Good use of diagrams showing equilibrium",
+  "Balanced discussion of price control pros and cons",
+  "Appropriate real-world examples"],
+
+  keyStrengths: [
+  "Accurate demand and supply diagram",
+  "Clear explanation of equilibrium price formation",
+  "Discussion of unintended consequences of price controls",
+  "Consideration of alternative government interventions"],
+
+  structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
+
+
+
+
+
 
 const modelCSQs = [
 {
