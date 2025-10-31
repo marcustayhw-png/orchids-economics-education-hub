@@ -71,6 +71,11 @@ export default function TuitionPage() {
                 <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                 <p>1.5-2 hour sessions</p>
               </div>
+              <div classname="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <p>Unlimited consultations</p>
+              </div> 
+
             </CardContent>
           </Card>
         </div>
