@@ -207,7 +207,7 @@ export default function EssaysPage() {
 
                     {/* Key Strengths */}
                     <AccordionItem value="strengths">
-                      <AccordionTrigger className="text-base font-semibold">Key Strenths of This Answer
+                      <AccordionTrigger className="text-base font-semibold !whitespace-pre-line">Key Strenths of This Answer
 
                     </AccordionTrigger>
                       <AccordionContent>
