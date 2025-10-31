@@ -43,7 +43,7 @@ export default function TuitionPage() {
                 <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium">Junior College Economics</p>
-                  <p className="text-sm text-muted-foreground">JC1-2 students preparing for A-Levels</p>
+                  <p className="text-sm text-muted-foreground">JC1-2 / private candidate students preparing for A-Levels</p>
                 </div>
               </div>
             </CardContent>
@@ -152,6 +152,6 @@ export default function TuitionPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>);
+
 }
