@@ -11,12 +11,7 @@ export const modelEssays = [
       "Well-balanced discussion of both policies with real-world examples",
       "Clear evaluation with well-justified conclusion"
     ],
-    keyStrengths: [
-      "Precise definitions of fiscal and monetary policy",
-      "Effective use of economic theory and diagrams",
-      "Good consideration of time lags and implementation challenges",
-      "Strong evaluative points throughout"
-    ],
+   
     structureNotes: "Introduction → Define policies → Explain fiscal policy effectiveness → Explain monetary policy effectiveness → Evaluation comparing contexts → Conclusion"
   },
   {
@@ -31,12 +26,7 @@ export const modelEssays = [
       "Balanced consideration of potential costs and limitations",
       "Strong use of examples from developed and developing economies"
     ],
-    keyStrengths: [
-      "Clear explanation of comparative advantage with numerical examples",
-      "Discussion of distributional effects on different stakeholders",
-      "Consideration of infant industry argument",
-      "Well-reasoned conclusion acknowledging context-dependency"
-    ],
+   
     structureNotes: "Introduction → Theory of comparative advantage → Benefits of free trade → Limitations and costs → Evaluation based on country characteristics → Conclusion"
   },
   {
@@ -51,12 +41,7 @@ export const modelEssays = [
       "Balanced discussion of price control pros and cons",
       "Appropriate real-world examples"
     ],
-    keyStrengths: [
-      "Accurate demand and supply diagram",
-      "Clear explanation of equilibrium price formation",
-      "Discussion of unintended consequences of price controls",
-      "Consideration of alternative government interventions"
-    ],
+    
     structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
   }
 ];
