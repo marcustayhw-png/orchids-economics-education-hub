@@ -72,7 +72,7 @@ export default function TuitionPage() {
                 <p>1.5-2 hour sessions</p>
               </div>
               <div classname="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="text-green-600 flex-shrink-0 mt-0.5 !w-[45px] !h-5" />
               <p className="!whitespace-pre-line !w-[244px] !h-[33px]"></p>
               </div> 
 
