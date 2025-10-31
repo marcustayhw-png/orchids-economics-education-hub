@@ -13,7 +13,7 @@ const modelEssays = [
   id: "e1",
   question: "Discuss whether fiscal policy is more effective than monetary policy in achieving economic growth.",
   level: "JC",
-  marks: "25",
+  marks: "15",
   examinerComments: [
   "Strong introduction defining key terms and setting context",
   "Excellent use of AD-AS diagrams to illustrate points",
