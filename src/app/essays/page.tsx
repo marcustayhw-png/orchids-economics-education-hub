@@ -84,7 +84,7 @@ const modelEssays = [
   "Consideration of alternative government interventions"],
 
   structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
-}
+},
 
 {
   id: "e5",
