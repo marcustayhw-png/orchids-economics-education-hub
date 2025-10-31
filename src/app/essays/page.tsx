@@ -195,12 +195,12 @@ export default function EssaysPage() {
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="space-y-2 pt-2">
-                          {essay.examinerComments.map((comment, idx) =>
-                        <div key={idx} className="flex gap-3 items-start">
+                          {essay.examinerComments.map((comment, idx) => (
+                            <div key={idx} className="flex gap-3 items-start">
                               <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                               <p className="text-sm text-muted-foreground">{comment}</p>
                             </div>
-                        )}
+                          ))}
                         </div>
                       </AccordionContent>
                     </AccordionItem>
