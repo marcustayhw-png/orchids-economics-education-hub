@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Clock, Users, Star, CheckCircle2 } from "lucide-react";
+import { GraduationCap, Clock, Users, Star, CheckCircle2, DollarSign } from "lucide-react";
 
 export default function TuitionPage() {
   return (
@@ -130,6 +130,72 @@ export default function TuitionPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Rates & Pricing */}
+        <Card>
+          <CardHeader>
+            <DollarSign className="w-8 h-8 text-primary mb-2" />
+            <CardTitle>Rates & Pricing</CardTitle>
+            <CardDescription>Transparent pricing for quality education</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3 p-4 rounded-lg border bg-card">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-lg">Secondary School</h3>
+                  <span className="text-sm text-muted-foreground">O-Level</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-primary">$80</span>
+                    <span className="text-muted-foreground">/hour</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Ideal for Sec 3-4 students preparing for O-Level Economics
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3 p-4 rounded-lg border bg-card">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-lg">Junior College</h3>
+                  <span className="text-sm text-muted-foreground">A-Level</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-primary">$100</span>
+                    <span className="text-muted-foreground">/hour</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    For JC1-2 and private candidates preparing for A-Level Economics
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 bg-muted/50 rounded-lg space-y-2">
+              <p className="text-sm font-medium">What's Included:</p>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span>Customized lesson materials and notes</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span>Practice questions and model answers</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span>Continuous support via messaging between lessons</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span>Flexible payment options available</span>
+                </li>
+              </ul>
             </div>
           </CardContent>
         </Card>
