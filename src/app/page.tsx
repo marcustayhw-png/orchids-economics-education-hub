@@ -1,103 +1,190 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { BookOpen, FileText, PenTool, Target, Award, Users } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+                Master Economics with
+                <span className="block text-primary mt-2">Comprehensive Resources</span>
+              </h1>
+              <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto">
+                A curated collection of notes, model essays, CSQ answers, and practice questions for JC and Secondary School Economics students
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button asChild size="lg" className="text-lg px-8">
+                <Link href="/notes">Explore Notes</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="text-lg px-8">
+                <Link href="/about">Learn About This Project</Link>
+              </Button>
+            </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 max-w-4xl mx-auto">
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">50+</div>
+                <div className="text-sm text-muted-foreground">Study Notes</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">30+</div>
+                <div className="text-sm text-muted-foreground">Model Essays</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">25+</div>
+                <div className="text-sm text-muted-foreground">CSQ Answers</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">100+</div>
+                <div className="text-sm text-muted-foreground">Practice Questions</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Everything You Need to Excel</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive resources designed to help students understand and master economics concepts
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="border-2 hover:border-primary transition-colors">
+              <CardHeader>
+                <BookOpen className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Comprehensive Notes</CardTitle>
+                <CardDescription>
+                  Detailed notes covering all major topics for both JC and Secondary School Economics, organized by theme and difficulty
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="link" className="px-0">
+                  <Link href="/notes">View Notes →</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors">
+              <CardHeader>
+                <FileText className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Model Essays</CardTitle>
+                <CardDescription>
+                  High-quality model essays with examiner comments, marking schemes, and detailed analysis of exemplary answers
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="link" className="px-0">
+                  <Link href="/essays">View Essays →</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors">
+              <CardHeader>
+                <PenTool className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>CSQ Solutions</CardTitle>
+                <CardDescription>
+                  Step-by-step solutions to Case Study Questions with marking points and examiner insights
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="link" className="px-0">
+                  <Link href="/essays#csq">View CSQ →</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors">
+              <CardHeader>
+                <Target className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Practice Questions</CardTitle>
+                <CardDescription>
+                  Interactive question bank with filtering by topic and difficulty, complete with detailed answers
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="link" className="px-0">
+                  <Link href="/practice">Start Practicing →</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors">
+              <CardHeader>
+                <Award className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Quality Content</CardTitle>
+                <CardDescription>
+                  All resources are carefully curated and aligned with MOE syllabus requirements and exam formats
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors">
+              <CardHeader>
+                <Users className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Student-Focused</CardTitle>
+                <CardDescription>
+                  Designed with students in mind, making complex economics concepts accessible and easy to understand
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission Statement */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-bold">My Mission</h2>
+          <div className="text-lg text-muted-foreground space-y-4 leading-relaxed">
+            <p>
+              This platform represents my commitment to making quality economics education accessible to all students. 
+              As an aspiring economics educator, I believe that every student deserves access to comprehensive, 
+              well-structured learning resources that can help them excel in their studies.
+            </p>
+            <p>
+              Through this project, I aim to demonstrate my passion for teaching and my dedication to improving 
+              economics education in Singapore. My goal is to support students in their learning journey and 
+              contribute to the broader educational community.
+            </p>
+          </div>
+          <Button asChild size="lg" variant="outline">
+            <Link href="/about">Read My Full Story</Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary text-primary-foreground">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-bold">Ready to Start Learning?</h2>
+          <p className="text-lg opacity-90">
+            Explore our comprehensive collection of resources and take your economics understanding to the next level
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/notes">Browse Notes</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+              <Link href="/practice">Start Practicing</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
