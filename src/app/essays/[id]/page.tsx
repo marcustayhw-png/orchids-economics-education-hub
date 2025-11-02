@@ -60,16 +60,16 @@ export default function EssayDetailPage() {
 
   if (notFound || !essay) {
     return (
-      <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">Essay Not Found</h1>
-          <p className="text-muted-foreground mb-8">
+      <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="max-w-4xl mx-auto text-center w-full">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 break-words px-2">Essay Not Found</h1>
+          <p className="text-muted-foreground mb-6 sm:mb-8 break-words px-2">
             The essay you're looking for doesn't exist.
           </p>
           <Link href="/essays">
             <Button>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to All Essays
+              <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span className="truncate">Back to All Essays</span>
             </Button>
           </Link>
         </div>
@@ -78,38 +78,38 @@ export default function EssayDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 w-full">
         {/* Back Button */}
         <Link href="/essays">
           <Button variant="outline">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to All Essays
+            <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
+            <span className="truncate">Back to All Essays</span>
           </Button>
         </Link>
 
         {/* Question Card */}
-        <Card className="border-2">
+        <Card className="border-2 overflow-hidden">
           <CardHeader>
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <Badge variant="secondary">{essay.level}</Badge>
-                <Badge variant="outline">{essay.marks} marks</Badge>
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex gap-2 flex-wrap">
+                <Badge variant="secondary" className="whitespace-nowrap">{essay.level}</Badge>
+                <Badge variant="outline" className="whitespace-nowrap">{essay.marks} marks</Badge>
               </div>
-              <CardTitle className="text-2xl">{essay.question}</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl break-words leading-tight">{essay.question}</CardTitle>
             </div>
           </CardHeader>
         </Card>
 
         {/* Preamble */}
         {essay.preamble && (
-          <Card>
+          <Card className="overflow-hidden">
             <CardHeader>
-              <CardTitle>Preamble</CardTitle>
+              <CardTitle className="break-words">Preamble</CardTitle>
             </CardHeader>
             <CardContent>
               <div 
-                className="prose prose-sm max-w-none rich-text-content"
+                className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
                 dangerouslySetInnerHTML={{ __html: essay.preamble }}
               />
             </CardContent>
@@ -118,12 +118,12 @@ export default function EssayDetailPage() {
 
         {/* Structure Notes */}
         {essay.structureNotes && (
-          <Card>
+          <Card className="overflow-hidden">
             <CardHeader>
-              <CardTitle>Essay Structure</CardTitle>
+              <CardTitle className="break-words">Essay Structure</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground font-medium">
+              <p className="text-muted-foreground font-medium break-words">
                 {essay.structureNotes}
               </p>
             </CardContent>
@@ -132,16 +132,16 @@ export default function EssayDetailPage() {
 
         {/* Examiner Comments */}
         {essay.examinerComments && essay.examinerComments.length > 0 && (
-          <Card className="bg-primary/5 border-primary/20">
+          <Card className="bg-primary/5 border-primary/20 overflow-hidden">
             <CardHeader>
-              <CardTitle>Examiner Comments</CardTitle>
+              <CardTitle className="break-words">Examiner Comments</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
                 {essay.examinerComments.map((comment, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <span className="text-primary mt-1">✓</span>
-                    <span className="text-muted-foreground">{comment}</span>
+                    <span className="text-primary mt-1 flex-shrink-0">✓</span>
+                    <span className="text-muted-foreground break-words flex-1 min-w-0">{comment}</span>
                   </li>
                 ))}
               </ul>
@@ -151,18 +151,18 @@ export default function EssayDetailPage() {
 
         {/* Model Answer */}
         {essay.modelAnswer && (
-          <Card className="border-2 border-primary">
+          <Card className="border-2 border-primary overflow-hidden">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span>Model Answer</span>
-                <Badge variant="outline" className="ml-auto">
+              <CardTitle className="flex items-center gap-2 flex-wrap">
+                <span className="break-words">Model Answer</span>
+                <Badge variant="outline" className="ml-auto whitespace-nowrap">
                   {essay.marks} marks
                 </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div 
-                className="prose prose-sm max-w-none rich-text-content"
+                className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
                 dangerouslySetInnerHTML={{ __html: essay.modelAnswer }}
               />
             </CardContent>
