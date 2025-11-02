@@ -1,107 +1,161 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Award, Download, CheckCircle2, FileText, ArrowLeft } from "lucide-react";
-import { modelEssays } from "../data";
+import { ArrowLeft, Download, Loader2 } from "lucide-react";
 
-export default function EssayDetailPage({ params }: { params: { id: string } }) {
-  const essay = modelEssays.find((e) => e.id === params.id);
+interface Essay {
+  id: number;
+  essayId: string;
+  question: string;
+  level: string;
+  marks: string;
+  preamble: string | null;
+  examinerComments: string[] | null;
+  structureNotes: string | null;
+}
 
-  if (!essay) {
-    notFound();
+export default function EssayDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [essay, setEssay] = useState<Essay | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    fetchEssay();
+  }, [params.id]);
+
+  const fetchEssay = async () => {
+    setIsLoading(true);
+    setNotFound(false);
+    try {
+      const response = await fetch(`/api/essays?essay_id=${params.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setEssay(data);
+      } else if (response.status === 404) {
+        setNotFound(true);
+      }
+    } catch (error) {
+      console.error("Error fetching essay:", error);
+      setNotFound(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (notFound || !essay) {
+    return (
+      <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">Essay Not Found</h1>
+          <p className="text-muted-foreground mb-8">
+            The essay you're looking for doesn't exist.
+          </p>
+          <Link href="/essays">
+            <Button>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to All Essays
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Back Button */}
         <Link href="/essays">
-          <Button variant="ghost" className="mb-6">
+          <Button variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to All Essays
           </Button>
         </Link>
 
-        <div className="mb-8 space-y-4">
-          <div className="flex gap-2 items-center flex-wrap">
-            <Badge variant="secondary">{essay.level}</Badge>
-            <Badge variant="outline">{essay.marks} marks</Badge>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold">{essay.question}</h1>
-        </div>
-
-        <Card className="mb-6 border-l-4 border-primary">
+        {/* Question Card */}
+        <Card className="border-2">
           <CardHeader>
-            <h2 className="font-semibold text-xl flex items-center gap-2">
-              <FileText className="w-5 h-5 text-primary" />
-              Preamble
-            </h2>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground leading-relaxed">{essay.preamble}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-6 bg-muted/50">
-          <CardHeader>
-            <h2 className="font-semibold text-xl flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-600" />
-              Essay Structure
-            </h2>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">{essay.structureNotes}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-6">
-          <CardHeader>
-            <h2 className="font-semibold text-xl flex items-center gap-2">
-              <Award className="w-5 h-5 text-primary" />
-              Examiner Comments
-            </h2>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {essay.examinerComments.map((comment, idx) => (
-              <div key={idx} className="flex gap-3 items-start p-3 bg-muted rounded-lg">
-                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <p className="text-muted-foreground">{comment}</p>
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <Badge variant="secondary">{essay.level}</Badge>
+                <Badge variant="outline">{essay.marks} marks</Badge>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card className="mb-6 border-2 border-primary">
-          <CardHeader>
-            <h2 className="font-semibold text-xl">Full Model Answer</h2>
+              <CardTitle className="text-2xl">{essay.question}</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground leading-relaxed">
-              [Full model answer with detailed paragraphs, diagrams, examples, and evaluation. 
-              Each paragraph would demonstrate strong economic analysis, use of terminology, 
-              and clear linkages between points. The answer would follow the structure guide 
-              provided above and incorporate all the key strengths highlighted.]
-            </p>
-            <Button variant="outline" className="mt-4">
+        </Card>
+
+        {/* Preamble */}
+        {essay.preamble && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Preamble</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground leading-relaxed">
+                {essay.preamble}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Structure Notes */}
+        {essay.structureNotes && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Essay Structure</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground font-medium">
+                {essay.structureNotes}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Examiner Comments */}
+        {essay.examinerComments && essay.examinerComments.length > 0 && (
+          <Card className="bg-primary/5 border-primary/20">
+            <CardHeader>
+              <CardTitle>Examiner Comments</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2">
+                {essay.examinerComments.map((comment, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-primary mt-1">✓</span>
+                    <span className="text-muted-foreground">{comment}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Download Button */}
+        <Card>
+          <CardContent className="pt-6">
+            <Button className="w-full" disabled>
               <Download className="w-4 h-4 mr-2" />
-              Download Full Answer PDF
+              Download Full Model Answer (Coming Soon)
             </Button>
           </CardContent>
         </Card>
-
-        <div className="flex justify-between items-center pt-6 border-t">
-          <Link href="/essays">
-            <Button variant="outline">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to All Essays
-            </Button>
-          </Link>
-          <Button>
-            <Download className="w-4 h-4 mr-2" />
-            Download PDF
-          </Button>
-        </div>
       </div>
     </div>
   );
