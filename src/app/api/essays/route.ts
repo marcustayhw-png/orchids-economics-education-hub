@@ -130,6 +130,7 @@ export async function POST(request: NextRequest) {
       preamble: body.preamble ? body.preamble.trim() : null,
       examinerComments: body.examinerComments || null,
       structureNotes: body.structureNotes ? body.structureNotes.trim() : null,
+      modelAnswer: body.modelAnswer ? body.modelAnswer.trim() : null,
       createdAt: now,
       updatedAt: now,
     };
@@ -194,6 +195,7 @@ export async function PUT(request: NextRequest) {
     if (body.preamble !== undefined) updateData.preamble = body.preamble ? body.preamble.trim() : null;
     if (body.examinerComments !== undefined) updateData.examinerComments = body.examinerComments;
     if (body.structureNotes !== undefined) updateData.structureNotes = body.structureNotes ? body.structureNotes.trim() : null;
+    if (body.modelAnswer !== undefined) updateData.modelAnswer = body.modelAnswer ? body.modelAnswer.trim() : null;
 
     const updated = await db.update(essays)
       .set(updateData)
