@@ -236,6 +236,62 @@
     border-radius: 0.125rem;
   }
   
+  /* Image Plus Resize Styles */
+  .rich-text-editor .tiptap .image-plus-wrapper {
+    display: inline-block;
+    position: relative;
+    margin: 1rem 0;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-wrapper.selected {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-container img {
+    display: block;
+    margin: 0;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--color-primary);
+    border: 2px solid var(--color-background);
+    border-radius: 50%;
+    cursor: nwse-resize;
+    z-index: 10;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-resize-handle.bottom-right {
+    bottom: -6px;
+    right: -6px;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-resize-handle.bottom-left {
+    bottom: -6px;
+    left: -6px;
+    cursor: nesw-resize;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-resize-handle.top-right {
+    top: -6px;
+    right: -6px;
+    cursor: nesw-resize;
+  }
+  
+  .rich-text-editor .tiptap .image-plus-resize-handle.top-left {
+    top: -6px;
+    left: -6px;
+    cursor: nwse-resize;
+  }
+  
   /* Rich Text Content Display (for public pages) */
   .rich-text-content {
     line-height: 1.7;
