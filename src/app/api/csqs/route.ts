@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { csqs, csqParts } from '@/db/schema';
-import { eq, like, or, and, asc, desc } from 'drizzle-orm';
+import { eq, like, or, and, asc, desc, gte, lte } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +38,10 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') ?? '0');
     const search = searchParams.get('search');
     const level = searchParams.get('level');
+    const topic = searchParams.get('topic');
+    const difficulty = searchParams.get('difficulty');
+    const minMarks = searchParams.get('min_marks');
+    const maxMarks = searchParams.get('max_marks');
 
     let query = db.select().from(csqs);
 
@@ -55,6 +59,28 @@ export async function GET(request: NextRequest) {
 
     if (level) {
       conditions.push(eq(csqs.level, level));
+    }
+
+    if (topic) {
+      conditions.push(eq(csqs.topic, topic));
+    }
+
+    if (difficulty) {
+      conditions.push(eq(csqs.difficulty, difficulty));
+    }
+
+    if (minMarks) {
+      const min = parseInt(minMarks);
+      if (!isNaN(min)) {
+        conditions.push(gte(csqs.totalMarks, min));
+      }
+    }
+
+    if (maxMarks) {
+      const max = parseInt(maxMarks);
+      if (!isNaN(max)) {
+        conditions.push(lte(csqs.totalMarks, max));
+      }
     }
 
     if (conditions.length > 0) {
@@ -105,7 +131,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { csqId, title, level, parts } = body;
+    const { csqId, title, level, topic, difficulty, totalMarks, parts } = body;
 
     // Validation
     if (!csqId || typeof csqId !== 'string' || !csqId.trim()) {
@@ -133,6 +159,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ 
         error: 'level must be either "JC" or "Secondary"',
         code: 'INVALID_LEVEL' 
+      }, { status: 400 });
+    }
+
+    if (!topic || typeof topic !== 'string' || !topic.trim()) {
+      return NextResponse.json({ 
+        error: 'topic is required and must be a non-empty string',
+        code: 'MISSING_TOPIC' 
+      }, { status: 400 });
+    }
+
+    if (!difficulty || typeof difficulty !== 'string') {
+      return NextResponse.json({ 
+        error: 'difficulty is required',
+        code: 'MISSING_DIFFICULTY' 
+      }, { status: 400 });
+    }
+
+    if (!['Easy', 'Medium', 'Hard'].includes(difficulty)) {
+      return NextResponse.json({ 
+        error: 'difficulty must be "Easy", "Medium", or "Hard"',
+        code: 'INVALID_DIFFICULTY' 
+      }, { status: 400 });
+    }
+
+    if (totalMarks === undefined || typeof totalMarks !== 'number' || totalMarks < 0) {
+      return NextResponse.json({ 
+        error: 'totalMarks is required and must be a non-negative number',
+        code: 'MISSING_TOTAL_MARKS' 
       }, { status: 400 });
     }
 
@@ -189,6 +243,9 @@ export async function POST(request: NextRequest) {
         csqId: csqId.trim(),
         title: title.trim(),
         level,
+        topic: topic.trim(),
+        difficulty,
+        totalMarks,
         createdAt: now,
         updatedAt: now
       })
@@ -239,7 +296,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, level, parts } = body;
+    const { title, level, topic, difficulty, totalMarks, parts } = body;
 
     // Find existing CSQ
     const existing = await db.select()
@@ -277,6 +334,27 @@ export async function PUT(request: NextRequest) {
           code: 'INVALID_LEVEL_VALUE' 
         }, { status: 400 });
       }
+    }
+
+    if (topic !== undefined && (typeof topic !== 'string' || !topic.trim())) {
+      return NextResponse.json({ 
+        error: 'topic must be a non-empty string',
+        code: 'INVALID_TOPIC' 
+      }, { status: 400 });
+    }
+
+    if (difficulty !== undefined && !['Easy', 'Medium', 'Hard'].includes(difficulty)) {
+      return NextResponse.json({ 
+        error: 'difficulty must be "Easy", "Medium", or "Hard"',
+        code: 'INVALID_DIFFICULTY' 
+      }, { status: 400 });
+    }
+
+    if (totalMarks !== undefined && (typeof totalMarks !== 'number' || totalMarks < 0)) {
+      return NextResponse.json({ 
+        error: 'totalMarks must be a non-negative number',
+        code: 'INVALID_TOTAL_MARKS' 
+      }, { status: 400 });
     }
 
     // Validate parts if provided
@@ -322,6 +400,18 @@ export async function PUT(request: NextRequest) {
 
     if (level !== undefined) {
       updates.level = level;
+    }
+
+    if (topic !== undefined) {
+      updates.topic = topic.trim();
+    }
+
+    if (difficulty !== undefined) {
+      updates.difficulty = difficulty;
+    }
+
+    if (totalMarks !== undefined) {
+      updates.totalMarks = totalMarks;
     }
 
     const updatedCsq = await db.update(csqs)
