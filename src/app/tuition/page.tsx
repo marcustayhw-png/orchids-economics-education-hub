@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { GraduationCap, Clock, Users, Star, CheckCircle2, DollarSign } from "lucide-react";
 
 export default function TuitionPage() {
+  const handleGetStarted = () => {
+    window.open('https://wa.me/6588872996', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -227,7 +231,7 @@ export default function TuitionPage() {
             <p className="text-muted-foreground text-center">
               Limited slots available. Contact me to learn more about rates and availability.
             </p>
-            <Button size="lg" className="w-full max-w-xs">
+            <Button size="lg" className="w-full max-w-xs" onClick={handleGetStarted}>
               Get Started
             </Button>
           </CardContent>
