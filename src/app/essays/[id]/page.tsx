@@ -168,16 +168,6 @@ export default function EssayDetailPage() {
             </CardContent>
           </Card>
         )}
-
-        {/* Download Button */}
-        <Card>
-          <CardContent className="pt-6">
-            <Button className="w-full" disabled>
-              <Download className="w-4 h-4 mr-2" />
-              Download Full Model Answer (Coming Soon)
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
