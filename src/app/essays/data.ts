@@ -1,21 +1,33 @@
+/**
+ * ===================================================
+ * ECONOMICS EDUCATION PLATFORM - CONTENT DATABASE
+ * ===================================================
+ * 
+ * HOW TO ADD NEW CONTENT:
+ * 
+ * 1. FOR ESSAYS: Add a new object to the modelEssays array below
+ * 2. FOR CSQ: Add a new object to the modelCSQs array below
+ * 
+ * Simply copy an existing entry and modify the values!
+ */
+
+// ===================================================
+// MODEL ESSAYS
+// ===================================================
+// Each essay needs: id, question, level, marks, preamble, examinerComments, structureNotes
+
 export const modelEssays = [
   {
-    id: "e1",
+    id: "e1", // Unique ID - use format e1, e2, e3, etc.
     question: "Discuss whether fiscal policy is more effective than monetary policy in achieving economic growth.",
-    level: "JC",
-    marks: "15",
+    level: "JC", // Either "JC" or "Secondary"
+    marks: "15", // Total marks for this question
     preamble: "Economic growth is a key macroeconomic objective for most governments. To achieve this, policymakers can employ various demand-side policies, with fiscal and monetary policy being the two main tools. The effectiveness of these policies in promoting sustained economic growth has been widely debated among economists.",
     examinerComments: [
       "Strong introduction defining key terms and setting context",
       "Excellent use of AD-AS diagrams to illustrate points",
       "Well-balanced discussion of both policies with real-world examples",
       "Clear evaluation with well-justified conclusion"
-    ],
-    keyStrengths: [
-      "Clear definition and explanation of both fiscal and monetary policy mechanisms",
-      "Effective use of AD-AS framework to analyze policy impacts",
-      "Strong evaluation considering time lags, political constraints, and economic contexts",
-      "Well-structured argument with logical flow from analysis to evaluation"
     ],
     structureNotes: "Introduction → Define policies → Explain fiscal policy effectiveness → Explain monetary policy effectiveness → Evaluation comparing contexts → Conclusion"
   },
@@ -31,12 +43,6 @@ export const modelEssays = [
       "Balanced consideration of potential costs and limitations",
       "Strong use of examples from developed and developing economies"
     ],
-    keyStrengths: [
-      "Comprehensive coverage of both benefits (efficiency gains, economies of scale) and costs (structural unemployment, infant industries)",
-      "Strong use of comparative advantage theory with numerical examples",
-      "Nuanced evaluation distinguishing between developed and developing country contexts",
-      "Excellent real-world examples from Singapore, China, and African economies"
-    ],
     structureNotes: "Introduction → Theory of comparative advantage → Benefits of free trade → Limitations and costs → Evaluation based on country characteristics → Conclusion"
   },
   {
@@ -51,26 +57,27 @@ export const modelEssays = [
       "Balanced discussion of price control pros and cons",
       "Appropriate real-world examples"
     ],
-    keyStrengths: [
-      "Clear step-by-step explanation of how demand and supply determine equilibrium price",
-      "Well-labeled diagrams showing market equilibrium and price ceiling effects",
-      "Balanced discussion of both benefits (affordability) and drawbacks (shortages) of price controls",
-      "Relevant examples such as rental controls and essential goods pricing"
-    ],
     structureNotes: "Introduction → Explain demand and supply → Show equilibrium determination → Discuss government intervention (price ceiling) → Evaluate effectiveness → Conclusion"
-  }
+  },
+  // TO ADD A NEW ESSAY: Copy the block above and paste here, then change the values
 ];
+
+// ===================================================
+// MODEL CSQ (CASE STUDY QUESTIONS)
+// ===================================================
+// Each CSQ has: id, title, level, and parts array
+// Each part needs: part (letter), question, marks, extract, markingScheme (array), modelAnswer
 
 export const modelCSQs = [
   {
-    id: "c1",
+    id: "c1", // Unique ID - use format c1, c2, c3, etc.
     title: "Case Study: Singapore's Economic Response to COVID-19",
-    level: "JC",
+    level: "JC", // Either "JC" or "Secondary"
     parts: [
       {
-        part: "a",
+        part: "a", // Part letter: a, b, c, d, etc.
         question: "With reference to Extract 1, explain the causes of the recession in Singapore during 2020.",
-        marks: "4",
+        marks: "4", // Marks for this part
         extract: "Extract 1: Singapore's Economy During COVID-19\n\nIn 2020, Singapore experienced its worst recession since independence, with GDP contracting by 5.4%. The aviation and tourism sectors were particularly hard hit as international travel came to a standstill. Singapore Airlines reported record losses as passenger numbers plummeted by 98% during the circuit breaker period. The manufacturing sector also faced significant challenges, with exports falling by 4.8% as global supply chains were disrupted and demand from major trading partners weakened. Domestically, consumer spending declined sharply as unemployment rose to 4.1% and businesses closed temporarily during the lockdown.",
         markingScheme: [
           "Fall in export demand due to global lockdowns (1 mark for identification + 1 mark for explanation)",
@@ -135,5 +142,6 @@ export const modelCSQs = [
         modelAnswer: "Government subsidies reduce the cost of providing healthcare, causing the supply curve to shift rightward from S1 to S2. This is because healthcare providers can afford to supply more at each price level with the subsidy. As a result, the equilibrium price falls from P1 to P2, making healthcare more affordable, while the equilibrium quantity rises from Q1 to Q2. This encourages more people to consume healthcare services, moving towards the socially optimal level of consumption."
       }
     ]
-  }
+  },
+  // TO ADD A NEW CSQ: Copy the block above and paste here, then change the values
 ];
