@@ -25,6 +25,8 @@ interface Essay {
   question: string;
   level: string;
   marks: string;
+  topic: string;
+  difficulty: string;
   preamble: string | null;
   examinerComments: string[] | null;
   structureNotes: string | null;
@@ -45,6 +47,8 @@ export function EssayManager() {
     question: "",
     level: "JC",
     marks: "",
+    topic: "",
+    difficulty: "Medium",
     preamble: "",
     examinerComments: "",
     structureNotes: "",
@@ -83,6 +87,8 @@ export function EssayManager() {
       question: "",
       level: "JC",
       marks: "",
+      topic: "",
+      difficulty: "Medium",
       preamble: "",
       examinerComments: "",
       structureNotes: "",
@@ -98,6 +104,8 @@ export function EssayManager() {
       question: essay.question,
       level: essay.level,
       marks: essay.marks,
+      topic: essay.topic || "",
+      difficulty: essay.difficulty || "Medium",
       preamble: essay.preamble || "",
       examinerComments: essay.examinerComments?.join("\n") || "",
       structureNotes: essay.structureNotes || "",
@@ -121,6 +129,8 @@ export function EssayManager() {
       question: formData.question,
       level: formData.level,
       marks: formData.marks,
+      topic: formData.topic,
+      difficulty: formData.difficulty,
       preamble: formData.preamble || null,
       examinerComments: examinerCommentsArray.length > 0 ? examinerCommentsArray : null,
       structureNotes: formData.structureNotes || null,
@@ -262,6 +272,40 @@ export function EssayManager() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="topic">Topic *</Label>
+                  <Input
+                    id="topic"
+                    value={formData.topic}
+                    onChange={(e) =>
+                      setFormData({ ...formData, topic: e.target.value })
+                    }
+                    placeholder="e.g., Market Failure, Macroeconomics"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="difficulty">Difficulty *</Label>
+                  <Select
+                    value={formData.difficulty}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, difficulty: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Easy">Easy</SelectItem>
+                      <SelectItem value="Medium">Medium</SelectItem>
+                      <SelectItem value="Hard">Hard</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
               <div>
                 <Label htmlFor="marks">Marks *</Label>
                 <Input
@@ -376,10 +420,20 @@ export function EssayManager() {
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2 flex-1">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Badge variant="secondary">{essay.essayId}</Badge>
                     <Badge variant="outline">{essay.level}</Badge>
                     <Badge>{essay.marks} marks</Badge>
+                    <Badge variant="outline">{essay.topic}</Badge>
+                    <Badge 
+                      variant={
+                        essay.difficulty === "Easy" ? "secondary" : 
+                        essay.difficulty === "Hard" ? "destructive" : 
+                        "default"
+                      }
+                    >
+                      {essay.difficulty}
+                    </Badge>
                   </div>
                   <p className="font-medium">{essay.question}</p>
                 </div>
