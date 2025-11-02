@@ -80,11 +80,15 @@ export default function EssaysPage() {
           </p>
         </div>
 
-        {/* Content Tabs */}
+        {/* Content Tabs - Mobile Optimized */}
         <Tabs defaultValue="essays" className="space-y-6 sm:space-y-8 w-full" onValueChange={setSelectedTab}>
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-            <TabsTrigger value="essays">Model Essays</TabsTrigger>
-            <TabsTrigger value="csq">CSQ Answers</TabsTrigger>
+          <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-9 p-1 gap-1">
+            <TabsTrigger value="essays" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
+              Model Essays
+            </TabsTrigger>
+            <TabsTrigger value="csq" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
+              CSQ Answers
+            </TabsTrigger>
           </TabsList>
 
           {/* Model Essays Tab */}
