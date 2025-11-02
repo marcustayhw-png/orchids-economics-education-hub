@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Plus, Edit, Trash2, X } from "lucide-react";
 import { ImageUploadButton } from "@/components/admin/image-upload-button";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import {
   Select,
   SelectContent,
@@ -38,9 +39,6 @@ export function EssayManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-
-  const preambleRef = useRef<HTMLTextAreaElement>(null);
-  const modelAnswerRef = useRef<HTMLTextAreaElement>(null);
 
   const [formData, setFormData] = useState({
     essayId: "",
@@ -199,29 +197,6 @@ export function EssayManager() {
     }
   };
 
-  const handleImageInsert = (field: 'preamble' | 'modelAnswer', imageUrl: string) => {
-    const textareaRef = field === 'preamble' ? preambleRef : modelAnswerRef;
-    const textarea = textareaRef.current;
-    
-    if (!textarea) return;
-
-    const cursorPos = textarea.selectionStart;
-    const textBefore = formData[field].substring(0, cursorPos);
-    const textAfter = formData[field].substring(cursorPos);
-    
-    const imageMarkdown = `\n![Image](${imageUrl})\n`;
-    const newText = textBefore + imageMarkdown + textAfter;
-    
-    setFormData({ ...formData, [field]: newText });
-    
-    // Set cursor position after inserted text
-    setTimeout(() => {
-      const newCursorPos = cursorPos + imageMarkdown.length;
-      textarea.focus();
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    }, 0);
-  };
-
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -315,25 +290,15 @@ export function EssayManager() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="preamble">Preamble</Label>
-                  <ImageUploadButton
-                    onImageInsert={(url) => handleImageInsert('preamble', url)}
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <Textarea
-                  ref={preambleRef}
-                  id="preamble"
-                  value={formData.preamble}
-                  onChange={(e) =>
-                    setFormData({ ...formData, preamble: e.target.value })
-                  }
-                  placeholder="Context for the essay. Use ![Image](URL) to add images."
-                  rows={4}
+                <Label htmlFor="preamble">Preamble</Label>
+                <RichTextEditor
+                  content={formData.preamble}
+                  onChange={(html) => setFormData({ ...formData, preamble: html })}
+                  placeholder="Add context or background information for the essay..."
+                  minHeight="150px"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Tip: Click "Upload Image" to easily insert images at cursor position
+                  Use the toolbar to format text with bold, italics, colors, and more
                 </p>
               </div>
 
@@ -369,25 +334,15 @@ export function EssayManager() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="modelAnswer">Model Answer</Label>
-                  <ImageUploadButton
-                    onImageInsert={(url) => handleImageInsert('modelAnswer', url)}
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <Textarea
-                  ref={modelAnswerRef}
-                  id="modelAnswer"
-                  value={formData.modelAnswer}
-                  onChange={(e) =>
-                    setFormData({ ...formData, modelAnswer: e.target.value })
-                  }
-                  placeholder="Full model answer for this essay. Use ![Image](URL) to add images."
-                  rows={8}
+                <Label htmlFor="modelAnswer">Model Answer</Label>
+                <RichTextEditor
+                  content={formData.modelAnswer}
+                  onChange={(html) => setFormData({ ...formData, modelAnswer: html })}
+                  placeholder="Write the full model answer with rich formatting..."
+                  minHeight="300px"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Tip: Click "Upload Image" to easily insert images at cursor position
+                  Use keyboard shortcuts: ⌘+B (bold), ⌘+I (italic), ⌘+U (underline)
                 </p>
               </div>
 
