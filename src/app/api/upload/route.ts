@@ -5,7 +5,14 @@ import path from 'path';
 import { getCurrentUser } from '@/lib/auth';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_MIME_TYPE = 'application/pdf';
+const ALLOWED_MIME_TYPES = [
+  'application/pdf',
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/gif'
+];
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
 
 export async function POST(request: NextRequest) {
@@ -38,10 +45,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file type
-    if (file.type !== ALLOWED_MIME_TYPE) {
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
       return NextResponse.json(
         { 
-          error: 'Invalid file type. Only PDF files are allowed',
+          error: 'Invalid file type. Allowed: PDF, JPG, PNG, WebP, GIF',
           code: 'INVALID_FILE_TYPE'
         },
         { status: 400 }
@@ -91,7 +98,8 @@ export async function POST(request: NextRequest) {
       {
         message: 'File uploaded successfully',
         fileUrl,
-        filename: uniqueFilename
+        filename: uniqueFilename,
+        fileType: file.type
       },
       { status: 201 }
     );
