@@ -140,7 +140,7 @@ export default function TuitionPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Free Trial Consultation</p>
+                    <p className="font-medium">Free Consultation</p>
                     <p className="text-sm text-muted-foreground">Complimentary first session to assess your needs and learning goals</p>
                   </div>
                 </div>
