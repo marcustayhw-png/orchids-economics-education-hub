@@ -77,6 +77,7 @@ export const essays = sqliteTable('essays', {
   preamble: text('preamble'),
   examinerComments: text('examiner_comments', { mode: 'json' }),
   structureNotes: text('structure_notes'),
+  modelAnswer: text('model_answer'),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
