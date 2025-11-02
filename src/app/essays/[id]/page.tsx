@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { MarkdownRenderer } from "@/components/admin/markdown-renderer";
 
 interface Essay {
   id: number;
@@ -108,9 +109,10 @@ export default function EssayDetailPage() {
               <CardTitle>Preamble</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground leading-relaxed">
-                {essay.preamble}
-              </p>
+              <MarkdownRenderer 
+                content={essay.preamble}
+                className="text-muted-foreground leading-relaxed"
+              />
             </CardContent>
           </Card>
         )}
@@ -161,9 +163,10 @@ export default function EssayDetailPage() {
             </CardHeader>
             <CardContent>
               <div className="prose prose-sm max-w-none">
-                <p className="whitespace-pre-wrap text-foreground leading-relaxed">
-                  {essay.modelAnswer}
-                </p>
+                <MarkdownRenderer 
+                  content={essay.modelAnswer}
+                  className="text-foreground leading-relaxed"
+                />
               </div>
             </CardContent>
           </Card>
