@@ -141,7 +141,7 @@ export default function TuitionPage() {
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="font-medium !whitespace-pre-line">Free Consultation</p>
-                    <p className="text-sm text-muted-foreground">Complimentary first session to assess your needs and learning goals</p>
+                    <p className="text-sm text-muted-foreground">Complimentary consultation to further aid you in your learning </p>
                   </div>
                 </div>
               </div>
