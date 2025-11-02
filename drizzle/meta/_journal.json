@@ -15,6 +15,13 @@
       "when": 1762041965807,
       "tag": "0001_adorable_lenny_balinger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1762042927883,
+      "tag": "0002_safe_wither",
+      "breakpoints": true
     }
   ]
 }
