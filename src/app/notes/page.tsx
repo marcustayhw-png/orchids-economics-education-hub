@@ -56,56 +56,60 @@ export default function NotesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-bold">Economics Notes</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12 space-y-3 sm:space-y-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold break-words px-2">Economics Notes</h1>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto break-words px-2">
             Comprehensive study notes organized by topic and difficulty level. Click on any topic to expand and view detailed content.
           </p>
         </div>
 
-        {/* Level Selector */}
-        <Tabs defaultValue="secondary" className="space-y-8" onValueChange={setSelectedLevel}>
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-            <TabsTrigger value="secondary">Secondary School</TabsTrigger>
-            <TabsTrigger value="jc">Junior College</TabsTrigger>
+        {/* Level Selector - Mobile Optimized */}
+        <Tabs defaultValue="secondary" className="space-y-6 sm:space-y-8 w-full" onValueChange={setSelectedLevel}>
+          <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-9 p-1 gap-1">
+            <TabsTrigger value="secondary" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
+              Secondary School
+            </TabsTrigger>
+            <TabsTrigger value="jc" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
+              Junior College
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="secondary" className="space-y-6">
+          <TabsContent value="secondary" className="space-y-4 sm:space-y-6">
             {secondaryNotes.length === 0 ? (
-              <Card className="border-2 border-dashed">
-                <CardContent className="py-12 text-center">
-                  <p className="text-muted-foreground">No notes available for Secondary level yet.</p>
+              <Card className="border-2 border-dashed overflow-hidden">
+                <CardContent className="py-8 sm:py-12 text-center">
+                  <p className="text-muted-foreground break-words px-2">No notes available for Secondary level yet.</p>
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-6">
+              <div className="grid gap-4 sm:gap-6">
                 {secondaryNotes.map((note) => (
-                  <Card key={note.id} className="border-2 hover:border-primary transition-colors">
+                  <Card key={note.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
                     <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-2">
-                          <CardTitle className="text-2xl">{note.title}</CardTitle>
-                          <Badge variant="secondary">{note.category}</Badge>
+                      <div className="flex items-start justify-between gap-3 sm:gap-4">
+                        <div className="space-y-2 flex-1 min-w-0">
+                          <CardTitle className="text-xl sm:text-2xl break-words leading-tight">{note.title}</CardTitle>
+                          <Badge variant="secondary" className="whitespace-nowrap">{note.category}</Badge>
                         </div>
-                        <BookOpen className="w-6 h-6 text-primary" />
+                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
                       </div>
-                      <CardDescription className="text-base">{note.description}</CardDescription>
+                      <CardDescription className="text-sm sm:text-base break-words">{note.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {note.pdfUrl ? (
-                        <div className="p-4 bg-muted rounded-lg">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <FileText className="w-5 h-5 text-primary" />
-                              <span className="font-semibold">Full Notes PDF Available</span>
+                        <div className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <FileText className="w-5 h-5 text-primary flex-shrink-0" />
+                              <span className="font-semibold text-sm sm:text-base break-words">Full Notes PDF Available</span>
                             </div>
-                            <Button asChild>
+                            <Button asChild size="sm" className="w-full sm:w-auto whitespace-nowrap">
                               <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
-                                <Download className="w-4 h-4 mr-2" />
-                                Download PDF
+                                <Download className="w-4 h-4 mr-2 flex-shrink-0" />
+                                <span className="truncate">Download PDF</span>
                               </a>
                             </Button>
                           </div>
@@ -113,15 +117,15 @@ export default function NotesPage() {
                       ) : (
                         <Accordion type="single" collapsible>
                           <AccordionItem value="topics" className="border-none">
-                            <AccordionTrigger className="text-sm font-semibold">
+                            <AccordionTrigger className="text-sm font-semibold break-words">
                               View Topics Covered ({note.topics.length})
                             </AccordionTrigger>
                             <AccordionContent>
-                              <div className="space-y-4 pt-2">
+                              <div className="space-y-3 sm:space-y-4 pt-2">
                                 {note.topics.map((topic, idx) => (
-                                  <div key={idx} className="p-4 bg-muted rounded-lg">
-                                    <h4 className="font-semibold mb-2">{topic}</h4>
-                                    <p className="text-sm text-muted-foreground">
+                                  <div key={idx} className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
+                                    <h4 className="font-semibold mb-2 text-sm sm:text-base break-words">{topic}</h4>
+                                    <p className="text-xs sm:text-sm text-muted-foreground break-words">
                                       Detailed explanation of {topic.toLowerCase()} including definitions, diagrams, 
                                       real-world examples, and common exam questions.
                                     </p>
@@ -139,39 +143,39 @@ export default function NotesPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="jc" className="space-y-6">
+          <TabsContent value="jc" className="space-y-4 sm:space-y-6">
             {jcNotes.length === 0 ? (
-              <Card className="border-2 border-dashed">
-                <CardContent className="py-12 text-center">
-                  <p className="text-muted-foreground">No notes available for JC level yet.</p>
+              <Card className="border-2 border-dashed overflow-hidden">
+                <CardContent className="py-8 sm:py-12 text-center">
+                  <p className="text-muted-foreground break-words px-2">No notes available for JC level yet.</p>
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-6">
+              <div className="grid gap-4 sm:gap-6">
                 {jcNotes.map((note) => (
-                  <Card key={note.id} className="border-2 hover:border-primary transition-colors">
+                  <Card key={note.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
                     <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-2">
-                          <CardTitle className="text-2xl">{note.title}</CardTitle>
-                          <Badge variant="secondary">{note.category}</Badge>
+                      <div className="flex items-start justify-between gap-3 sm:gap-4">
+                        <div className="space-y-2 flex-1 min-w-0">
+                          <CardTitle className="text-xl sm:text-2xl break-words leading-tight">{note.title}</CardTitle>
+                          <Badge variant="secondary" className="whitespace-nowrap">{note.category}</Badge>
                         </div>
-                        <BookOpen className="w-6 h-6 text-primary" />
+                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
                       </div>
-                      <CardDescription className="text-base">{note.description}</CardDescription>
+                      <CardDescription className="text-sm sm:text-base break-words">{note.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {note.pdfUrl ? (
-                        <div className="p-4 bg-muted rounded-lg">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <FileText className="w-5 h-5 text-primary" />
-                              <span className="font-semibold">Full Notes PDF Available</span>
+                        <div className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <FileText className="w-5 h-5 text-primary flex-shrink-0" />
+                              <span className="font-semibold text-sm sm:text-base break-words">Full Notes PDF Available</span>
                             </div>
-                            <Button asChild>
+                            <Button asChild size="sm" className="w-full sm:w-auto whitespace-nowrap">
                               <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
-                                <Download className="w-4 h-4 mr-2" />
-                                Download PDF
+                                <Download className="w-4 h-4 mr-2 flex-shrink-0" />
+                                <span className="truncate">Download PDF</span>
                               </a>
                             </Button>
                           </div>
@@ -179,15 +183,15 @@ export default function NotesPage() {
                       ) : (
                         <Accordion type="single" collapsible>
                           <AccordionItem value="topics" className="border-none">
-                            <AccordionTrigger className="text-sm font-semibold">
+                            <AccordionTrigger className="text-sm font-semibold break-words">
                               View Topics Covered ({note.topics.length})
                             </AccordionTrigger>
                             <AccordionContent>
-                              <div className="space-y-4 pt-2">
+                              <div className="space-y-3 sm:space-y-4 pt-2">
                                 {note.topics.map((topic, idx) => (
-                                  <div key={idx} className="p-4 bg-muted rounded-lg">
-                                    <h4 className="font-semibold mb-2">{topic}</h4>
-                                    <p className="text-sm text-muted-foreground">
+                                  <div key={idx} className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
+                                    <h4 className="font-semibold mb-2 text-sm sm:text-base break-words">{topic}</h4>
+                                    <p className="text-xs sm:text-sm text-muted-foreground break-words">
                                       In-depth coverage of {topic.toLowerCase()} with advanced economic analysis, 
                                       mathematical models where applicable, case studies, and examination techniques.
                                     </p>
@@ -207,16 +211,16 @@ export default function NotesPage() {
         </Tabs>
 
         {/* Study Tips */}
-        <Card className="mt-12 bg-muted/50 border-2">
+        <Card className="mt-8 sm:mt-12 bg-muted/50 border-2 overflow-hidden">
           <CardHeader>
-            <CardTitle>How to Use These Notes Effectively</CardTitle>
+            <CardTitle className="break-words">How to Use These Notes Effectively</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-muted-foreground">
-            <p>• Read through the notes systematically, starting from basic concepts before moving to advanced topics</p>
-            <p>• Draw your own diagrams to reinforce understanding of economic models</p>
-            <p>• Attempt to explain concepts in your own words to test comprehension</p>
-            <p>• Link theoretical concepts to real-world examples from current affairs</p>
-            <p>• Use these notes alongside model essays and practice questions for comprehensive exam preparation</p>
+          <CardContent className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
+            <p className="break-words">• Read through the notes systematically, starting from basic concepts before moving to advanced topics</p>
+            <p className="break-words">• Draw your own diagrams to reinforce understanding of economic models</p>
+            <p className="break-words">• Attempt to explain concepts in your own words to test comprehension</p>
+            <p className="break-words">• Link theoretical concepts to real-world examples from current affairs</p>
+            <p className="break-words">• Use these notes alongside model essays and practice questions for comprehensive exam preparation</p>
           </CardContent>
         </Card>
       </div>
