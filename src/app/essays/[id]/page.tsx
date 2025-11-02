@@ -82,7 +82,7 @@ export default function EssayDetailPage() {
       <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 w-full">
         {/* Back Button */}
         <Link href="/essays">
-          <Button variant="outline">
+          <Button variant="outline" className="text-foreground">
             <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
             <span className="truncate">Back to All Essays</span>
           </Button>
