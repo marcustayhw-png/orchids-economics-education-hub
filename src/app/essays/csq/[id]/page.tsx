@@ -133,9 +133,10 @@ export default function CSQDetailPage() {
                   <CardTitle className="text-base">Extract</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
-                    {part.extract}
-                  </div>
+                  <div 
+                    className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: part.extract }}
+                  />
                 </CardContent>
               </Card>
             )}
@@ -166,9 +167,10 @@ export default function CSQDetailPage() {
                   <CardTitle className="text-base">Model Answer</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
-                    {part.modelAnswer}
-                  </div>
+                  <div 
+                    className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: part.modelAnswer }}
+                  />
                 </CardContent>
               </Card>
             )}
