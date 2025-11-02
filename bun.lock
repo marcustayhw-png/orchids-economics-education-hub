@@ -98,6 +98,7 @@
         "tailwindcss-animate": "^1.0.7",
         "three": "^0.178.0",
         "three-globe": "^2.43.0",
+        "tiptap-image-plus": "^1.0.5",
         "vaul": "^1.1.2",
         "zod": "^4.1.12",
       },
@@ -1887,6 +1888,8 @@
     "tinycolor2": ["tinycolor2@1.6.0", "", {}, "sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw=="],
 
     "tinyglobby": ["tinyglobby@0.2.15", "", { "dependencies": { "fdir": "^6.5.0", "picomatch": "^4.0.3" } }, "sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ=="],
+
+    "tiptap-image-plus": ["tiptap-image-plus@1.0.5", "", { "peerDependencies": { "@tiptap/extension-image": "^2.26.1", "@tiptap/pm": "^2.26.1" } }, "sha512-1QJ4VFqB5OjM8CtYxdUifo/6glF0+LO03ZkOGP20iS3qrtldB4fVvlzWtYX9xHJHhs+t2CmVbVRCXGuxUMHmLw=="],
 
     "to-regex-range": ["to-regex-range@5.0.1", "", { "dependencies": { "is-number": "^7.0.0" } }, "sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ=="],
 
