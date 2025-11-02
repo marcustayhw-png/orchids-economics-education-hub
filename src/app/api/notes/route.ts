@@ -3,6 +3,14 @@ import { db } from '@/db';
 import { notes } from '@/db/schema';
 import { eq, like, or, and, desc } from 'drizzle-orm';
 
+// Helper function to parse note topics
+function parseNote(note: any) {
+  return {
+    ...note,
+    topics: typeof note.topics === 'string' ? JSON.parse(note.topics) : note.topics
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -29,7 +37,7 @@ export async function GET(request: NextRequest) {
         }, { status: 404 });
       }
 
-      return NextResponse.json(note[0], { status: 200 });
+      return NextResponse.json(parseNote(note[0]), { status: 200 });
     }
 
     // List with pagination, search, and filters
@@ -71,7 +79,7 @@ export async function GET(request: NextRequest) {
       .limit(limit)
       .offset(offset);
 
-    return NextResponse.json(results, { status: 200 });
+    return NextResponse.json(results.map(parseNote), { status: 200 });
 
   } catch (error) {
     console.error('GET error:', error);
@@ -236,7 +244,7 @@ export async function PUT(request: NextRequest) {
       .where(eq(notes.id, parseInt(id)))
       .returning();
 
-    return NextResponse.json(updatedNote[0], { status: 200 });
+    return NextResponse.json(parseNote(updatedNote[0]), { status: 200 });
 
   } catch (error) {
     console.error('PUT error:', error);
