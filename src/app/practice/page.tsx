@@ -1,103 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Eye, EyeOff, Filter } from "lucide-react";
+import { Eye, EyeOff, Filter, Loader2, FileText, Download } from "lucide-react";
 
 type Question = {
-  id: string;
+  id: number;
+  questionId: string;
   question: string;
   topic: string;
   difficulty: "Easy" | "Medium" | "Hard";
   level: "Secondary" | "JC";
   marks: number;
   answer: string;
+  pdfUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
-const practiceQuestions: Question[] = [
-  {
-    id: "q1",
-    question: "Define the term 'opportunity cost' and provide a real-world example.",
-    topic: "Basic Economic Problem",
-    difficulty: "Easy",
-    level: "Secondary",
-    marks: 2,
-    answer: "Opportunity cost is the benefit forgone from the next best alternative when making a choice. For example, if a student chooses to spend 2 hours studying economics, the opportunity cost might be the enjoyment they would have gained from watching a movie or the income from working part-time during those 2 hours.",
-  },
-  {
-    id: "q2",
-    question: "Using a demand and supply diagram, explain how a subsidy on electric vehicles would affect the market equilibrium.",
-    topic: "Demand and Supply",
-    difficulty: "Medium",
-    level: "Secondary",
-    marks: 6,
-    answer: "A subsidy on electric vehicles effectively reduces the cost of production for manufacturers. This causes the supply curve to shift rightward from S1 to S2. At the original price P1, there is now excess supply, putting downward pressure on price. The new equilibrium is established at a lower price (P2) and higher quantity (Q2). This achieves the government's objective of encouraging greater consumption of electric vehicles to reduce carbon emissions.",
-  },
-  {
-    id: "q3",
-    question: "Explain two reasons why the demand for petrol is likely to be price inelastic.",
-    topic: "Elasticity",
-    difficulty: "Medium",
-    level: "Secondary",
-    marks: 4,
-    answer: "Firstly, petrol is a necessity for many people who need to drive to work, with few close substitutes in the short run. Even if price rises, consumers cannot easily switch to alternatives like public transport if it's unavailable or inconvenient. Secondly, petrol represents a small proportion of most households' income. A 10% rise in petrol price has minimal impact on total expenditure, so consumers don't significantly reduce consumption in response to price changes.",
-  },
-  {
-    id: "q4",
-    question: "Explain how the multiplier process works when there is an increase in government spending.",
-    topic: "Fiscal Policy",
-    difficulty: "Hard",
-    level: "JC",
-    marks: 8,
-    answer: "When government increases spending, there is an initial injection into the circular flow of income. For example, if the government spends $100m on infrastructure, this becomes income for construction firms and workers. They will spend a proportion of this income (determined by MPC), creating income for others. If MPC is 0.8, the initial $100m generates $80m in the second round, then $64m in the third round, and so on. The multiplier = 1/(1-MPC) = 1/0.2 = 5. Therefore, the total increase in national income = $100m × 5 = $500m. However, the multiplier effect may be weakened by withdrawals (savings, taxes, imports) and supply constraints in the economy.",
-  },
-  {
-    id: "q5",
-    question: "Discuss whether monetary policy is effective in controlling inflation.",
-    topic: "Monetary Policy",
-    difficulty: "Hard",
-    level: "JC",
-    marks: 12,
-    answer: "[Detailed essay answer discussing: definition of monetary policy and inflation; how contractionary monetary policy (raising interest rates) works through various transmission mechanisms; effectiveness depends on type of inflation (demand-pull vs cost-push); time lags involved; side effects on growth and unemployment; comparison with other policies; contextual evaluation based on economic conditions. Conclusion would provide balanced judgment based on circumstances.]",
-  },
-  {
-    id: "q6",
-    question: "Explain the law of comparative advantage using a numerical example.",
-    topic: "International Trade",
-    difficulty: "Medium",
-    level: "JC",
-    marks: 6,
-    answer: "The law of comparative advantage states that countries should specialize in producing goods where they have the lowest opportunity cost. Example: Country A can produce either 100 units of cloth OR 50 units of wine. Country B can produce either 60 units of cloth OR 60 units of wine. For Country A: 1 wine costs 2 cloth (100/50). For Country B: 1 wine costs 1 cloth (60/60). Country B has comparative advantage in wine (lower opportunity cost). Country A has comparative advantage in cloth. Even though Country A is absolutely more efficient at producing both goods, both countries gain from trade if A specializes in cloth and B in wine, then they trade.",
-  },
-  {
-    id: "q7",
-    question: "Explain two government measures to correct the market failure caused by demerit goods.",
-    topic: "Market Failure",
-    difficulty: "Medium",
-    level: "Secondary",
-    marks: 6,
-    answer: "Firstly, the government can impose indirect taxes on demerit goods like cigarettes. This increases the price, reducing quantity demanded, especially if demand is price elastic. The tax internalizes the negative externalities by making consumers pay closer to the true social cost. Secondly, the government can use regulation, such as banning advertising or restricting sales to certain age groups. This reduces information failure and limits accessibility, thereby reducing over-consumption of the demerit good.",
-  },
-  {
-    id: "q8",
-    question: "Define GDP and explain one limitation of using GDP as a measure of living standards.",
-    topic: "National Income",
-    difficulty: "Easy",
-    level: "JC",
-    marks: 4,
-    answer: "GDP (Gross Domestic Product) is the total value of all final goods and services produced within a country's borders in a given time period. One limitation is that GDP does not account for income distribution. A country may have high GDP per capita, but if income is concentrated among a small wealthy elite, the majority may have low living standards. GDP figures alone don't reveal whether economic growth benefits everyone or just a privileged few.",
-  },
-];
-
 export default function PracticePage() {
+  const [practiceQuestions, setPracticeQuestions] = useState<Question[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all");
   const [revealedAnswers, setRevealedAnswers] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  const fetchQuestions = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/practice-questions?limit=100");
+      if (response.ok) {
+        const data = await response.json();
+        setPracticeQuestions(data);
+      }
+    } catch (error) {
+      console.error("Error fetching practice questions:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Extract unique topics
   const topics = Array.from(new Set(practiceQuestions.map(q => q.topic)));
@@ -123,12 +72,20 @@ export default function PracticePage() {
   };
 
   const revealAllAnswers = () => {
-    setRevealedAnswers(new Set(filteredQuestions.map(q => q.id)));
+    setRevealedAnswers(new Set(filteredQuestions.map(q => q.questionId)));
   };
 
   const hideAllAnswers = () => {
     setRevealedAnswers(new Set());
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
@@ -236,31 +193,47 @@ export default function PracticePage() {
                         {q.difficulty}
                       </Badge>
                       <Badge variant="outline">{q.marks} marks</Badge>
+                      {q.pdfUrl && (
+                        <Badge variant="default">
+                          <FileText className="w-3 h-3 mr-1" />
+                          PDF
+                        </Badge>
+                      )}
                     </div>
                     <CardTitle className="text-lg leading-relaxed">{q.question}</CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button 
-                  onClick={() => toggleAnswer(q.id)}
-                  variant={revealedAnswers.has(q.id) ? "default" : "outline"}
-                  className="w-full sm:w-auto"
-                >
-                  {revealedAnswers.has(q.id) ? (
-                    <>
-                      <EyeOff className="w-4 h-4 mr-2" />
-                      Hide Answer
-                    </>
-                  ) : (
-                    <>
-                      <Eye className="w-4 h-4 mr-2" />
-                      Reveal Answer
-                    </>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => toggleAnswer(q.questionId)}
+                    variant={revealedAnswers.has(q.questionId) ? "default" : "outline"}
+                    className="w-full sm:w-auto"
+                  >
+                    {revealedAnswers.has(q.questionId) ? (
+                      <>
+                        <EyeOff className="w-4 h-4 mr-2" />
+                        Hide Answer
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="w-4 h-4 mr-2" />
+                        Reveal Answer
+                      </>
+                    )}
+                  </Button>
+                  {q.pdfUrl && (
+                    <Button variant="outline" asChild>
+                      <a href={q.pdfUrl} target="_blank" rel="noopener noreferrer">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download PDF
+                      </a>
+                    </Button>
                   )}
-                </Button>
+                </div>
 
-                {revealedAnswers.has(q.id) && (
+                {revealedAnswers.has(q.questionId) && (
                   <div className="p-4 bg-muted rounded-lg border-l-4 border-primary animate-in slide-in-from-top-2">
                     <h4 className="font-semibold mb-2 text-primary">Model Answer:</h4>
                     <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
