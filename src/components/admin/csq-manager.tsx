@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Plus, Edit, Trash2, X, PlusCircle, MinusCircle } from "lucide-react";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import {
   Select,
   SelectContent,
@@ -469,15 +470,16 @@ export function CSQManager() {
                       </div>
 
                       <div>
-                        <Label>Extract</Label>
-                        <Textarea
-                          value={part.extract}
-                          onChange={(e) =>
-                            updatePart(index, "extract", e.target.value)
-                          }
-                          placeholder="Extract text for this part"
-                          rows={4}
+                        <Label>Extract (with image upload support)</Label>
+                        <RichTextEditor
+                          content={part.extract}
+                          onChange={(html) => updatePart(index, "extract", html)}
+                          placeholder="Add extract text with images, formatting, diagrams..."
+                          minHeight="200px"
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Use the image button in toolbar to upload diagrams and charts
+                        </p>
                       </div>
 
                       <div>
@@ -493,15 +495,16 @@ export function CSQManager() {
                       </div>
 
                       <div>
-                        <Label>Model Answer</Label>
-                        <Textarea
-                          value={part.modelAnswer}
-                          onChange={(e) =>
-                            updatePart(index, "modelAnswer", e.target.value)
-                          }
-                          placeholder="Full model answer for this part"
-                          rows={5}
+                        <Label>Model Answer (with image upload support)</Label>
+                        <RichTextEditor
+                          content={part.modelAnswer}
+                          onChange={(html) => updatePart(index, "modelAnswer", html)}
+                          placeholder="Write the full model answer with images, diagrams, formatting..."
+                          minHeight="250px"
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Upload images directly using the image button in the toolbar
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
