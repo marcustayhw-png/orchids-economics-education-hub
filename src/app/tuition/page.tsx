@@ -130,6 +130,20 @@ export default function TuitionPage() {
                     <p className="text-sm text-muted-foreground">Regular assessments to monitor improvement</p>
                   </div>
                 </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium">24/7 Online Help</p>
+                    <p className="text-sm text-muted-foreground">Round-the-clock support for all your questions</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Complimentary Consultations</p>
+                    <p className="text-sm text-muted-foreground">Free initial consultation to discuss your learning needs</p>
+                  </div>
+                </div>
               </div>
             </div>
           </CardContent>
