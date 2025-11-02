@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
-    return NextResponse.json(newNote[0], { status: 201 });
+    return NextResponse.json(parseNote(newNote[0]), { status: 201 });
 
   } catch (error) {
     console.error('POST error:', error);
