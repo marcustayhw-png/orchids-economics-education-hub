@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2, LogOut } from "lucide-react";
 import { EssayManager } from "@/components/admin/essay-manager";
 import { CSQManager } from "@/components/admin/csq-manager";
+import { NotesManager } from "@/components/admin/notes-manager";
+import { PracticeQuestionsManager } from "@/components/admin/practice-questions-manager";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 
@@ -90,9 +92,11 @@ export default function AdminPage() {
 
         {/* Content Management Tabs */}
         <Tabs defaultValue="essays" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="essays">Manage Essays</TabsTrigger>
-            <TabsTrigger value="csqs">Manage CSQs</TabsTrigger>
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+            <TabsTrigger value="essays">Essays</TabsTrigger>
+            <TabsTrigger value="csqs">CSQs</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
+            <TabsTrigger value="practice">Practice</TabsTrigger>
           </TabsList>
 
           <TabsContent value="essays">
@@ -113,6 +117,28 @@ export default function AdminPage() {
               </CardHeader>
               <CardContent>
                 <CSQManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="notes">
+            <Card>
+              <CardHeader>
+                <CardTitle>Notes Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <NotesManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="practice">
+            <Card>
+              <CardHeader>
+                <CardTitle>Practice Questions Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <PracticeQuestionsManager />
               </CardContent>
             </Card>
           </TabsContent>
