@@ -103,3 +103,31 @@ export const csqParts = sqliteTable('csq_parts', {
   modelAnswer: text('model_answer'),
   orderIndex: integer('order_index').notNull().default(0),
 });
+
+// Notes table
+export const notes = sqliteTable('notes', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  title: text('title').notNull(),
+  category: text('category').notNull(),
+  level: text('level').notNull(),
+  topics: text('topics', { mode: 'json' }).notNull(),
+  description: text('description').notNull(),
+  pdfUrl: text('pdf_url'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
+
+// Practice Questions table
+export const practiceQuestions = sqliteTable('practice_questions', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  questionId: text('question_id').notNull().unique(),
+  question: text('question').notNull(),
+  topic: text('topic').notNull(),
+  difficulty: text('difficulty').notNull(),
+  level: text('level').notNull(),
+  marks: integer('marks').notNull(),
+  answer: text('answer').notNull(),
+  pdfUrl: text('pdf_url'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
