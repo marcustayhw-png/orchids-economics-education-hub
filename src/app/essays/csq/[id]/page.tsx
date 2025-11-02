@@ -1,115 +1,194 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Award, Download, AlertCircle, FileText, ArrowLeft } from "lucide-react";
-import { modelCSQs } from "../../data";
+import { ArrowLeft, Download, Loader2 } from "lucide-react";
 
-export default function CSQDetailPage({ params }: { params: { id: string } }) {
-  const csq = modelCSQs.find((c) => c.id === params.id);
+interface CSQPart {
+  id: number;
+  part: string;
+  question: string;
+  marks: string;
+  extract: string | null;
+  markingScheme: string[] | null;
+  modelAnswer: string | null;
+  orderIndex: number;
+}
 
-  if (!csq) {
-    notFound();
+interface CSQ {
+  id: number;
+  csqId: string;
+  title: string;
+  level: string;
+  parts: CSQPart[];
+}
+
+export default function CSQDetailPage() {
+  const params = useParams();
+  const [csq, setCSQ] = useState<CSQ | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    fetchCSQ();
+  }, [params.id]);
+
+  const fetchCSQ = async () => {
+    setIsLoading(true);
+    setNotFound(false);
+    try {
+      const response = await fetch(`/api/csqs?csq_id=${params.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setCSQ(data);
+      } else if (response.status === 404) {
+        setNotFound(true);
+      }
+    } catch (error) {
+      console.error("Error fetching CSQ:", error);
+      setNotFound(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
   }
 
-  const totalMarks = csq.parts.reduce((sum, p) => sum + parseInt(p.marks), 0);
-
-  return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <Link href="/essays">
-          <Button variant="ghost" className="mb-6">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to All CSQs
-          </Button>
-        </Link>
-
-        <div className="mb-8 space-y-4">
-          <div className="flex gap-2 items-center flex-wrap">
-            <Badge variant="secondary">{csq.level}</Badge>
-            <Badge variant="outline">{totalMarks} total marks</Badge>
-            <Badge variant="outline">{csq.parts.length} parts</Badge>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold flex items-center gap-3">
-            <Award className="w-8 h-8 text-primary flex-shrink-0" />
-            {csq.title}
-          </h1>
-        </div>
-
-        {csq.parts.map((part) => (
-          <div key={part.part} className="mb-8">
-            <Card className="border-2 border-primary">
-              <CardHeader className="bg-primary/5">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-2 flex-1">
-                    <div className="flex gap-2 items-center flex-wrap">
-                      <Badge>Part {part.part}</Badge>
-                      <Badge variant="outline">{part.marks} marks</Badge>
-                    </div>
-                    <h2 className="text-xl font-semibold">{part.question}</h2>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6 space-y-6">
-                <div className="p-4 bg-muted/50 rounded-lg border-l-4 border-primary">
-                  <h3 className="font-semibold mb-3 flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-primary" />
-                    Extract
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                    {part.extract}
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-lg mb-3">Marking Scheme</h3>
-                  <div className="space-y-2">
-                    {part.markingScheme.map((item, idx) => (
-                      <div key={idx} className="flex gap-3 items-start p-3 bg-muted rounded-lg">
-                        <AlertCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-muted-foreground">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="p-4 bg-primary/5 rounded-lg border-2 border-primary">
-                  <h3 className="font-semibold text-lg mb-3">Model Answer</h3>
-                  <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                    {part.modelAnswer}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-
-        <Card className="bg-muted/50 border-2">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between gap-4 flex-wrap">
-              <div>
-                <h3 className="font-semibold text-lg mb-1">Complete Case Study</h3>
-                <p className="text-sm text-muted-foreground">
-                  Download the full CSQ with all extracts, questions, and model answers
-                </p>
-              </div>
-              <Button>
-                <Download className="w-4 h-4 mr-2" />
-                Download PDF
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-between items-center pt-6 border-t mt-6">
+  if (notFound || !csq) {
+    return (
+      <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">CSQ Not Found</h1>
+          <p className="text-muted-foreground mb-8">
+            The case study question you're looking for doesn't exist.
+          </p>
           <Link href="/essays">
-            <Button variant="outline">
+            <Button>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to All CSQs
             </Button>
           </Link>
         </div>
+      </div>
+    );
+  }
+
+  const totalMarks = csq.parts.reduce((sum, part) => sum + parseInt(part.marks), 0);
+
+  return (
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Back Button */}
+        <Link href="/essays">
+          <Button variant="outline">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to All CSQs
+          </Button>
+        </Link>
+
+        {/* Title Card */}
+        <Card className="border-2">
+          <CardHeader>
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <Badge variant="secondary">{csq.level}</Badge>
+                <Badge variant="outline">{totalMarks} total marks</Badge>
+                <Badge>{csq.parts.length} parts</Badge>
+              </div>
+              <CardTitle className="text-2xl">{csq.title}</CardTitle>
+            </div>
+          </CardHeader>
+        </Card>
+
+        {/* Parts */}
+        {csq.parts.map((part, index) => (
+          <div key={part.id} className="space-y-4">
+            {/* Part Header */}
+            <Card className="border-2 border-primary">
+              <CardHeader>
+                <div className="space-y-3">
+                  <div className="flex gap-2">
+                    <Badge>Part {part.part}</Badge>
+                    <Badge variant="outline">{part.marks} marks</Badge>
+                  </div>
+                  <CardTitle className="text-lg">{part.question}</CardTitle>
+                </div>
+              </CardHeader>
+            </Card>
+
+            {/* Extract */}
+            {part.extract && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Extract</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
+                    {part.extract}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Marking Scheme */}
+            {part.markingScheme && part.markingScheme.length > 0 && (
+              <Card className="bg-muted/50">
+                <CardHeader>
+                  <CardTitle className="text-base">Marking Scheme</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {part.markingScheme.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-primary mt-1">•</span>
+                        <span className="text-muted-foreground">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Model Answer */}
+            {part.modelAnswer && (
+              <Card className="bg-primary/5 border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-base">Model Answer</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
+                    {part.modelAnswer}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Divider between parts */}
+            {index < csq.parts.length - 1 && (
+              <div className="border-t-2 border-dashed my-8" />
+            )}
+          </div>
+        ))}
+
+        {/* Download Button */}
+        <Card>
+          <CardContent className="pt-6">
+            <Button className="w-full" disabled>
+              <Download className="w-4 h-4 mr-2" />
+              Download Complete Case Study (Coming Soon)
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
