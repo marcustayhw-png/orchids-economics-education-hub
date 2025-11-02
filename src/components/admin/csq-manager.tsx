@@ -32,6 +32,9 @@ interface CSQ {
   csqId: string;
   title: string;
   level: string;
+  topic: string;
+  difficulty: string;
+  totalMarks: number;
   parts: CSQPart[];
   createdAt: string;
   updatedAt: string;
@@ -48,6 +51,8 @@ export function CSQManager() {
     csqId: "",
     title: "",
     level: "JC",
+    topic: "",
+    difficulty: "Medium",
     parts: [
       {
         part: "a",
@@ -92,6 +97,8 @@ export function CSQManager() {
       csqId: "",
       title: "",
       level: "JC",
+      topic: "",
+      difficulty: "Medium",
       parts: [
         {
           part: "a",
@@ -113,6 +120,8 @@ export function CSQManager() {
       csqId: csq.csqId,
       title: csq.title,
       level: csq.level,
+      topic: csq.topic || "",
+      difficulty: csq.difficulty || "Medium",
       parts: csq.parts.map((part) => ({
         part: part.part,
         question: part.question,
@@ -161,6 +170,13 @@ export function CSQManager() {
     setFormData({ ...formData, parts: newParts });
   };
 
+  const calculateTotalMarks = () => {
+    return formData.parts.reduce((sum, part) => {
+      const marks = parseInt(part.marks) || 0;
+      return sum + marks;
+    }, 0);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -187,6 +203,9 @@ export function CSQManager() {
       csqId: formData.csqId,
       title: formData.title,
       level: formData.level,
+      topic: formData.topic,
+      difficulty: formData.difficulty,
+      totalMarks: calculateTotalMarks(),
       parts: partsPayload,
     };
 
@@ -328,6 +347,40 @@ export function CSQManager() {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="topic">Topic *</Label>
+                    <Input
+                      id="topic"
+                      value={formData.topic}
+                      onChange={(e) =>
+                        setFormData({ ...formData, topic: e.target.value })
+                      }
+                      placeholder="e.g., Market Failure, Trade"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="difficulty">Difficulty *</Label>
+                    <Select
+                      value={formData.difficulty}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, difficulty: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Easy">Easy</SelectItem>
+                        <SelectItem value="Medium">Medium</SelectItem>
+                        <SelectItem value="Hard">Hard</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
                 <div>
                   <Label htmlFor="title">Title *</Label>
                   <Input
@@ -339,6 +392,11 @@ export function CSQManager() {
                     placeholder="e.g., Case Study: Singapore's Economic Response"
                     required
                   />
+                </div>
+
+                <div className="p-3 bg-muted rounded-md">
+                  <p className="text-sm font-medium">Total Marks: {calculateTotalMarks()}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Calculated from all parts</p>
                 </div>
               </div>
 
@@ -478,10 +536,21 @@ export function CSQManager() {
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2 flex-1">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Badge variant="secondary">{csq.csqId}</Badge>
                     <Badge variant="outline">{csq.level}</Badge>
                     <Badge>{csq.parts.length} parts</Badge>
+                    <Badge>{csq.totalMarks} marks</Badge>
+                    <Badge variant="outline">{csq.topic}</Badge>
+                    <Badge 
+                      variant={
+                        csq.difficulty === "Easy" ? "secondary" : 
+                        csq.difficulty === "Hard" ? "destructive" : 
+                        "default"
+                      }
+                    >
+                      {csq.difficulty}
+                    </Badge>
                   </div>
                   <p className="font-medium">{csq.title}</p>
                   <p className="text-sm text-muted-foreground">
