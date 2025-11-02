@@ -89,22 +89,29 @@ export default function TuitionPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Concept Clarification</p>
-                    <p className="text-sm text-muted-foreground">Break down complex theories into understandable parts</p>
+                    <p className="font-medium">Deep Concept Clarification</p>
+                    <p className="text-sm text-muted-foreground">Break down complex economic theories into simple, understandable concepts</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Essay Writing Techniques</p>
-                    <p className="text-sm text-muted-foreground">Master the art of structured economic analysis</p>
+                    <p className="font-medium">Essay Writing Mastery</p>
+                    <p className="text-sm text-muted-foreground">Learn structured analysis techniques to craft A-grade essays</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">CSQ Practice</p>
-                    <p className="text-sm text-muted-foreground">Learn to tackle data-response questions effectively</p>
+                    <p className="font-medium">CSQ Practice & Techniques</p>
+                    <p className="text-sm text-muted-foreground">Master data-response questions with proven strategies</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Smart Exam Strategies</p>
+                    <p className="text-sm text-muted-foreground">Time management tips and marking scheme insights to maximize your scores</p>
                   </div>
                 </div>
               </div>
@@ -112,36 +119,29 @@ export default function TuitionPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Exam Strategies</p>
-                    <p className="text-sm text-muted-foreground">Time management and marking scheme insights</p>
+                    <p className="font-medium">Personalized Study Materials</p>
+                    <p className="text-sm text-muted-foreground">Custom notes, practice questions, and model answers tailored to you</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Customized Materials</p>
-                    <p className="text-sm text-muted-foreground">Notes, practice questions, and model answers</p>
+                    <p className="font-medium">Progress Tracking & Feedback</p>
+                    <p className="text-sm text-muted-foreground">Regular assessments with detailed feedback to monitor your improvement</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Progress Tracking</p>
-                    <p className="text-sm text-muted-foreground">Regular assessments to monitor improvement</p>
+                    <p className="font-medium">24/7 WhatsApp Support</p>
+                    <p className="text-sm text-muted-foreground">Get answers to your questions anytime, even between lessons</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">24/7 Online Help</p>
-                    <p className="text-sm text-muted-foreground">Round-the-clock support for all your questions</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-medium">Complimentary Consultations</p>
-                    <p className="text-sm text-muted-foreground">Free initial consultation to discuss your learning needs</p>
+                    <p className="font-medium">Free Trial Consultation</p>
+                    <p className="text-sm text-muted-foreground">Complimentary first session to assess your needs and learning goals</p>
                   </div>
                 </div>
               </div>
