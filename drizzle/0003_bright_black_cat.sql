@@ -1,0 +1,1 @@
+ALTER TABLE `essays` ADD `model_answer` text;
