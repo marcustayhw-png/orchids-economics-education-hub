@@ -66,3 +66,40 @@ export const verification = sqliteTable("verification", {
     () => new Date(),
   ),
 });
+
+// Essays table
+export const essays = sqliteTable('essays', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  essayId: text('essay_id').notNull().unique(),
+  question: text('question').notNull(),
+  level: text('level').notNull(),
+  marks: text('marks').notNull(),
+  preamble: text('preamble'),
+  examinerComments: text('examiner_comments', { mode: 'json' }),
+  structureNotes: text('structure_notes'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
+
+// CSQs table
+export const csqs = sqliteTable('csqs', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  csqId: text('csq_id').notNull().unique(),
+  title: text('title').notNull(),
+  level: text('level').notNull(),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
+
+// CSQ Parts table
+export const csqParts = sqliteTable('csq_parts', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  csqId: integer('csq_id').notNull().references(() => csqs.id, { onDelete: 'cascade' }),
+  part: text('part').notNull(),
+  question: text('question').notNull(),
+  marks: text('marks').notNull(),
+  extract: text('extract'),
+  markingScheme: text('marking_scheme', { mode: 'json' }),
+  modelAnswer: text('model_answer'),
+  orderIndex: integer('order_index').notNull().default(0),
+});
