@@ -8,6 +8,7 @@ import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import { FontFamily } from "@tiptap/extension-font-family";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 import { Button } from "@/components/ui/button";
 import {
   Bold,
@@ -25,6 +26,8 @@ import {
   Heading2,
   Heading3,
   Type,
+  ImageIcon,
+  Loader2,
 } from "lucide-react";
 import {
   Select,
@@ -33,7 +36,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 interface RichTextEditorProps {
   content: string;
@@ -48,6 +52,9 @@ export function RichTextEditor({
   placeholder = "Start typing...",
   minHeight = "200px",
 }: RichTextEditorProps) {
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -68,6 +75,13 @@ export function RichTextEditor({
       Placeholder.configure({
         placeholder,
       }),
+      Image.configure({
+        inline: true,
+        allowBase64: false,
+        HTMLAttributes: {
+          class: "max-w-full h-auto rounded-md border border-border my-4",
+        },
+      }),
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -86,6 +100,59 @@ export function RichTextEditor({
       editor.commands.setContent(content);
     }
   }, [content, editor]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editor) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Invalid file type. Please select a JPG, PNG, WebP, or GIF image.');
+      return;
+    }
+
+    // Validate file size (10MB max)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error('File size exceeds 10MB limit.');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const token = localStorage.getItem('bearer_token');
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Insert image at current cursor position
+        editor.chain().focus().setImage({ src: data.fileUrl }).run();
+        toast.success('Image uploaded and inserted!');
+      } else {
+        const error = await response.json();
+        toast.error(error.error || 'Failed to upload image');
+      }
+    } catch (error) {
+      toast.error('Error uploading image');
+      console.error('Upload error:', error);
+    } finally {
+      setIsUploadingImage(false);
+      // Reset input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
   if (!editor) {
     return null;
@@ -131,6 +198,15 @@ export function RichTextEditor({
 
   return (
     <div className="border rounded-lg overflow-hidden">
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+        onChange={handleImageUpload}
+        className="hidden"
+      />
+
       {/* Toolbar */}
       <div className="bg-muted p-2 border-b flex flex-wrap gap-1 items-center">
         {/* Font Family */}
@@ -328,6 +404,25 @@ export function RichTextEditor({
           title="Code"
         >
           <Code className="w-4 h-4" />
+        </Button>
+
+        <div className="w-px h-6 bg-border mx-1" />
+
+        {/* Image Upload Button */}
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isUploadingImage}
+          className="h-8 w-8 p-0"
+          title="Upload Image"
+        >
+          {isUploadingImage ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <ImageIcon className="w-4 h-4" />
+          )}
         </Button>
 
         <div className="w-px h-6 bg-border mx-1" />
