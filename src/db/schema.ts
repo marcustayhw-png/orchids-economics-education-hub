@@ -74,6 +74,8 @@ export const essays = sqliteTable('essays', {
   question: text('question').notNull(),
   level: text('level').notNull(),
   marks: text('marks').notNull(),
+  topic: text('topic').notNull(),
+  difficulty: text('difficulty').notNull(),
   preamble: text('preamble'),
   examinerComments: text('examiner_comments', { mode: 'json' }),
   structureNotes: text('structure_notes'),
@@ -88,6 +90,9 @@ export const csqs = sqliteTable('csqs', {
   csqId: text('csq_id').notNull().unique(),
   title: text('title').notNull(),
   level: text('level').notNull(),
+  topic: text('topic').notNull(),
+  difficulty: text('difficulty').notNull(),
+  totalMarks: integer('total_marks').notNull(),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
@@ -113,21 +118,6 @@ export const notes = sqliteTable('notes', {
   level: text('level').notNull(),
   topics: text('topics', { mode: 'json' }).notNull(),
   description: text('description').notNull(),
-  pdfUrl: text('pdf_url'),
-  createdAt: text('created_at').notNull(),
-  updatedAt: text('updated_at').notNull(),
-});
-
-// Practice Questions table
-export const practiceQuestions = sqliteTable('practice_questions', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  questionId: text('question_id').notNull().unique(),
-  question: text('question').notNull(),
-  topic: text('topic').notNull(),
-  difficulty: text('difficulty').notNull(),
-  level: text('level').notNull(),
-  marks: integer('marks').notNull(),
-  answer: text('answer').notNull(),
   pdfUrl: text('pdf_url'),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
