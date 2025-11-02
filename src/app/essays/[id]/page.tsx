@@ -17,6 +17,7 @@ interface Essay {
   preamble: string | null;
   examinerComments: string[] | null;
   structureNotes: string | null;
+  modelAnswer: string | null;
 }
 
 export default function EssayDetailPage() {
@@ -143,6 +144,27 @@ export default function EssayDetailPage() {
                   </li>
                 ))}
               </ul>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Model Answer */}
+        {essay.modelAnswer && (
+          <Card className="border-2 border-primary">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <span>Model Answer</span>
+                <Badge variant="outline" className="ml-auto">
+                  {essay.marks} marks
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="prose prose-sm max-w-none">
+                <p className="whitespace-pre-wrap text-foreground leading-relaxed">
+                  {essay.modelAnswer}
+                </p>
+              </div>
             </CardContent>
           </Card>
         )}
