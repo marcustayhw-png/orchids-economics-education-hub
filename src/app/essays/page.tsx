@@ -116,7 +116,7 @@ export default function EssaysPage() {
                   </CardHeader>
                   <CardContent>
                     <Link href={`/essays/${essay.essayId}`}>
-                      <Button className="w-full" variant="outline">
+                      <Button className="w-full text-foreground" variant="outline">
                         <span className="truncate">View Full Question & Answer</span>
                         <ArrowRight className="w-4 h-4 ml-2 flex-shrink-0" />
                       </Button>
@@ -152,7 +152,7 @@ export default function EssaysPage() {
                   </CardHeader>
                   <CardContent>
                     <Link href={`/essays/csq/${csq.csqId}`}>
-                      <Button className="w-full" variant="outline">
+                      <Button className="w-full text-foreground" variant="outline">
                         <span className="truncate">View Full Case Study & Answers</span>
                         <ArrowRight className="w-4 h-4 ml-2 flex-shrink-0" />
                       </Button>
