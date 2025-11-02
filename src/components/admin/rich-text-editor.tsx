@@ -3,10 +3,10 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import TextStyle from "@tiptap/extension-text-style";
+import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
-import FontFamily from "@tiptap/extension-font-family";
+import { FontFamily } from "@tiptap/extension-font-family";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Button } from "@/components/ui/button";
 import {
