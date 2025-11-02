@@ -72,20 +72,6 @@ export default function EssayDetailPage({ params }: { params: { id: string } }) 
           </CardContent>
         </Card>
 
-        <Card className="mb-6">
-          <CardHeader>
-            <h2 className="font-semibold text-xl">Key Strengths</h2>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {essay.keyStrengths.map((strength, idx) => (
-              <div key={idx} className="flex gap-3 items-start p-3 bg-muted rounded-lg">
-                <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <p className="text-muted-foreground">{strength}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
         <Card className="mb-6 border-2 border-primary">
           <CardHeader>
             <h2 className="font-semibold text-xl">Full Model Answer</h2>
