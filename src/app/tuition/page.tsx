@@ -192,7 +192,7 @@ export default function TuitionPage() {
             </div>
 
             <div className="mt-6 p-4 bg-muted/50 rounded-lg space-y-2">
-              <p className="text-sm font-medium">What's also Included:</p>
+              <p className="text-sm font-medium !whitespace-pre-line">What's also Included:</p>
               <ul className="text-sm text-muted-foreground space-y-1">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
