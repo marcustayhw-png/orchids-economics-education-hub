@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { essays } from '@/db/schema';
-import { eq, like, or, and, desc } from 'drizzle-orm';
+import { eq, like, or, and, desc, gte, lte } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,6 +30,10 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') ?? '0');
     const search = searchParams.get('search');
     const level = searchParams.get('level');
+    const topic = searchParams.get('topic');
+    const difficulty = searchParams.get('difficulty');
+    const minMarks = searchParams.get('min_marks');
+    const maxMarks = searchParams.get('max_marks');
 
     let query = db.select().from(essays);
     const conditions = [];
@@ -45,6 +49,28 @@ export async function GET(request: NextRequest) {
 
     if (level) {
       conditions.push(eq(essays.level, level));
+    }
+
+    if (topic) {
+      conditions.push(eq(essays.topic, topic));
+    }
+
+    if (difficulty) {
+      conditions.push(eq(essays.difficulty, difficulty));
+    }
+
+    if (minMarks) {
+      const min = parseInt(minMarks);
+      if (!isNaN(min)) {
+        conditions.push(gte(essays.marks, minMarks));
+      }
+    }
+
+    if (maxMarks) {
+      const max = parseInt(maxMarks);
+      if (!isNaN(max)) {
+        conditions.push(lte(essays.marks, maxMarks));
+      }
     }
 
     if (conditions.length > 0) {
@@ -99,11 +125,33 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    if (!body.topic) {
+      return NextResponse.json({ 
+        error: 'topic is required',
+        code: 'MISSING_TOPIC' 
+      }, { status: 400 });
+    }
+
+    if (!body.difficulty) {
+      return NextResponse.json({ 
+        error: 'difficulty is required',
+        code: 'MISSING_DIFFICULTY' 
+      }, { status: 400 });
+    }
+
     // Validate level is either JC or Secondary
     if (body.level !== 'JC' && body.level !== 'Secondary') {
       return NextResponse.json({ 
         error: 'level must be either "JC" or "Secondary"',
         code: 'INVALID_LEVEL' 
+      }, { status: 400 });
+    }
+
+    // Validate difficulty
+    if (!['Easy', 'Medium', 'Hard'].includes(body.difficulty)) {
+      return NextResponse.json({ 
+        error: 'difficulty must be "Easy", "Medium", or "Hard"',
+        code: 'INVALID_DIFFICULTY' 
       }, { status: 400 });
     }
 
@@ -127,6 +175,8 @@ export async function POST(request: NextRequest) {
       question: body.question.trim(),
       level: body.level,
       marks: body.marks.trim(),
+      topic: body.topic.trim(),
+      difficulty: body.difficulty,
       preamble: body.preamble ? body.preamble.trim() : null,
       examinerComments: body.examinerComments || null,
       structureNotes: body.structureNotes ? body.structureNotes.trim() : null,
@@ -184,6 +234,14 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 });
     }
 
+    // Validate difficulty if provided
+    if (body.difficulty && !['Easy', 'Medium', 'Hard'].includes(body.difficulty)) {
+      return NextResponse.json({ 
+        error: 'difficulty must be "Easy", "Medium", or "Hard"',
+        code: 'INVALID_DIFFICULTY' 
+      }, { status: 400 });
+    }
+
     // Prepare update data (exclude id and essayId)
     const updateData: Record<string, any> = {
       updatedAt: new Date().toISOString(),
@@ -192,6 +250,8 @@ export async function PUT(request: NextRequest) {
     if (body.question !== undefined) updateData.question = body.question.trim();
     if (body.level !== undefined) updateData.level = body.level;
     if (body.marks !== undefined) updateData.marks = body.marks.trim();
+    if (body.topic !== undefined) updateData.topic = body.topic.trim();
+    if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
     if (body.preamble !== undefined) updateData.preamble = body.preamble ? body.preamble.trim() : null;
     if (body.examinerComments !== undefined) updateData.examinerComments = body.examinerComments;
     if (body.structureNotes !== undefined) updateData.structureNotes = body.structureNotes ? body.structureNotes.trim() : null;
