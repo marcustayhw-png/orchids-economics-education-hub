@@ -88,33 +88,33 @@ export default function PracticePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-bold">Practice Questions</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12 space-y-3 sm:space-y-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold break-words px-2">Practice Questions</h1>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto break-words px-2">
             Test your understanding with our comprehensive question bank. Filter by level, topic, and difficulty.
           </p>
         </div>
 
-        {/* Filters */}
-        <Card className="mb-8">
+        {/* Filters - Mobile Optimized */}
+        <Card className="mb-6 sm:mb-8 overflow-hidden">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Filter className="w-5 h-5" />
-              Filter Questions
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl break-words">
+              <Filter className="w-5 h-5 flex-shrink-0" />
+              <span className="truncate">Filter Questions</span>
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm break-words">
               Showing {filteredQuestions.length} of {practiceQuestions.length} questions
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Level</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium break-words">Level</label>
                 <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="All Levels" />
                   </SelectTrigger>
                   <SelectContent>
@@ -125,10 +125,10 @@ export default function PracticePage() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Topic</label>
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium break-words">Topic</label>
                 <Select value={selectedTopic} onValueChange={setSelectedTopic}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="All Topics" />
                   </SelectTrigger>
                   <SelectContent>
@@ -140,10 +140,10 @@ export default function PracticePage() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Difficulty</label>
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium break-words">Difficulty</label>
                 <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="All Difficulties" />
                   </SelectTrigger>
                   <SelectContent>
@@ -155,16 +155,16 @@ export default function PracticePage() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Quick Actions</label>
+              <div className="space-y-2 min-w-0">
+                <label className="text-sm font-medium break-words">Quick Actions</label>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={revealAllAnswers} className="flex-1">
-                    <Eye className="w-4 h-4 mr-1" />
-                    Show All
+                  <Button variant="outline" size="sm" onClick={revealAllAnswers} className="flex-1 min-w-0">
+                    <Eye className="w-4 h-4 mr-1 flex-shrink-0" />
+                    <span className="truncate text-xs sm:text-sm">Show All</span>
                   </Button>
-                  <Button variant="outline" size="sm" onClick={hideAllAnswers} className="flex-1">
-                    <EyeOff className="w-4 h-4 mr-1" />
-                    Hide All
+                  <Button variant="outline" size="sm" onClick={hideAllAnswers} className="flex-1 min-w-0">
+                    <EyeOff className="w-4 h-4 mr-1 flex-shrink-0" />
+                    <span className="truncate text-xs sm:text-sm">Hide All</span>
                   </Button>
                 </div>
               </div>
@@ -175,68 +175,69 @@ export default function PracticePage() {
         {/* Questions */}
         <div className="space-y-4">
           {filteredQuestions.map((q, index) => (
-            <Card key={q.id} className="border-2 hover:border-primary/50 transition-colors">
+            <Card key={q.id} className="border-2 hover:border-primary/50 transition-colors overflow-hidden">
               <CardHeader>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-2 flex-1">
+                <div className="flex items-start justify-between gap-3 sm:gap-4">
+                  <div className="space-y-2 flex-1 min-w-0">
                     <div className="flex gap-2 items-center flex-wrap">
-                      <Badge variant="outline">Question {index + 1}</Badge>
-                      <Badge variant="secondary">{q.level}</Badge>
-                      <Badge variant="outline">{q.topic}</Badge>
+                      <Badge variant="outline" className="whitespace-nowrap">Question {index + 1}</Badge>
+                      <Badge variant="secondary" className="whitespace-nowrap">{q.level}</Badge>
+                      <Badge variant="outline" className="whitespace-nowrap">{q.topic}</Badge>
                       <Badge 
                         variant={
                           q.difficulty === "Easy" ? "secondary" : 
                           q.difficulty === "Medium" ? "default" : 
                           "destructive"
                         }
+                        className="whitespace-nowrap"
                       >
                         {q.difficulty}
                       </Badge>
-                      <Badge variant="outline">{q.marks} marks</Badge>
+                      <Badge variant="outline" className="whitespace-nowrap">{q.marks} marks</Badge>
                       {q.pdfUrl && (
-                        <Badge variant="default">
-                          <FileText className="w-3 h-3 mr-1" />
+                        <Badge variant="default" className="whitespace-nowrap">
+                          <FileText className="w-3 h-3 mr-1 flex-shrink-0" />
                           PDF
                         </Badge>
                       )}
                     </div>
-                    <CardTitle className="text-lg leading-relaxed">{q.question}</CardTitle>
+                    <CardTitle className="text-base sm:text-lg leading-relaxed break-words">{q.question}</CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Button 
                     onClick={() => toggleAnswer(q.questionId)}
                     variant={revealedAnswers.has(q.questionId) ? "default" : "outline"}
-                    className="w-full sm:w-auto"
+                    className="w-full sm:flex-1"
                   >
                     {revealedAnswers.has(q.questionId) ? (
                       <>
-                        <EyeOff className="w-4 h-4 mr-2" />
-                        Hide Answer
+                        <EyeOff className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Hide Answer</span>
                       </>
                     ) : (
                       <>
-                        <Eye className="w-4 h-4 mr-2" />
-                        Reveal Answer
+                        <Eye className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Reveal Answer</span>
                       </>
                     )}
                   </Button>
                   {q.pdfUrl && (
-                    <Button variant="outline" asChild>
+                    <Button variant="outline" asChild className="w-full sm:w-auto">
                       <a href={q.pdfUrl} target="_blank" rel="noopener noreferrer">
-                        <Download className="w-4 h-4 mr-2" />
-                        Download PDF
+                        <Download className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Download PDF</span>
                       </a>
                     </Button>
                   )}
                 </div>
 
                 {revealedAnswers.has(q.questionId) && (
-                  <div className="p-4 bg-muted rounded-lg border-l-4 border-primary animate-in slide-in-from-top-2">
-                    <h4 className="font-semibold mb-2 text-primary">Model Answer:</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                  <div className="p-3 sm:p-4 bg-muted rounded-lg border-l-4 border-primary animate-in slide-in-from-top-2 overflow-hidden">
+                    <h4 className="font-semibold mb-2 text-primary text-sm sm:text-base break-words">Model Answer:</h4>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed whitespace-pre-line break-words">
                       {q.answer}
                     </p>
                   </div>
@@ -246,9 +247,9 @@ export default function PracticePage() {
           ))}
 
           {filteredQuestions.length === 0 && (
-            <Card className="border-2 border-dashed">
-              <CardContent className="py-12 text-center">
-                <p className="text-muted-foreground">
+            <Card className="border-2 border-dashed overflow-hidden">
+              <CardContent className="py-8 sm:py-12 text-center">
+                <p className="text-muted-foreground break-words px-2">
                   No questions match your current filters. Try adjusting your selection.
                 </p>
               </CardContent>
@@ -257,17 +258,17 @@ export default function PracticePage() {
         </div>
 
         {/* Study Tips */}
-        <Card className="mt-12 bg-muted/50 border-2">
+        <Card className="mt-8 sm:mt-12 bg-muted/50 border-2 overflow-hidden">
           <CardHeader>
-            <CardTitle>Practice Tips</CardTitle>
+            <CardTitle className="break-words">Practice Tips</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-muted-foreground">
-            <p>• Attempt questions under timed conditions to simulate exam pressure</p>
-            <p>• Write out your full answer before revealing the model answer</p>
-            <p>• Compare your answer with the model - identify what you missed or could improve</p>
-            <p>• For diagram questions, always draw the diagram first, then explain it in words</p>
-            <p>• Start with easier questions to build confidence, then progress to harder ones</p>
-            <p>• Review questions you got wrong multiple times until you master the concept</p>
+          <CardContent className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
+            <p className="break-words">• Attempt questions under timed conditions to simulate exam pressure</p>
+            <p className="break-words">• Write out your full answer before revealing the model answer</p>
+            <p className="break-words">• Compare your answer with the model - identify what you missed or could improve</p>
+            <p className="break-words">• For diagram questions, always draw the diagram first, then explain it in words</p>
+            <p className="break-words">• Start with easier questions to build confidence, then progress to harder ones</p>
+            <p className="break-words">• Review questions you got wrong multiple times until you master the concept</p>
           </CardContent>
         </Card>
       </div>
