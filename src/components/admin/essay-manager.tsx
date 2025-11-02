@@ -26,6 +26,7 @@ interface Essay {
   preamble: string | null;
   examinerComments: string[] | null;
   structureNotes: string | null;
+  modelAnswer: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -45,6 +46,7 @@ export function EssayManager() {
     preamble: "",
     examinerComments: "",
     structureNotes: "",
+    modelAnswer: "",
   });
 
   useEffect(() => {
@@ -82,6 +84,7 @@ export function EssayManager() {
       preamble: "",
       examinerComments: "",
       structureNotes: "",
+      modelAnswer: "",
     });
     setEditingId(null);
     setShowForm(false);
@@ -96,6 +99,7 @@ export function EssayManager() {
       preamble: essay.preamble || "",
       examinerComments: essay.examinerComments?.join("\n") || "",
       structureNotes: essay.structureNotes || "",
+      modelAnswer: essay.modelAnswer || "",
     });
     setEditingId(essay.essayId);
     setShowForm(true);
@@ -118,6 +122,7 @@ export function EssayManager() {
       preamble: formData.preamble || null,
       examinerComments: examinerCommentsArray.length > 0 ? examinerCommentsArray : null,
       structureNotes: formData.structureNotes || null,
+      modelAnswer: formData.modelAnswer || null,
     };
 
     try {
@@ -323,6 +328,19 @@ export function EssayManager() {
                   }
                   placeholder="Strong introduction&#10;Good use of examples&#10;Clear evaluation"
                   rows={5}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="modelAnswer">Model Answer</Label>
+                <Textarea
+                  id="modelAnswer"
+                  value={formData.modelAnswer}
+                  onChange={(e) =>
+                    setFormData({ ...formData, modelAnswer: e.target.value })
+                  }
+                  placeholder="Full model answer for this essay"
+                  rows={8}
                 />
               </div>
 
