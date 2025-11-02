@@ -8,7 +8,7 @@ import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import { FontFamily } from "@tiptap/extension-font-family";
 import Placeholder from "@tiptap/extension-placeholder";
-import { ResizableImageExtension } from "tiptap-extension-resize-image";
+import { ImagePlus } from "tiptap-image-plus";
 import { Button } from "@/components/ui/button";
 import {
   Bold,
@@ -75,11 +75,11 @@ export function RichTextEditor({
       Placeholder.configure({
         placeholder,
       }),
-      ResizableImageExtension.configure({
+      ImagePlus.configure({
         inline: true,
         allowBase64: false,
         HTMLAttributes: {
-          class: "max-w-full h-auto rounded-md border border-border my-4",
+          class: "rounded-md border border-border",
         },
       }),
     ],
