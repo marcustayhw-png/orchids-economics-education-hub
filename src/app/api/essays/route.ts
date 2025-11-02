@@ -2,15 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { essays } from '@/db/schema';
 import { eq, like, or, and, desc } from 'drizzle-orm';
-import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await getCurrentUser(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
     const searchParams = request.nextUrl.searchParams;
     const essayId = searchParams.get('essay_id');
 
@@ -74,11 +68,6 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const user = await getCurrentUser(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
     const body = await request.json();
 
     // Validate required fields
@@ -161,11 +150,6 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const user = await getCurrentUser(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
     const searchParams = request.nextUrl.searchParams;
     const essayId = searchParams.get('essay_id');
 
@@ -228,11 +212,6 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const user = await getCurrentUser(request);
-    if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-    }
-
     const searchParams = request.nextUrl.searchParams;
     const essayId = searchParams.get('essay_id');
 
