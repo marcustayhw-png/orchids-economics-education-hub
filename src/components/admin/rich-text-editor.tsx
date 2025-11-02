@@ -8,7 +8,7 @@ import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import { FontFamily } from "@tiptap/extension-font-family";
 import Placeholder from "@tiptap/extension-placeholder";
-import Image from "@tiptap/extension-image";
+import { ResizableImageExtension } from "tiptap-extension-resize-image";
 import { Button } from "@/components/ui/button";
 import {
   Bold,
@@ -75,7 +75,7 @@ export function RichTextEditor({
       Placeholder.configure({
         placeholder,
       }),
-      Image.configure({
+      ResizableImageExtension.configure({
         inline: true,
         allowBase64: false,
         HTMLAttributes: {
