@@ -201,7 +201,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { question, answer, level, category, topic, difficulty } = body;
 
-    const updates: any = {
+    const updates: Record<string, string | null> = {
       updatedAt: new Date().toISOString()
     };
 
@@ -256,14 +256,16 @@ export async function PUT(request: NextRequest) {
       updates.topic = topic.trim();
     }
 
-    if (difficulty !== undefined) {
-      if (difficulty !== null && difficulty !== 'Easy' && difficulty !== 'Medium' && difficulty !== 'Hard') {
+    if (difficulty !== undefined && difficulty !== null) {
+      if (difficulty !== 'Easy' && difficulty !== 'Medium' && difficulty !== 'Hard') {
         return NextResponse.json({ 
           error: "Difficulty must be 'Easy', 'Medium', or 'Hard'",
           code: "INVALID_DIFFICULTY" 
         }, { status: 400 });
       }
       updates.difficulty = difficulty;
+    } else if (difficulty === null) {
+      updates.difficulty = null;
     }
 
     const updated = await db.update(flashcards)
