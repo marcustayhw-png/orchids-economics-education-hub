@@ -213,7 +213,7 @@ export default function FlashcardsPage() {
                       >
                         <CardContent className="pt-8 pb-8 text-center space-y-4">
                           <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                            <BookOpen className="w-8 h-8 text-primary" />
+                            <Users className="w-8 h-8 text-primary" />
                           </div>
                           <h3 className="text-xl font-semibold">Microeconomics</h3>
                           <p className="text-sm text-muted-foreground">
