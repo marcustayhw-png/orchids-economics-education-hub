@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Sparkles, RefreshCw, BookOpen } from "lucide-react";
+import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Flashcard = {
@@ -29,10 +29,13 @@ type Flashcard = {
   updatedAt: string;
 };
 
+type Step = "economics-type" | "chapter" | "study";
+
 export default function FlashcardsPage() {
   const [selectedLevel, setSelectedLevel] = useState("Secondary");
-  const [selectedEconomicsType, setSelectedEconomicsType] = useState("all");
-  const [selectedChapter, setSelectedChapter] = useState("all");
+  const [selectedEconomicsType, setSelectedEconomicsType] = useState("");
+  const [selectedChapter, setSelectedChapter] = useState("");
+  const [currentStep, setCurrentStep] = useState<Step>("economics-type");
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [filteredCards, setFilteredCards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +48,9 @@ export default function FlashcardsPage() {
   }, []);
 
   useEffect(() => {
-    applyFilters();
+    if (selectedEconomicsType && selectedChapter) {
+      applyFilters();
+    }
   }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter]);
 
   const fetchFlashcards = async () => {
@@ -66,11 +71,11 @@ export default function FlashcardsPage() {
   const applyFilters = () => {
     let filtered = flashcards.filter((card) => card.level === selectedLevel);
 
-    if (selectedEconomicsType !== "all") {
+    if (selectedEconomicsType) {
       filtered = filtered.filter((card) => card.economicsType === selectedEconomicsType);
     }
 
-    if (selectedChapter !== "all") {
+    if (selectedChapter) {
       filtered = filtered.filter((card) => card.chapter === selectedChapter);
     }
 
@@ -106,11 +111,33 @@ export default function FlashcardsPage() {
     setCurrentIndex(randomIndex);
   };
 
+  const handleEconomicsTypeSelect = (type: string) => {
+    setSelectedEconomicsType(type);
+    setSelectedChapter("");
+    setCurrentStep("chapter");
+  };
+
+  const handleChapterSelect = (chapter: string) => {
+    setSelectedChapter(chapter);
+    setCurrentStep("study");
+  };
+
+  const handleBackToEconomicsType = () => {
+    setSelectedEconomicsType("");
+    setSelectedChapter("");
+    setCurrentStep("economics-type");
+  };
+
+  const handleBackToChapter = () => {
+    setSelectedChapter("");
+    setCurrentStep("chapter");
+  };
+
   const chapters = Array.from(
     new Set(
       flashcards
         .filter((card) => card.level === selectedLevel)
-        .filter((card) => selectedEconomicsType === "all" || card.economicsType === selectedEconomicsType)
+        .filter((card) => card.economicsType === selectedEconomicsType)
         .map((card) => card.chapter)
     )
   ).sort();
@@ -134,224 +161,350 @@ export default function FlashcardsPage() {
             Economics Flashcards
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Test your knowledge with interactive flashcards. Organized by Micro/Macro economics and H2 chapters.
+            Test your knowledge with interactive flashcards. Select your focus area to begin.
           </p>
         </div>
 
         {/* Level Selector */}
         <Tabs
           defaultValue="Secondary"
-          className="space-y-6"
-          onValueChange={setSelectedLevel}
+          className="space-y-8"
+          onValueChange={(value) => {
+            setSelectedLevel(value);
+            setSelectedEconomicsType("");
+            setSelectedChapter("");
+            setCurrentStep("economics-type");
+          }}
         >
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
             <TabsTrigger value="Secondary">Secondary School</TabsTrigger>
             <TabsTrigger value="JC">Junior College</TabsTrigger>
           </TabsList>
 
-          <TabsContent value={selectedLevel} className="space-y-6">
-            {/* Filters */}
-            <Card className="border-2">
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Economics Type</label>
-                    <Select
-                      value={selectedEconomicsType}
-                      onValueChange={(value) => {
-                        setSelectedEconomicsType(value);
-                        setSelectedChapter("all");
-                      }}
+          <TabsContent value={selectedLevel} className="space-y-8">
+            <AnimatePresence mode="wait">
+              {/* Step 1: Select Economics Type */}
+              {currentStep === "economics-type" && (
+                <motion.div
+                  key="economics-type"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="space-y-6"
+                >
+                  <div className="text-center space-y-3">
+                    <h2 className="text-2xl sm:text-3xl font-semibold">
+                      Choose Your Focus
+                    </h2>
+                    <p className="text-muted-foreground">
+                      Select either Microeconomics or Macroeconomics to begin
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Types</SelectItem>
-                        <SelectItem value="Microeconomics">Microeconomics</SelectItem>
-                        <SelectItem value="Macroeconomics">Macroeconomics</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">H2 Chapter</label>
-                    <Select
-                      value={selectedChapter}
-                      onValueChange={setSelectedChapter}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Chapters</SelectItem>
-                        {chapters.map((chapter) => (
-                          <SelectItem key={chapter} value={chapter}>
-                            {chapter}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Study Mode</label>
-                    <Select
-                      value={studyMode}
-                      onValueChange={(value: "sequential" | "random") =>
-                        setStudyMode(value)
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="sequential">Sequential</SelectItem>
-                        <SelectItem value="random">Random</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Flashcard Display */}
-            {filteredCards.length === 0 ? (
-              <Card className="border-2 border-dashed">
-                <CardContent className="py-12 text-center">
-                  <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">
-                    No flashcards available for the selected filters.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-6">
-                {/* Progress */}
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>
-                    Card {currentIndex + 1} of {filteredCards.length}
-                  </span>
-                  <div className="flex gap-2 items-center flex-wrap justify-end">
-                    <Badge variant="secondary">{currentCard?.economicsType}</Badge>
-                    <Badge variant="outline">{currentCard?.chapter}</Badge>
-                    <Badge>{currentCard?.topic}</Badge>
-                  </div>
-                </div>
-
-                {/* Flip Card */}
-                <div className="perspective-1000">
-                  <motion.div
-                    className="relative w-full"
-                    style={{ minHeight: "400px" }}
-                    onClick={handleFlip}
-                  >
-                    <AnimatePresence mode="wait" initial={false}>
-                      <motion.div
-                        key={isFlipped ? "answer" : "question"}
-                        initial={{ rotateY: 90, opacity: 0 }}
-                        animate={{ rotateY: 0, opacity: 1 }}
-                        exit={{ rotateY: -90, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="w-full"
+                      <Card
+                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30"
+                        onClick={() => handleEconomicsTypeSelect("Microeconomics")}
                       >
-                        <Card className="border-2 hover:border-primary transition-all cursor-pointer bg-gradient-to-br from-background to-muted/30 shadow-lg h-full">
-                          <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
-                            <div className="mb-6">
-                              {isFlipped ? (
-                                <Sparkles className="w-12 h-12 text-primary" />
-                              ) : (
-                                <BookOpen className="w-12 h-12 text-primary" />
-                              )}
-                            </div>
-                            <div className="space-y-4 w-full">
-                              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
-                                {isFlipped ? "Answer" : "Question"}
-                              </p>
-                              <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
-                                {isFlipped
-                                  ? currentCard?.answer
-                                  : currentCard?.question}
-                              </p>
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-8">
-                              {isFlipped
-                                ? "Click to see question"
-                                : "Click to reveal answer"}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    </AnimatePresence>
-                  </motion.div>
-                </div>
+                        <CardContent className="pt-8 pb-8 text-center space-y-4">
+                          <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                            <BookOpen className="w-8 h-8 text-primary" />
+                          </div>
+                          <h3 className="text-xl font-semibold">Microeconomics</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Study individual markets, consumer behavior, and firm decisions
+                          </p>
+                          <Button className="w-full" size="lg">
+                            Select
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
 
-                {/* Controls */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
-                  <Button
-                    onClick={handlePrevious}
-                    variant="outline"
-                    size="lg"
-                    className="flex-1 sm:flex-none"
-                    disabled={filteredCards.length <= 1}
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    onClick={handleFlip}
-                    variant="default"
-                    size="lg"
-                    className="flex-1 sm:flex-none"
-                  >
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Flip Card
-                  </Button>
-                  <Button
-                    onClick={handleShuffle}
-                    variant="outline"
-                    size="lg"
-                    className="flex-1 sm:flex-none"
-                  >
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Shuffle
-                  </Button>
-                  <Button
-                    onClick={handleNext}
-                    variant="outline"
-                    size="lg"
-                    className="flex-1 sm:flex-none"
-                    disabled={filteredCards.length <= 1}
-                  >
-                    Next
-                  </Button>
-                </div>
-              </div>
-            )}
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Card
+                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30"
+                        onClick={() => handleEconomicsTypeSelect("Macroeconomics")}
+                      >
+                        <CardContent className="pt-8 pb-8 text-center space-y-4">
+                          <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                            <Sparkles className="w-8 h-8 text-primary" />
+                          </div>
+                          <h3 className="text-xl font-semibold">Macroeconomics</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Explore national economies, GDP, inflation, and fiscal policy
+                          </p>
+                          <Button className="w-full" size="lg">
+                            Select
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Step 2: Select Chapter */}
+              {currentStep === "chapter" && (
+                <motion.div
+                  key="chapter"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="space-y-6"
+                >
+                  <div className="text-center space-y-3">
+                    <Badge variant="secondary" className="mb-2">
+                      {selectedEconomicsType}
+                    </Badge>
+                    <h2 className="text-2xl sm:text-3xl font-semibold">
+                      Select a Chapter
+                    </h2>
+                    <p className="text-muted-foreground">
+                      Choose the H2 Economics chapter you want to study
+                    </p>
+                  </div>
+
+                  <div className="max-w-2xl mx-auto">
+                    <Card className="border-2">
+                      <CardContent className="pt-6 space-y-4">
+                        {chapters.length === 0 ? (
+                          <div className="text-center py-8">
+                            <p className="text-muted-foreground">
+                              No chapters available for {selectedEconomicsType}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-1 gap-3">
+                            {chapters.map((chapter) => (
+                              <motion.div
+                                key={chapter}
+                                whileHover={{ scale: 1.01 }}
+                                whileTap={{ scale: 0.99 }}
+                              >
+                                <Button
+                                  variant="outline"
+                                  className="w-full justify-between h-auto py-4 px-6 text-left"
+                                  onClick={() => handleChapterSelect(chapter)}
+                                >
+                                  <span className="font-medium">{chapter}</span>
+                                  <ArrowRight className="w-4 h-4 ml-2" />
+                                </Button>
+                              </motion.div>
+                            ))}
+                          </div>
+                        )}
+
+                        <Button
+                          variant="ghost"
+                          className="w-full"
+                          onClick={handleBackToEconomicsType}
+                        >
+                          <ArrowLeft className="w-4 h-4 mr-2" />
+                          Back to Economics Type
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Step 3: Study Mode */}
+              {currentStep === "study" && (
+                <motion.div
+                  key="study"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="space-y-6"
+                >
+                  {/* Breadcrumb */}
+                  <div className="flex items-center justify-center gap-2 flex-wrap">
+                    <Badge variant="secondary">{selectedEconomicsType}</Badge>
+                    <span className="text-muted-foreground">/</span>
+                    <Badge variant="outline">{selectedChapter}</Badge>
+                  </div>
+
+                  {/* Study Mode Selector */}
+                  <Card className="border-2 max-w-md mx-auto">
+                    <CardContent className="pt-6 space-y-4">
+                      <label className="text-sm font-medium">Study Mode</label>
+                      <Select
+                        value={studyMode}
+                        onValueChange={(value: "sequential" | "random") =>
+                          setStudyMode(value)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="sequential">Sequential</SelectItem>
+                          <SelectItem value="random">Random</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        variant="ghost"
+                        className="w-full"
+                        onClick={handleBackToChapter}
+                      >
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Change Chapter
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  {/* Flashcard Display */}
+                  {filteredCards.length === 0 ? (
+                    <Card className="border-2 border-dashed">
+                      <CardContent className="py-12 text-center">
+                        <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                        <p className="text-muted-foreground">
+                          No flashcards available for the selected filters.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <div className="space-y-6">
+                      {/* Progress */}
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>
+                          Card {currentIndex + 1} of {filteredCards.length}
+                        </span>
+                        <Badge>{currentCard?.topic}</Badge>
+                      </div>
+
+                      {/* Flip Card */}
+                      <div className="perspective-1000">
+                        <motion.div
+                          className="relative w-full"
+                          style={{ minHeight: "400px" }}
+                          onClick={handleFlip}
+                        >
+                          <AnimatePresence mode="wait" initial={false}>
+                            <motion.div
+                              key={isFlipped ? "answer" : "question"}
+                              initial={{ rotateY: 90, opacity: 0 }}
+                              animate={{ rotateY: 0, opacity: 1 }}
+                              exit={{ rotateY: -90, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="w-full"
+                            >
+                              <Card className="border-2 hover:border-primary transition-all cursor-pointer bg-gradient-to-br from-background to-muted/30 shadow-lg h-full">
+                                <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
+                                  <div className="mb-6">
+                                    {isFlipped ? (
+                                      <Sparkles className="w-12 h-12 text-primary" />
+                                    ) : (
+                                      <BookOpen className="w-12 h-12 text-primary" />
+                                    )}
+                                  </div>
+                                  <div className="space-y-4 w-full">
+                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
+                                      {isFlipped ? "Answer" : "Question"}
+                                    </p>
+                                    <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
+                                      {isFlipped
+                                        ? currentCard?.answer
+                                        : currentCard?.question}
+                                    </p>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-8">
+                                    {isFlipped
+                                      ? "Click to see question"
+                                      : "Click to reveal answer"}
+                                  </p>
+                                </CardContent>
+                              </Card>
+                            </motion.div>
+                          </AnimatePresence>
+                        </motion.div>
+                      </div>
+
+                      {/* Controls */}
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
+                        <Button
+                          onClick={handlePrevious}
+                          variant="outline"
+                          size="lg"
+                          className="flex-1 sm:flex-none"
+                          disabled={filteredCards.length <= 1}
+                        >
+                          Previous
+                        </Button>
+                        <Button
+                          onClick={handleFlip}
+                          variant="default"
+                          size="lg"
+                          className="flex-1 sm:flex-none"
+                        >
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Flip Card
+                        </Button>
+                        <Button
+                          onClick={handleShuffle}
+                          variant="outline"
+                          size="lg"
+                          className="flex-1 sm:flex-none"
+                        >
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Shuffle
+                        </Button>
+                        <Button
+                          onClick={handleNext}
+                          variant="outline"
+                          size="lg"
+                          className="flex-1 sm:flex-none"
+                          disabled={filteredCards.length <= 1}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </TabsContent>
         </Tabs>
 
         {/* Study Tips */}
-        <Card className="mt-12 bg-muted/50 border-2">
-          <CardContent className="pt-6 space-y-3 text-sm sm:text-base text-muted-foreground">
-            <p className="font-semibold text-foreground">
-              How to Use Flashcards Effectively:
-            </p>
-            <p>
-              • Filter by Microeconomics or Macroeconomics to focus on specific areas
-            </p>
-            <p>
-              • Use chapter filtering to study specific H2 Economics topics
-            </p>
-            <p>
-              • Try to answer the question before flipping the card
-            </p>
-            <p>
-              • Use sequential mode for comprehensive coverage or random mode
-              for varied practice
-            </p>
-            <p>• Revisit difficult cards multiple times until mastered</p>
-          </CardContent>
-        </Card>
+        {currentStep === "study" && filteredCards.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Card className="mt-12 bg-muted/50 border-2">
+              <CardContent className="pt-6 space-y-3 text-sm sm:text-base text-muted-foreground">
+                <p className="font-semibold text-foreground">
+                  Study Tips:
+                </p>
+                <p>
+                  • Try to answer the question before flipping the card
+                </p>
+                <p>
+                  • Use sequential mode for comprehensive coverage or random mode for varied practice
+                </p>
+                <p>
+                  • Revisit difficult cards multiple times until mastered
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
       </div>
     </div>
   );
