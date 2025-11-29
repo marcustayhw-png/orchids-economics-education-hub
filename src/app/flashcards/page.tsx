@@ -34,7 +34,6 @@ export default function FlashcardsPage() {
   const [selectedEconomicsType, setSelectedEconomicsType] = useState("all");
   const [selectedChapter, setSelectedChapter] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [filteredCards, setFilteredCards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +47,7 @@ export default function FlashcardsPage() {
 
   useEffect(() => {
     applyFilters();
-  }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter, selectedCategory, selectedDifficulty]);
+  }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter, selectedCategory]);
 
   const fetchFlashcards = async () => {
     setIsLoading(true);
@@ -78,12 +77,6 @@ export default function FlashcardsPage() {
 
     if (selectedCategory !== "all") {
       filtered = filtered.filter((card) => card.category === selectedCategory);
-    }
-
-    if (selectedDifficulty !== "all") {
-      filtered = filtered.filter(
-        (card) => card.difficulty === selectedDifficulty
-      );
     }
 
     setFilteredCards(filtered);
@@ -173,7 +166,7 @@ export default function FlashcardsPage() {
             {/* Filters */}
             <Card className="border-2">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Economics Type</label>
                     <Select
@@ -235,24 +228,6 @@ export default function FlashcardsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Difficulty</label>
-                    <Select
-                      value={selectedDifficulty}
-                      onValueChange={setSelectedDifficulty}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Difficulties</SelectItem>
-                        <SelectItem value="Easy">Easy</SelectItem>
-                        <SelectItem value="Medium">Medium</SelectItem>
-                        <SelectItem value="Hard">Hard</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
                     <label className="text-sm font-medium">Study Mode</label>
                     <Select
                       value={studyMode}
@@ -293,19 +268,6 @@ export default function FlashcardsPage() {
                   <div className="flex gap-2 items-center flex-wrap justify-end">
                     <Badge variant="secondary">{currentCard?.economicsType}</Badge>
                     <Badge variant="outline">{currentCard?.chapter}</Badge>
-                    {currentCard?.difficulty && (
-                      <Badge
-                        variant={
-                          currentCard.difficulty === "Easy"
-                            ? "secondary"
-                            : currentCard.difficulty === "Medium"
-                            ? "default"
-                            : "destructive"
-                        }
-                      >
-                        {currentCard.difficulty}
-                      </Badge>
-                    )}
                     <Badge>{currentCard?.topic}</Badge>
                   </div>
                 </div>
