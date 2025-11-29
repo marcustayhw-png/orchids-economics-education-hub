@@ -43,6 +43,13 @@
       "when": 1764390568916,
       "tag": "0005_aspiring_proteus",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1764391116133,
+      "tag": "0006_wealthy_doctor_faustus",
+      "breakpoints": true
     }
   ]
 }
