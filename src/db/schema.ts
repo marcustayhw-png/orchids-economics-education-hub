@@ -122,3 +122,16 @@ export const notes = sqliteTable('notes', {
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
+
+// Flashcards table
+export const flashcards = sqliteTable('flashcards', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  question: text('question').notNull(),
+  answer: text('answer').notNull(),
+  level: text('level').notNull(),
+  category: text('category').notNull(),
+  topic: text('topic').notNull(),
+  difficulty: text('difficulty'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
