@@ -233,7 +233,7 @@ export async function PUT(request: NextRequest) {
           code: "INVALID_LEVEL" 
         }, { status: 400 });
       }
-      updates.level = level.trim();
+      updates.level = level;
     }
 
     if (category !== undefined) {
@@ -263,7 +263,7 @@ export async function PUT(request: NextRequest) {
           code: "INVALID_DIFFICULTY" 
         }, { status: 400 });
       }
-      updates.difficulty = difficulty ? difficulty.trim() : null;
+      updates.difficulty = difficulty;
     }
 
     const updated = await db.update(flashcards)
