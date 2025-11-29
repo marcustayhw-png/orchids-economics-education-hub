@@ -33,7 +33,6 @@ export default function FlashcardsPage() {
   const [selectedLevel, setSelectedLevel] = useState("Secondary");
   const [selectedEconomicsType, setSelectedEconomicsType] = useState("all");
   const [selectedChapter, setSelectedChapter] = useState("all");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [filteredCards, setFilteredCards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +46,7 @@ export default function FlashcardsPage() {
 
   useEffect(() => {
     applyFilters();
-  }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter, selectedCategory]);
+  }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter]);
 
   const fetchFlashcards = async () => {
     setIsLoading(true);
@@ -73,10 +72,6 @@ export default function FlashcardsPage() {
 
     if (selectedChapter !== "all") {
       filtered = filtered.filter((card) => card.chapter === selectedChapter);
-    }
-
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter((card) => card.category === selectedCategory);
     }
 
     setFilteredCards(filtered);
@@ -110,14 +105,6 @@ export default function FlashcardsPage() {
     const randomIndex = Math.floor(Math.random() * filteredCards.length);
     setCurrentIndex(randomIndex);
   };
-
-  const categories = Array.from(
-    new Set(
-      flashcards
-        .filter((card) => card.level === selectedLevel)
-        .map((card) => card.category)
-    )
-  );
 
   const chapters = Array.from(
     new Set(
@@ -166,7 +153,7 @@ export default function FlashcardsPage() {
             {/* Filters */}
             <Card className="border-2">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Economics Type</label>
                     <Select
@@ -201,26 +188,6 @@ export default function FlashcardsPage() {
                         {chapters.map((chapter) => (
                           <SelectItem key={chapter} value={chapter}>
                             {chapter}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Category</label>
-                    <Select
-                      value={selectedCategory}
-                      onValueChange={setSelectedCategory}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>
-                            {cat}
                           </SelectItem>
                         ))}
                       </SelectContent>
