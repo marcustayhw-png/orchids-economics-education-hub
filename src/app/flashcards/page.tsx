@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft } from "lucide-react";
+import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft, Users, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Flashcard = {
