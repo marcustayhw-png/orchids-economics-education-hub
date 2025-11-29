@@ -25,6 +25,8 @@ interface Flashcard {
   category: string;
   topic: string;
   difficulty: string | null;
+  economicsType: string;
+  chapter: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -43,6 +45,8 @@ export function FlashcardManager() {
     category: "",
     topic: "",
     difficulty: "",
+    economicsType: "Microeconomics",
+    chapter: "",
   });
 
   useEffect(() => {
@@ -79,6 +83,8 @@ export function FlashcardManager() {
       category: "",
       topic: "",
       difficulty: "",
+      economicsType: "Microeconomics",
+      chapter: "",
     });
     setEditingId(null);
     setShowForm(false);
@@ -92,6 +98,8 @@ export function FlashcardManager() {
       category: flashcard.category,
       topic: flashcard.topic,
       difficulty: flashcard.difficulty || "",
+      economicsType: flashcard.economicsType,
+      chapter: flashcard.chapter,
     });
     setEditingId(flashcard.id);
     setShowForm(true);
@@ -110,6 +118,8 @@ export function FlashcardManager() {
       category: formData.category,
       topic: formData.topic,
       difficulty: formData.difficulty || null,
+      economicsType: formData.economicsType,
+      chapter: formData.chapter,
     };
 
     try {
@@ -263,6 +273,39 @@ export function FlashcardManager() {
                 </div>
 
                 <div>
+                  <Label htmlFor="economicsType">Economics Type *</Label>
+                  <Select
+                    value={formData.economicsType}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, economicsType: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Microeconomics">Microeconomics</SelectItem>
+                      <SelectItem value="Macroeconomics">Macroeconomics</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="chapter">H2 Chapter *</Label>
+                  <Input
+                    id="chapter"
+                    value={formData.chapter}
+                    onChange={(e) =>
+                      setFormData({ ...formData, chapter: e.target.value })
+                    }
+                    placeholder="e.g., Market Failure, Elasticity"
+                    required
+                  />
+                </div>
+
+                <div>
                   <Label htmlFor="difficulty">Difficulty</Label>
                   <Select
                     value={formData.difficulty}
@@ -342,8 +385,10 @@ export function FlashcardManager() {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2 flex-1">
                   <div className="flex gap-2 flex-wrap">
-                    <Badge variant="secondary">{flashcard.category}</Badge>
-                    <Badge variant="outline">{flashcard.level}</Badge>
+                    <Badge variant="secondary">{flashcard.economicsType}</Badge>
+                    <Badge variant="outline">{flashcard.chapter}</Badge>
+                    <Badge>{flashcard.level}</Badge>
+                    <Badge variant="outline">{flashcard.category}</Badge>
                     <Badge>{flashcard.topic}</Badge>
                     {flashcard.difficulty && (
                       <Badge
