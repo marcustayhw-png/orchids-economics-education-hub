@@ -40,6 +40,8 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const topic = searchParams.get('topic');
     const difficulty = searchParams.get('difficulty');
+    const economicsType = searchParams.get('economics_type');
+    const chapter = searchParams.get('chapter');
 
     let query = db.select().from(flashcards);
 
@@ -71,6 +73,14 @@ export async function GET(request: NextRequest) {
       conditions.push(eq(flashcards.difficulty, difficulty));
     }
 
+    if (economicsType) {
+      conditions.push(eq(flashcards.economicsType, economicsType));
+    }
+
+    if (chapter) {
+      conditions.push(eq(flashcards.chapter, chapter));
+    }
+
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
     }
@@ -93,7 +103,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { question, answer, level, category, topic, difficulty } = body;
+    const { question, answer, level, category, topic, difficulty, economicsType, chapter } = body;
 
     // Validate required fields
     if (!question || typeof question !== 'string' || question.trim() === '') {
@@ -131,6 +141,27 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    if (!economicsType || typeof economicsType !== 'string' || economicsType.trim() === '') {
+      return NextResponse.json({ 
+        error: "economicsType is required and must be a non-empty string",
+        code: "INVALID_ECONOMICS_TYPE" 
+      }, { status: 400 });
+    }
+
+    if (economicsType !== 'Microeconomics' && economicsType !== 'Macroeconomics') {
+      return NextResponse.json({ 
+        error: "economicsType must be either 'Microeconomics' or 'Macroeconomics'",
+        code: "INVALID_ECONOMICS_TYPE_VALUE" 
+      }, { status: 400 });
+    }
+
+    if (!chapter || typeof chapter !== 'string' || chapter.trim() === '') {
+      return NextResponse.json({ 
+        error: "chapter is required and must be a non-empty string",
+        code: "INVALID_CHAPTER" 
+      }, { status: 400 });
+    }
+
     // Validate difficulty if provided
     if (difficulty !== undefined && difficulty !== null) {
       if (difficulty !== 'Easy' && difficulty !== 'Medium' && difficulty !== 'Hard') {
@@ -151,6 +182,8 @@ export async function POST(request: NextRequest) {
         category: category.trim(),
         topic: topic.trim(),
         difficulty: difficulty ? difficulty.trim() : null,
+        economicsType: economicsType.trim(),
+        chapter: chapter.trim(),
         createdAt: now,
         updatedAt: now
       })
@@ -199,7 +232,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { question, answer, level, category, topic, difficulty } = body;
+    const { question, answer, level, category, topic, difficulty, economicsType, chapter } = body;
 
     const updates: Record<string, string | null> = {
       updatedAt: new Date().toISOString()
@@ -254,6 +287,32 @@ export async function PUT(request: NextRequest) {
         }, { status: 400 });
       }
       updates.topic = topic.trim();
+    }
+
+    if (economicsType !== undefined) {
+      if (typeof economicsType !== 'string' || economicsType.trim() === '') {
+        return NextResponse.json({ 
+          error: "economicsType must be a non-empty string",
+          code: "INVALID_ECONOMICS_TYPE" 
+        }, { status: 400 });
+      }
+      if (economicsType !== 'Microeconomics' && economicsType !== 'Macroeconomics') {
+        return NextResponse.json({ 
+          error: "economicsType must be either 'Microeconomics' or 'Macroeconomics'",
+          code: "INVALID_ECONOMICS_TYPE_VALUE" 
+        }, { status: 400 });
+      }
+      updates.economicsType = economicsType.trim();
+    }
+
+    if (chapter !== undefined) {
+      if (typeof chapter !== 'string' || chapter.trim() === '') {
+        return NextResponse.json({ 
+          error: "chapter must be a non-empty string",
+          code: "INVALID_CHAPTER" 
+        }, { status: 400 });
+      }
+      updates.chapter = chapter.trim();
     }
 
     if (difficulty !== undefined && difficulty !== null) {
