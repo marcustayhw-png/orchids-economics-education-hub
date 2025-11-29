@@ -10,6 +10,7 @@ import { Loader2, LogOut } from "lucide-react";
 import { EssayManager } from "@/components/admin/essay-manager";
 import { CSQManager } from "@/components/admin/csq-manager";
 import { NotesManager } from "@/components/admin/notes-manager";
+import { FlashcardManager } from "@/components/admin/flashcard-manager";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 
@@ -91,10 +92,11 @@ export default function AdminPage() {
 
         {/* Content Management Tabs */}
         <Tabs defaultValue="essays" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-3">
+          <TabsList className="grid w-full max-w-3xl grid-cols-4">
             <TabsTrigger value="essays">Essays</TabsTrigger>
             <TabsTrigger value="csqs">CSQs</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
+            <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
           </TabsList>
 
           <TabsContent value="essays">
@@ -126,6 +128,17 @@ export default function AdminPage() {
               </CardHeader>
               <CardContent>
                 <NotesManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="flashcards">
+            <Card>
+              <CardHeader>
+                <CardTitle>Flashcard Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <FlashcardManager />
               </CardContent>
             </Card>
           </TabsContent>
