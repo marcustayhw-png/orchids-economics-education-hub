@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, FileText, PenTool, Target, Award, Users } from "lucide-react";
+import { BookOpen, FileText, PenTool, Target, Award, Users, Sparkles } from "lucide-react";
 
 export default function Home() {
   return (
@@ -80,6 +80,21 @@ export default function Home() {
 
             <Card className="border-2 hover:border-primary transition-colors touch-manipulation active:scale-[0.98]">
               <CardHeader className="pb-2 sm:pb-4 lg:pb-6">
+                <Sparkles className="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-primary mb-2 sm:mb-3 lg:mb-4" />
+                <CardTitle className="text-lg sm:text-xl">Interactive Flashcards</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
+                  Test your knowledge with interactive flip cards covering key concepts, definitions, and economic theories
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <Button asChild variant="link" className="px-0 h-auto text-sm sm:text-base touch-manipulation">
+                  <Link href="/flashcards">Study Flashcards →</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors touch-manipulation active:scale-[0.98]">
+              <CardHeader className="pb-2 sm:pb-4 lg:pb-6">
                 <FileText className="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-primary mb-2 sm:mb-3 lg:mb-4" />
                 <CardTitle className="text-lg sm:text-xl">Model Essays</CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
@@ -104,21 +119,6 @@ export default function Home() {
               <CardContent className="pt-0">
                 <Button asChild variant="link" className="px-0 h-auto text-sm sm:text-base touch-manipulation">
                   <Link href="/essays#csq">View CSQ →</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 hover:border-primary transition-colors touch-manipulation active:scale-[0.98]">
-              <CardHeader className="pb-2 sm:pb-4 lg:pb-6">
-                <Target className="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-primary mb-2 sm:mb-3 lg:mb-4" />
-                <CardTitle className="text-lg sm:text-xl">Practice Questions</CardTitle>
-                <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Interactive question bank with filtering by topic and difficulty, complete with detailed answers
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <Button asChild variant="link" className="px-0 h-auto text-sm sm:text-base touch-manipulation">
-                  <Link href="/practice">Start Practicing →</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -180,7 +180,7 @@ export default function Home() {
               <Link href="/notes">Browse Notes</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12 text-sm sm:text-base lg:text-lg bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 touch-manipulation">
-              <Link href="/practice">Start Practicing</Link>
+              <Link href="/flashcards">Study Flashcards</Link>
             </Button>
           </div>
         </div>
