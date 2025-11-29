@@ -23,12 +23,16 @@ type Flashcard = {
   category: string;
   topic: string;
   difficulty: string | null;
+  economicsType: string;
+  chapter: string;
   createdAt: string;
   updatedAt: string;
 };
 
 export default function FlashcardsPage() {
   const [selectedLevel, setSelectedLevel] = useState("Secondary");
+  const [selectedEconomicsType, setSelectedEconomicsType] = useState("all");
+  const [selectedChapter, setSelectedChapter] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
@@ -44,7 +48,7 @@ export default function FlashcardsPage() {
 
   useEffect(() => {
     applyFilters();
-  }, [flashcards, selectedLevel, selectedCategory, selectedDifficulty]);
+  }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter, selectedCategory, selectedDifficulty]);
 
   const fetchFlashcards = async () => {
     setIsLoading(true);
@@ -63,6 +67,14 @@ export default function FlashcardsPage() {
 
   const applyFilters = () => {
     let filtered = flashcards.filter((card) => card.level === selectedLevel);
+
+    if (selectedEconomicsType !== "all") {
+      filtered = filtered.filter((card) => card.economicsType === selectedEconomicsType);
+    }
+
+    if (selectedChapter !== "all") {
+      filtered = filtered.filter((card) => card.chapter === selectedChapter);
+    }
 
     if (selectedCategory !== "all") {
       filtered = filtered.filter((card) => card.category === selectedCategory);
@@ -114,6 +126,15 @@ export default function FlashcardsPage() {
     )
   );
 
+  const chapters = Array.from(
+    new Set(
+      flashcards
+        .filter((card) => card.level === selectedLevel)
+        .filter((card) => selectedEconomicsType === "all" || card.economicsType === selectedEconomicsType)
+        .map((card) => card.chapter)
+    )
+  ).sort();
+
   const currentCard = filteredCards[currentIndex];
 
   if (isLoading) {
@@ -133,8 +154,7 @@ export default function FlashcardsPage() {
             Economics Flashcards
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Test your knowledge with interactive flashcards. Click to reveal
-            answers and track your progress.
+            Test your knowledge with interactive flashcards. Organized by Micro/Macro economics and H2 chapters.
           </p>
         </div>
 
@@ -153,7 +173,47 @@ export default function FlashcardsPage() {
             {/* Filters */}
             <Card className="border-2">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Economics Type</label>
+                    <Select
+                      value={selectedEconomicsType}
+                      onValueChange={(value) => {
+                        setSelectedEconomicsType(value);
+                        setSelectedChapter("all");
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Types</SelectItem>
+                        <SelectItem value="Microeconomics">Microeconomics</SelectItem>
+                        <SelectItem value="Macroeconomics">Macroeconomics</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">H2 Chapter</label>
+                    <Select
+                      value={selectedChapter}
+                      onValueChange={setSelectedChapter}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Chapters</SelectItem>
+                        {chapters.map((chapter) => (
+                          <SelectItem key={chapter} value={chapter}>
+                            {chapter}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Category</label>
                     <Select
@@ -230,7 +290,9 @@ export default function FlashcardsPage() {
                   <span>
                     Card {currentIndex + 1} of {filteredCards.length}
                   </span>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex gap-2 items-center flex-wrap justify-end">
+                    <Badge variant="secondary">{currentCard?.economicsType}</Badge>
+                    <Badge variant="outline">{currentCard?.chapter}</Badge>
                     {currentCard?.difficulty && (
                       <Badge
                         variant={
@@ -244,7 +306,7 @@ export default function FlashcardsPage() {
                         {currentCard.difficulty}
                       </Badge>
                     )}
-                    <Badge variant="outline">{currentCard?.topic}</Badge>
+                    <Badge>{currentCard?.topic}</Badge>
                   </div>
                 </div>
 
@@ -346,6 +408,12 @@ export default function FlashcardsPage() {
               How to Use Flashcards Effectively:
             </p>
             <p>
+              • Filter by Microeconomics or Macroeconomics to focus on specific areas
+            </p>
+            <p>
+              • Use chapter filtering to study specific H2 Economics topics
+            </p>
+            <p>
               • Try to answer the question before flipping the card
             </p>
             <p>
@@ -353,10 +421,6 @@ export default function FlashcardsPage() {
               for varied practice
             </p>
             <p>• Revisit difficult cards multiple times until mastered</p>
-            <p>
-              • Combine flashcard study with notes and practice questions for
-              best results
-            </p>
           </CardContent>
         </Card>
       </div>
