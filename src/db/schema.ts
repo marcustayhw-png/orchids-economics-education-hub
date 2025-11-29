@@ -132,6 +132,8 @@ export const flashcards = sqliteTable('flashcards', {
   category: text('category').notNull(),
   topic: text('topic').notNull(),
   difficulty: text('difficulty'),
+  economicsType: text('economics_type').notNull(),
+  chapter: text('chapter').notNull(),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
