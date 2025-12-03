@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft, Users, Globe } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 
 type Flashcard = {
   id: number;
@@ -41,6 +41,7 @@ export default function FlashcardsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
 
   useEffect(() => {
     fetchFlashcards();
@@ -103,6 +104,26 @@ export default function FlashcardsPage() {
     setIsFlipped(false);
     const randomIndex = Math.floor(Math.random() * filteredCards.length);
     setCurrentIndex(randomIndex);
+  };
+
+  const handleSwipe = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipeThreshold = 50;
+    
+    if (info.offset.x > swipeThreshold) {
+      // Swiped right - go to previous
+      setSwipeDirection("right");
+      setTimeout(() => {
+        handlePrevious();
+        setSwipeDirection(null);
+      }, 150);
+    } else if (info.offset.x < -swipeThreshold) {
+      // Swiped left - go to next
+      setSwipeDirection("left");
+      setTimeout(() => {
+        handleNext();
+        setSwipeDirection(null);
+      }, 150);
+    }
   };
 
   const handleEconomicsTypeSelect = (type: string) => {
@@ -351,6 +372,13 @@ export default function FlashcardsPage() {
                     </motion.button>
                   </div>
 
+                  {/* Swipe instruction for mobile */}
+                  <div className="text-center sm:hidden">
+                    <p className="text-xs text-muted-foreground">
+                      💡 Swipe left/right to navigate • Tap to flip
+                    </p>
+                  </div>
+
                   {/* Flashcard Display */}
                   {filteredCards.length === 0 ? (
                     <Card className="border-2 border-dashed">
@@ -371,21 +399,33 @@ export default function FlashcardsPage() {
                         <Badge>{currentCard?.topic}</Badge>
                       </div>
 
-                      {/* 3D Flip Card Container */}
-                      <div className="perspective-1000 w-full flex justify-center mb-12">
-                        <div 
-                          className="relative w-full max-w-2xl cursor-pointer"
+                      {/* 3D Flip Card Container with Swipe */}
+                      <div className="perspective-1000 w-full flex justify-center mb-16">
+                        <motion.div 
+                          className="relative w-full max-w-2xl cursor-pointer touch-pan-y"
                           style={{ 
                             perspective: '1000px',
-                            minHeight: '500px',
+                            minHeight: '450px',
                           }}
+                          drag="x"
+                          dragConstraints={{ left: 0, right: 0 }}
+                          dragElastic={0.2}
+                          onDragEnd={handleSwipe}
                           onClick={handleFlip}
+                          animate={{
+                            x: swipeDirection === "left" ? -20 : swipeDirection === "right" ? 20 : 0,
+                            opacity: swipeDirection ? 0.5 : 1
+                          }}
+                          transition={{
+                            x: { duration: 0.15 },
+                            opacity: { duration: 0.15 }
+                          }}
                         >
                           <motion.div
                             className="relative w-full"
                             style={{ 
                               transformStyle: 'preserve-3d',
-                              minHeight: '500px',
+                              minHeight: '450px',
                             }}
                             animate={{ rotateY: isFlipped ? 180 : 0 }}
                             transition={{
@@ -462,11 +502,11 @@ export default function FlashcardsPage() {
                               </Card>
                             </motion.div>
                           </motion.div>
-                        </div>
+                        </motion.div>
                       </div>
 
                       {/* Enhanced Controls */}
-                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mt-8 relative z-10">
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mt-12 relative z-10">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
@@ -536,8 +576,11 @@ export default function FlashcardsPage() {
                 <p>
                   • Try to answer the question before flipping the card
                 </p>
-                <p>
-                  • Navigate through cards sequentially or use shuffle for random practice
+                <p className="sm:hidden">
+                  • Swipe left/right to navigate between cards
+                </p>
+                <p className="hidden sm:block">
+                  • Use sequential mode for comprehensive coverage or random mode for varied practice
                 </p>
                 <p>
                   • Revisit difficult cards multiple times until mastered
