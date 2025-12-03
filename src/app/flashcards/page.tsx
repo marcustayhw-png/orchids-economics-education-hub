@@ -626,9 +626,18 @@ export default function FlashcardsPage() {
                                     <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide mb-4 text-center">
                                       Answer
                                     </p>
-                                    <ul className="list-disc list-inside space-y-2 text-left max-w-prose mx-auto">
-                                      {formatAnswerAsPoints(currentCard?.answer || "")}
-                                    </ul>
+                                    <div className="text-left max-w-prose mx-auto">
+                                      {(() => {
+                                        const formattedContent = formatAnswerAsPoints(currentCard?.answer || "");
+                                        const hasNumberedPoints = currentCard?.answer && /\(\d+\)/.test(currentCard.answer);
+                                        
+                                        if (hasNumberedPoints) {
+                                          return <div className="space-y-2">{formattedContent}</div>;
+                                        } else {
+                                          return <ul className="list-disc list-inside space-y-2">{formattedContent}</ul>;
+                                        }
+                                      })()}
+                                    </div>
                                   </div>
                                   <div className="flex-none pt-6 text-center">
                                     <p className="text-xs text-muted-foreground">
