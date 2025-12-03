@@ -35,6 +35,34 @@ interface Essay {
   updatedAt: string;
 }
 
+// O-Level syllabus topics aligned with Syllabus 2286
+const SYLLABUS_TOPICS = [
+  "1. The Basic Economic Problem",
+  "2. Allocation of Resources",
+  "3. Microeconomic Decision Makers",
+  "4. Government and Macroeconomy",
+  "5. Economic Development",
+  "6. International Trade and Globalisation",
+  "Demand and Supply",
+  "Price Elasticity (PED/PES)",
+  "Market Failure",
+  "Market Structure",
+  "Factors of Production",
+  "Firms and Production",
+  "Fiscal Policy",
+  "Monetary Policy",
+  "Supply-Side Policy",
+  "Economic Growth",
+  "Unemployment",
+  "Inflation and Deflation",
+  "Living Standards",
+  "Poverty",
+  "Population",
+  "International Trade",
+  "Exchange Rates",
+  "Balance of Payments",
+];
+
 export function EssayManager() {
   const [essays, setEssays] = useState<Essay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -290,16 +318,27 @@ export function EssayManager() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="topic">Topic *</Label>
-                  <Input
-                    id="topic"
+                  <Label htmlFor="topic">Topic * (Align with Syllabus 2286)</Label>
+                  <Select
                     value={formData.topic}
-                    onChange={(e) =>
-                      setFormData({ ...formData, topic: e.target.value })
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, topic: value })
                     }
-                    placeholder="e.g., Market Failure, Macroeconomics"
-                    required
-                  />
+                  >
+                    <SelectTrigger id="topic">
+                      <SelectValue placeholder="Select syllabus topic" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {SYLLABUS_TOPICS.map((topic) => (
+                        <SelectItem key={topic} value={topic}>
+                          {topic}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Based on Cambridge O-Level Economics Syllabus 2286 (2026)
+                  </p>
                 </div>
 
                 <div>
@@ -336,17 +375,20 @@ export function EssayManager() {
               </div>
 
               <div>
-                <Label htmlFor="question">Question *</Label>
+                <Label htmlFor="question">Question * (Use syllabus command words)</Label>
                 <Textarea
                   id="question"
                   value={formData.question}
                   onChange={(e) =>
                     setFormData({ ...formData, question: e.target.value })
                   }
-                  placeholder="Enter the essay question"
+                  placeholder="e.g., Discuss whether fiscal policy is effective in achieving macroeconomic aims. (15 marks)&#10;&#10;Command words: Explain, Analyse, Discuss, Evaluate"
                   rows={3}
                   required
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  📘 Use command words: Explain, Analyse, Discuss (requires AO3: Evaluation)
+                </p>
               </div>
 
               <div>
@@ -363,21 +405,24 @@ export function EssayManager() {
               </div>
 
               <div>
-                <Label htmlFor="structureNotes">Structure Notes</Label>
+                <Label htmlFor="structureNotes">Structure Notes (Suggested outline)</Label>
                 <Textarea
                   id="structureNotes"
                   value={formData.structureNotes}
                   onChange={(e) =>
                     setFormData({ ...formData, structureNotes: e.target.value })
                   }
-                  placeholder="Introduction → Main points → Conclusion"
-                  rows={2}
+                  placeholder="Suggested structure:&#10;• Introduction: Define key terms&#10;• Body Para 1: Explain concept + example&#10;• Body Para 2: Analyse with diagram&#10;• Body Para 3: Evaluate limitations&#10;• Conclusion: Balanced judgement"
+                  rows={5}
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  ✅ Guide students on essay structure using bullet points
+                </p>
               </div>
 
               <div>
                 <Label htmlFor="examinerComments">
-                  Examiner Comments (one per line)
+                  Examiner Comments * (Succinct points - one per line)
                 </Label>
                 <Textarea
                   id="examinerComments"
@@ -388,21 +433,24 @@ export function EssayManager() {
                       examinerComments: e.target.value,
                     })
                   }
-                  placeholder="Strong introduction&#10;Good use of examples&#10;Clear evaluation"
-                  rows={5}
+                  placeholder="Keep feedback brief and actionable:&#10;• Clear definition of key terms&#10;• Good use of real-world examples&#10;• Strong evaluation with judgement&#10;• Effective use of diagrams&#10;• Well-structured argument"
+                  rows={6}
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  ✅ One point per line. Focus on assessment objectives (AO1, AO2, AO3)
+                </p>
               </div>
 
               <div>
-                <Label htmlFor="modelAnswer">Model Answer</Label>
+                <Label htmlFor="modelAnswer">Model Answer * (Succinct with clear structure)</Label>
                 <RichTextEditor
                   content={formData.modelAnswer}
                   onChange={(html) => setFormData({ ...formData, modelAnswer: html })}
-                  placeholder="Write the full model answer with rich formatting..."
-                  minHeight="300px"
+                  placeholder="Write model answer with clear structure:&#10;&#10;Introduction:&#10;• Define key terms briefly&#10;&#10;Body Paragraphs:&#10;• Topic sentence&#10;• Explanation with example&#10;• Diagram if relevant&#10;• Evaluation/Judgement&#10;&#10;Conclusion:&#10;• Balanced judgement&#10;&#10;Use bullet points and headings for clarity!"
+                  minHeight="350px"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Use keyboard shortcuts: ⌘+B (bold), ⌘+I (italic), ⌘+U (underline)
+                  ✅ Use headings (H2/H3) and bullet points. Keep explanations succinct. Show clear structure.
                 </p>
               </div>
 
