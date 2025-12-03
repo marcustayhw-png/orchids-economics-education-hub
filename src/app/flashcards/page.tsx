@@ -398,12 +398,12 @@ export default function FlashcardsPage() {
                       </div>
 
                       {/* 3D Flip Card Container */}
-                      <div className="perspective-1000 w-full flex justify-center mb-8">
+                      <div className="perspective-1000 w-full flex justify-center mb-12">
                         <div 
                           className="relative w-full max-w-2xl cursor-pointer"
                           style={{ 
                             perspective: '1000px',
-                            minHeight: '450px',
+                            minHeight: '500px',
                           }}
                           onClick={handleFlip}
                         >
@@ -411,7 +411,7 @@ export default function FlashcardsPage() {
                             className="relative w-full"
                             style={{ 
                               transformStyle: 'preserve-3d',
-                              minHeight: '450px',
+                              minHeight: '500px',
                             }}
                             animate={{ rotateY: isFlipped ? 180 : 0 }}
                             transition={{
@@ -426,11 +426,12 @@ export default function FlashcardsPage() {
                               className="absolute inset-0 w-full"
                               style={{
                                 backfaceVisibility: 'hidden',
-                                WebkitBackfaceVisibility: 'hidden'
+                                WebkitBackfaceVisibility: 'hidden',
+                                zIndex: isFlipped ? 0 : 1
                               }}
                             >
                               <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20">
-                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[420px]">
+                                <CardContent className="p-8 sm:p-12 flex flex-col h-[450px]">
                                   <div className="flex-none mb-6">
                                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                       <BookOpen className="w-8 h-8 text-primary" />
@@ -459,11 +460,12 @@ export default function FlashcardsPage() {
                               style={{
                                 backfaceVisibility: 'hidden',
                                 WebkitBackfaceVisibility: 'hidden',
-                                rotateY: 180
+                                rotateY: 180,
+                                zIndex: isFlipped ? 1 : 0
                               }}
                             >
                               <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20">
-                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[420px]">
+                                <CardContent className="p-8 sm:p-12 flex flex-col h-[450px]">
                                   <div className="flex-none mb-6">
                                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                       <Sparkles className="w-8 h-8 text-primary" />
@@ -490,7 +492,7 @@ export default function FlashcardsPage() {
                       </div>
 
                       {/* Enhanced Controls */}
-                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-8">
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mt-8 relative z-10">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
