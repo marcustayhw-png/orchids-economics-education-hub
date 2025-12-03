@@ -41,6 +41,33 @@ interface CSQ {
   updatedAt: string;
 }
 
+// O-Level syllabus topics aligned with Syllabus 2286
+const SYLLABUS_TOPICS = [
+  "1. The Basic Economic Problem",
+  "2. Allocation of Resources",
+  "3. Microeconomic Decision Makers",
+  "4. Government and Macroeconomy",
+  "5. Economic Development",
+  "6. International Trade and Globalisation",
+  "Demand and Supply",
+  "Price Elasticity (PED/PES)",
+  "Market Failure",
+  "Market Structure",
+  "Factors of Production",
+  "Firms and Production",
+  "Fiscal Policy",
+  "Monetary Policy",
+  "Economic Growth",
+  "Unemployment",
+  "Inflation and Deflation",
+  "Living Standards",
+  "Poverty",
+  "Population",
+  "International Trade",
+  "Exchange Rates",
+  "Balance of Payments",
+];
+
 export function CSQManager() {
   const [csqs, setCSQs] = useState<CSQ[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -366,16 +393,27 @@ export function CSQManager() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="topic">Topic *</Label>
-                    <Input
-                      id="topic"
+                    <Label htmlFor="topic">Topic * (Align with Syllabus 2286)</Label>
+                    <Select
                       value={formData.topic}
-                      onChange={(e) =>
-                        setFormData({ ...formData, topic: e.target.value })
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, topic: value })
                       }
-                      placeholder="e.g., Market Failure, Trade"
-                      required
-                    />
+                    >
+                      <SelectTrigger id="topic">
+                        <SelectValue placeholder="Select syllabus topic" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[300px]">
+                        {SYLLABUS_TOPICS.map((topic) => (
+                          <SelectItem key={topic} value={topic}>
+                            {topic}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Based on Cambridge O-Level Economics Syllabus 2286 (2026)
+                    </p>
                   </div>
 
                   <div>
@@ -473,16 +511,19 @@ export function CSQManager() {
                       </div>
 
                       <div>
-                        <Label>Question *</Label>
+                        <Label>Question * (Use syllabus command words)</Label>
                         <Textarea
                           value={part.question}
                           onChange={(e) =>
                             updatePart(index, "question", e.target.value)
                           }
-                          placeholder="Enter the question for this part"
+                          placeholder="e.g., Explain how an increase in consumer income affects demand. (4 marks)&#10;&#10;Command words: Define, Explain, Calculate, Analyse, Describe, Discuss"
                           rows={2}
                           required
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          📘 Use command words from syllabus: Define, Explain, Calculate, Analyse, Describe, Discuss
+                        </p>
                       </div>
 
                       <div>
@@ -499,27 +540,30 @@ export function CSQManager() {
                       </div>
 
                       <div>
-                        <Label>Marking Scheme (one point per line)</Label>
+                        <Label>Marking Scheme * (Succinct points - one per line)</Label>
                         <Textarea
                           value={part.markingScheme}
                           onChange={(e) =>
                             updatePart(index, "markingScheme", e.target.value)
                           }
-                          placeholder="Point 1 (2 marks)&#10;Point 2 (1 mark)"
-                          rows={3}
+                          placeholder="Keep points brief and exam-focused:&#10;• Define key term (1m)&#10;• Explain concept with example (2m)&#10;• Apply to context (1m)&#10;&#10;Use bullet points for clarity!"
+                          rows={4}
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          ✅ Best practice: Use bullet points (•) and mark allocation per point
+                        </p>
                       </div>
 
                       <div>
-                        <Label>Model Answer (with image upload support)</Label>
+                        <Label>Model Answer * (Keep succinct - use point form)</Label>
                         <RichTextEditor
                           content={part.modelAnswer}
                           onChange={(html) => updatePart(index, "modelAnswer", html)}
-                          placeholder="Write the full model answer with images, diagrams, formatting..."
+                          placeholder="Write model answer in clear point form:&#10;&#10;• Point 1: Brief explanation&#10;• Point 2: Key concept with example&#10;• Point 3: Application to context&#10;&#10;Avoid lengthy paragraphs. Keep it exam-focused and succinct!"
                           minHeight="250px"
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Upload images directly using the image button in the toolbar
+                          ✅ Use bullet points in editor toolbar. Keep answers concise and aligned with marking scheme.
                         </p>
                       </div>
                     </CardContent>
