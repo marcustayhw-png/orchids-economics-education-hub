@@ -1,9 +1,53 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, FileText, PenTool, Target, Award, Users, Sparkles } from "lucide-react";
+import { BookOpen, FileText, PenTool, Target, Award, Users, Sparkles, Loader2 } from "lucide-react";
 
 export default function Home() {
+  const [stats, setStats] = useState({
+    notes: 0,
+    essays: 0,
+    csqs: 0,
+    flashcards: 0,
+    isLoading: true
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [notesRes, essaysRes, csqsRes, flashcardsRes] = await Promise.all([
+          fetch("/api/notes?limit=1000"),
+          fetch("/api/essays?limit=1000"),
+          fetch("/api/csqs?limit=1000"),
+          fetch("/api/flashcards?limit=1000")
+        ]);
+
+        const [notes, essays, csqs, flashcards] = await Promise.all([
+          notesRes.json(),
+          essaysRes.json(),
+          csqsRes.json(),
+          flashcardsRes.json()
+        ]);
+
+        setStats({
+          notes: Array.isArray(notes) ? notes.length : 0,
+          essays: Array.isArray(essays) ? essays.length : 0,
+          csqs: Array.isArray(csqs) ? csqs.length : 0,
+          flashcards: Array.isArray(flashcards) ? flashcards.length : 0,
+          isLoading: false
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+        setStats(prev => ({ ...prev, isLoading: false }));
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       {/* Hero Section */}
@@ -32,20 +76,44 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-8 pt-6 sm:pt-8 lg:pt-12 max-w-4xl mx-auto px-2">
               <div className="space-y-0.5 sm:space-y-1 lg:space-y-2">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">50+</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
+                  {stats.isLoading ? (
+                    <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 animate-spin mx-auto" />
+                  ) : (
+                    `${stats.notes}+`
+                  )}
+                </div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Study Notes</div>
               </div>
               <div className="space-y-0.5 sm:space-y-1 lg:space-y-2">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">30+</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
+                  {stats.isLoading ? (
+                    <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 animate-spin mx-auto" />
+                  ) : (
+                    `${stats.essays}+`
+                  )}
+                </div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Model Essays</div>
               </div>
               <div className="space-y-0.5 sm:space-y-1 lg:space-y-2">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">25+</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
+                  {stats.isLoading ? (
+                    <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 animate-spin mx-auto" />
+                  ) : (
+                    `${stats.csqs}+`
+                  )}
+                </div>
                 <div className="text-xs sm:text-sm text-muted-foreground">CSQ Answers</div>
               </div>
               <div className="space-y-0.5 sm:space-y-1 lg:space-y-2">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">100+</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Practice Questions</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
+                  {stats.isLoading ? (
+                    <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 animate-spin mx-auto" />
+                  ) : (
+                    `${stats.flashcards}+`
+                  )}
+                </div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Flashcards</div>
               </div>
             </div>
           </div>
