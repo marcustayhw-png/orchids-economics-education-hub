@@ -208,21 +208,27 @@ export default function FlashcardsPage() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Card
-                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30"
+                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30 overflow-hidden group"
                         onClick={() => handleEconomicsTypeSelect("Microeconomics")}
                       >
-                        <CardContent className="pt-8 pb-8 text-center space-y-4">
-                          <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                            <Users className="w-8 h-8 text-primary" />
+                        <CardContent className="pt-8 pb-8 text-center space-y-4 relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300">
+                            <Users className="w-8 h-8 text-primary group-hover:rotate-12 transition-transform duration-300" />
                           </div>
-                          <h3 className="text-xl font-semibold">Microeconomics</h3>
-                          <p className="text-sm text-muted-foreground">
+                          <h3 className="text-xl font-semibold relative z-10">Microeconomics</h3>
+                          <p className="text-sm text-muted-foreground relative z-10">
                             Study individual markets, consumer behavior, and firm decisions
                           </p>
-                          <Button className="w-full" size="lg">
-                            Select
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative z-10 group/btn overflow-hidden"
+                          >
+                            <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+                            <span className="relative">Select</span>
+                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300 relative" />
+                          </motion.button>
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -232,21 +238,27 @@ export default function FlashcardsPage() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Card
-                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30"
+                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30 overflow-hidden group"
                         onClick={() => handleEconomicsTypeSelect("Macroeconomics")}
                       >
-                        <CardContent className="pt-8 pb-8 text-center space-y-4">
-                          <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                            <Globe className="w-8 h-8 text-primary" />
+                        <CardContent className="pt-8 pb-8 text-center space-y-4 relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300">
+                            <Globe className="w-8 h-8 text-primary group-hover:rotate-12 transition-transform duration-300" />
                           </div>
-                          <h3 className="text-xl font-semibold">Macroeconomics</h3>
-                          <p className="text-sm text-muted-foreground">
+                          <h3 className="text-xl font-semibold relative z-10">Macroeconomics</h3>
+                          <p className="text-sm text-muted-foreground relative z-10">
                             Explore national economies, GDP, inflation, and fiscal policy
                           </p>
-                          <Button className="w-full" size="lg">
-                            Select
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative z-10 group/btn overflow-hidden"
+                          >
+                            <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+                            <span className="relative">Select</span>
+                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300 relative" />
+                          </motion.button>
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -288,32 +300,30 @@ export default function FlashcardsPage() {
                         ) : (
                           <div className="grid grid-cols-1 gap-3">
                             {chapters.map((chapter) => (
-                              <motion.div
+                              <motion.button
                                 key={chapter}
-                                whileHover={{ scale: 1.01 }}
-                                whileTap={{ scale: 0.99 }}
+                                whileHover={{ scale: 1.02, x: 4 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => handleChapterSelect(chapter)}
+                                className="w-full py-4 px-6 rounded-lg border-2 border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary hover:shadow-md transition-all duration-300 flex items-center justify-between group overflow-hidden relative"
                               >
-                                <Button
-                                  variant="outline"
-                                  className="w-full justify-between h-auto py-4 px-6 text-left"
-                                  onClick={() => handleChapterSelect(chapter)}
-                                >
-                                  <span className="font-medium">{chapter}</span>
-                                  <ArrowRight className="w-4 h-4 ml-2" />
-                                </Button>
-                              </motion.div>
+                                <span className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <span className="font-medium relative z-10">{chapter}</span>
+                                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 relative z-10" />
+                              </motion.button>
                             ))}
                           </div>
                         )}
 
-                        <Button
-                          variant="ghost"
-                          className="w-full"
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
                           onClick={handleBackToEconomicsType}
+                          className="w-full py-3 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center justify-center gap-2 font-medium group"
                         >
-                          <ArrowLeft className="w-4 h-4 mr-2" />
+                          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
                           Back to Economics Type
-                        </Button>
+                        </motion.button>
                       </CardContent>
                     </Card>
                   </div>
@@ -355,14 +365,15 @@ export default function FlashcardsPage() {
                           <SelectItem value="random">Random</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Button
-                        variant="ghost"
-                        className="w-full"
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={handleBackToChapter}
+                        className="w-full py-3 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center justify-center gap-2 font-medium group"
                       >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
                         Change Chapter
-                      </Button>
+                      </motion.button>
                     </CardContent>
                   </Card>
 
@@ -476,46 +487,53 @@ export default function FlashcardsPage() {
                         </div>
                       </div>
 
-                      {/* Controls */}
+                      {/* Enhanced Controls */}
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
-                        <Button
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={handlePrevious}
-                          variant="outline"
-                          size="lg"
-                          className="flex-1 sm:flex-none"
                           disabled={filteredCards.length <= 1}
+                          className="flex-1 sm:flex-none py-3 px-6 rounded-lg border-2 border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 font-semibold group overflow-hidden relative"
                         >
-                          <ArrowLeft className="w-4 h-4 mr-2" />
-                          Previous
-                        </Button>
-                        <Button
+                          <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300 relative z-10" />
+                          <span className="relative z-10">Previous</span>
+                        </motion.button>
+                        
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={handleFlip}
-                          variant="default"
-                          size="lg"
-                          className="flex-1 sm:flex-none"
+                          className="flex-1 sm:flex-none py-3 px-8 rounded-lg bg-gradient-to-r from-primary via-primary to-primary/80 text-primary-foreground font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group overflow-hidden relative"
                         >
-                          <RefreshCw className="w-4 h-4 mr-2" />
-                          Flip Card
-                        </Button>
-                        <Button
+                          <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/30 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                          <RefreshCw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500 relative z-10" />
+                          <span className="relative z-10">Flip Card</span>
+                        </motion.button>
+                        
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={handleShuffle}
-                          variant="outline"
-                          size="lg"
-                          className="flex-1 sm:flex-none"
+                          className="flex-1 sm:flex-none py-3 px-6 rounded-lg border-2 border-primary/50 bg-gradient-to-r from-primary/10 to-primary/5 hover:from-primary/20 hover:to-primary/10 hover:border-primary hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 font-semibold group overflow-hidden relative"
                         >
-                          <Sparkles className="w-4 h-4 mr-2" />
-                          Shuffle
-                        </Button>
-                        <Button
+                          <span className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <Sparkles className="w-4 h-4 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10" />
+                          <span className="relative z-10">Shuffle</span>
+                        </motion.button>
+                        
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={handleNext}
-                          variant="outline"
-                          size="lg"
-                          className="flex-1 sm:flex-none"
                           disabled={filteredCards.length <= 1}
+                          className="flex-1 sm:flex-none py-3 px-6 rounded-lg border-2 border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 font-semibold group overflow-hidden relative"
                         >
-                          Next
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
+                          <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <span className="relative z-10">Next</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
+                        </motion.button>
                       </div>
                     </div>
                   )}
