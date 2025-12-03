@@ -41,7 +41,6 @@ export default function FlashcardsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [studyMode, setStudyMode] = useState<"sequential" | "random">("sequential");
 
   useEffect(() => {
     fetchFlashcards();
@@ -90,12 +89,7 @@ export default function FlashcardsPage() {
 
   const handleNext = () => {
     setIsFlipped(false);
-    if (studyMode === "random") {
-      const randomIndex = Math.floor(Math.random() * filteredCards.length);
-      setCurrentIndex(randomIndex);
-    } else {
-      setCurrentIndex((prev) => (prev + 1) % filteredCards.length);
-    }
+    setCurrentIndex((prev) => (prev + 1) % filteredCards.length);
   };
 
   const handlePrevious = () => {
@@ -340,42 +334,22 @@ export default function FlashcardsPage() {
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="space-y-6"
                 >
-                  {/* Breadcrumb */}
-                  <div className="flex items-center justify-center gap-2 flex-wrap">
+                  {/* Breadcrumb with Change Chapter button */}
+                  <div className="flex items-center justify-center gap-3 flex-wrap">
                     <Badge variant="secondary">{selectedEconomicsType}</Badge>
                     <span className="text-muted-foreground">/</span>
                     <Badge variant="outline">{selectedChapter}</Badge>
+                    <span className="text-muted-foreground mx-2">•</span>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleBackToChapter}
+                      className="py-2 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center gap-2 text-sm font-medium group"
+                    >
+                      <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform duration-300" />
+                      Change Chapter
+                    </motion.button>
                   </div>
-
-                  {/* Study Mode Selector */}
-                  <Card className="border-2 max-w-md mx-auto">
-                    <CardContent className="pt-6 space-y-4">
-                      <label className="text-sm font-medium">Study Mode</label>
-                      <Select
-                        value={studyMode}
-                        onValueChange={(value: "sequential" | "random") =>
-                          setStudyMode(value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="sequential">Sequential</SelectItem>
-                          <SelectItem value="random">Random</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={handleBackToChapter}
-                        className="w-full py-3 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center justify-center gap-2 font-medium group"
-                      >
-                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
-                        Change Chapter
-                      </motion.button>
-                    </CardContent>
-                  </Card>
 
                   {/* Flashcard Display */}
                   {filteredCards.length === 0 ? (
