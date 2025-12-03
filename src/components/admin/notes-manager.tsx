@@ -132,7 +132,7 @@ export function NotesManager() {
 
       if (response.ok) {
         const data = await response.json();
-        setFormData({ ...formData, pdfUrl: data.fileUrl });
+        setFormData((prev) => ({ ...prev, pdfUrl: data.fileUrl }));
         toast.success("PDF uploaded successfully");
       } else {
         const error = await response.json();
