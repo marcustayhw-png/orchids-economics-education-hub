@@ -31,6 +31,55 @@ interface Flashcard {
   updatedAt: string;
 }
 
+// O-Level syllabus chapters for Secondary level
+const SYLLABUS_CHAPTERS = [
+  "1. The Basic Economic Problem",
+  "1.1 Nature of Economic Problem",
+  "1.2 Factors of Production",
+  "1.3 Opportunity Cost",
+  "1.4 Production Possibility Curve (PPC)",
+  "2. Allocation of Resources",
+  "2.1 Microeconomics vs Macroeconomics",
+  "2.2 Role of Markets",
+  "2.3 Demand",
+  "2.4 Supply",
+  "2.5 Price Determination",
+  "2.6 Price Changes",
+  "2.7 Price Elasticity of Demand (PED)",
+  "2.8 Price Elasticity of Supply (PES)",
+  "2.9 Market Economic System",
+  "2.10 Market Failure",
+  "2.11 Mixed Economic System",
+  "3. Microeconomic Decision Makers",
+  "3.1 Money and Banking",
+  "3.2 Households",
+  "3.3 Workers",
+  "3.4 Trade Unions",
+  "3.5 Firms",
+  "3.6 Firms and Production",
+  "3.7 Firms' Costs, Revenue and Objectives",
+  "3.8 Market Structure",
+  "4. Government and Macroeconomy",
+  "4.1 Role of Government",
+  "4.2 Macroeconomic Aims",
+  "4.3 Fiscal Policy",
+  "4.4 Monetary Policy",
+  "4.5 Supply-Side Policy",
+  "4.6 Economic Growth",
+  "4.7 Employment and Unemployment",
+  "4.8 Inflation and Deflation",
+  "5. Economic Development",
+  "5.1 Living Standards",
+  "5.2 Poverty",
+  "5.3 Population",
+  "5.4 Differences in Economic Development",
+  "6. International Trade and Globalisation",
+  "6.1 International Specialisation",
+  "6.2 Globalisation, Free Trade and Protection",
+  "6.3 Foreign Exchange Rates",
+  "6.4 Current Account of Balance of Payments",
+];
+
 export function FlashcardManager() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -249,24 +298,30 @@ export function FlashcardManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, question: e.target.value })
                   }
-                  placeholder="e.g., What is the law of demand?"
+                  placeholder="e.g., What is the law of demand? Define opportunity cost. Explain PED."
                   rows={3}
                   required
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  📘 Use syllabus command words: Define, Explain, Calculate, Analyse, Describe
+                </p>
               </div>
 
               <div>
-                <Label htmlFor="answer">Answer *</Label>
+                <Label htmlFor="answer">Answer * (Keep succinct - use point form)</Label>
                 <Textarea
                   id="answer"
                   value={formData.answer}
                   onChange={(e) =>
                     setFormData({ ...formData, answer: e.target.value })
                   }
-                  placeholder="Provide a comprehensive answer"
-                  rows={5}
+                  placeholder="Use bullet points for clarity:&#10;• Point 1: Brief explanation&#10;• Point 2: Key concept&#10;• Point 3: Example if needed&#10;&#10;Keep it concise and exam-focused!"
+                  rows={6}
                   required
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  ✅ Best practice: Use bullet points (•) for clarity. Keep each point brief and exam-relevant.
+                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -282,8 +337,8 @@ export function FlashcardManager() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Secondary">Secondary</SelectItem>
-                      <SelectItem value="JC">JC</SelectItem>
+                      <SelectItem value="Secondary">Secondary (O-Level)</SelectItem>
+                      <SelectItem value="JC">JC (A-Level)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -309,16 +364,27 @@ export function FlashcardManager() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="chapter">H2 Chapter *</Label>
-                  <Input
-                    id="chapter"
+                  <Label htmlFor="chapter">Chapter * (Align with O-Level Syllabus 2286)</Label>
+                  <Select
                     value={formData.chapter}
-                    onChange={(e) =>
-                      setFormData({ ...formData, chapter: e.target.value })
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, chapter: value })
                     }
-                    placeholder="e.g., Market Failure, Elasticity"
-                    required
-                  />
+                  >
+                    <SelectTrigger id="chapter">
+                      <SelectValue placeholder="Select syllabus chapter" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {SYLLABUS_CHAPTERS.map((chapter) => (
+                        <SelectItem key={chapter} value={chapter}>
+                          {chapter}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Based on Cambridge O-Level Economics Syllabus 2286 (2026)
+                  </p>
                 </div>
 
                 <div>
