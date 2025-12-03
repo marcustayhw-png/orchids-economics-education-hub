@@ -38,6 +38,10 @@ export function FlashcardManager() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
 
+  // Filter states
+  const [filterLevel, setFilterLevel] = useState<string>("All");
+  const [filterChapter, setFilterChapter] = useState<string>("All");
+
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
@@ -74,6 +78,18 @@ export function FlashcardManager() {
       setIsLoading(false);
     }
   };
+
+  // Get unique chapters for filter dropdown
+  const uniqueChapters = Array.from(
+    new Set(flashcards.map((f) => f.chapter).filter(Boolean))
+  ).sort();
+
+  // Filter flashcards based on selected filters
+  const filteredFlashcards = flashcards.filter((flashcard) => {
+    const matchesLevel = filterLevel === "All" || flashcard.level === filterLevel;
+    const matchesChapter = filterChapter === "All" || flashcard.chapter === filterChapter;
+    return matchesLevel && matchesChapter;
+  });
 
   const resetForm = () => {
     setFormData({
@@ -374,12 +390,58 @@ export function FlashcardManager() {
         </Card>
       )}
 
+      {/* Filter Controls */}
+      {!showForm && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Filter Flashcards</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="filterLevel">Level</Label>
+                <Select value={filterLevel} onValueChange={setFilterLevel}>
+                  <SelectTrigger id="filterLevel">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Levels</SelectItem>
+                    <SelectItem value="Secondary">Secondary</SelectItem>
+                    <SelectItem value="JC">JC</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="filterChapter">Chapter</Label>
+                <Select value={filterChapter} onValueChange={setFilterChapter}>
+                  <SelectTrigger id="filterChapter">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Chapters</SelectItem>
+                    {uniqueChapters.map((chapter) => (
+                      <SelectItem key={chapter} value={chapter}>
+                        {chapter}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Flashcards List */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
-          All Flashcards ({flashcards.length})
+          {filterLevel === "All" && filterChapter === "All" 
+            ? `All Flashcards (${flashcards.length})`
+            : `Filtered Flashcards (${filteredFlashcards.length} of ${flashcards.length})`
+          }
         </h3>
-        {flashcards.map((flashcard) => (
+        {filteredFlashcards.map((flashcard) => (
           <Card key={flashcard.id}>
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
