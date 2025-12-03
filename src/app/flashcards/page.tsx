@@ -33,6 +33,36 @@ type Step = "economics-type" | "chapter" | "study";
 
 // Helper function to format answer text into point form
 const formatAnswerAsPoints = (answer: string) => {
+  // Check if answer contains numbered points like (1), (2), etc.
+  const numberedPattern = /\((\d+)\)/g;
+  const hasNumberedPoints = numberedPattern.test(answer);
+  
+  if (hasNumberedPoints) {
+    // Split by numbered points and format as separate paragraphs
+    const points = answer.split(/\((\d+)\)/).filter(part => part.trim().length > 0);
+    const formattedPoints: JSX.Element[] = [];
+    
+    for (let i = 0; i < points.length; i += 2) {
+      if (i + 1 < points.length) {
+        const number = points[i];
+        const content = points[i + 1].trim();
+        
+        if (content) {
+          formattedPoints.push(
+            <div key={number} className="mb-4">
+              <p className="text-sm leading-relaxed">
+                <span className="font-semibold">({number})</span> {content}
+              </p>
+            </div>
+          );
+        }
+      }
+    }
+    
+    return formattedPoints;
+  }
+  
+  // Original bullet point formatting for non-numbered answers
   const lines = answer.split('\n').map(line => line.trim()).filter(line => line.length > 0);
   
   return lines.map((line, index) => {
