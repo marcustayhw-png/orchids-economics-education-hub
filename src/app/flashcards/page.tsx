@@ -386,51 +386,96 @@ export default function FlashcardsPage() {
                         <Badge>{currentCard?.topic}</Badge>
                       </div>
 
-                      {/* Flip Card */}
-                      <div className="perspective-1000">
-                        <motion.div
-                          className="relative w-full"
-                          style={{ minHeight: "400px" }}
+                      {/* 3D Flip Card Container */}
+                      <div className="perspective-1000 w-full flex justify-center">
+                        <div 
+                          className="relative w-full max-w-2xl cursor-pointer"
+                          style={{ 
+                            perspective: '1000px',
+                            minHeight: '450px'
+                          }}
                           onClick={handleFlip}
                         >
-                          <AnimatePresence mode="wait" initial={false}>
+                          <motion.div
+                            className="relative w-full h-full"
+                            style={{ 
+                              transformStyle: 'preserve-3d',
+                              minHeight: '450px'
+                            }}
+                            animate={{ rotateY: isFlipped ? 180 : 0 }}
+                            transition={{
+                              duration: 0.6,
+                              type: "spring",
+                              stiffness: 100,
+                              damping: 15
+                            }}
+                          >
+                            {/* Front of Card (Question) */}
                             <motion.div
-                              key={isFlipped ? "answer" : "question"}
-                              initial={{ rotateY: 90, opacity: 0 }}
-                              animate={{ rotateY: 0, opacity: 1 }}
-                              exit={{ rotateY: -90, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="w-full"
+                              className="absolute inset-0 w-full h-full"
+                              style={{
+                                backfaceVisibility: 'hidden',
+                                WebkitBackfaceVisibility: 'hidden'
+                              }}
                             >
-                              <Card className="border-2 hover:border-primary transition-all cursor-pointer bg-gradient-to-br from-background to-muted/30 shadow-lg h-full">
-                                <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
+                              <Card className="border-2 h-full shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20">
+                                <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center h-full min-h-[450px]">
                                   <div className="mb-6">
-                                    {isFlipped ? (
-                                      <Sparkles className="w-12 h-12 text-primary" />
-                                    ) : (
-                                      <BookOpen className="w-12 h-12 text-primary" />
-                                    )}
+                                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                                      <BookOpen className="w-8 h-8 text-primary" />
+                                    </div>
                                   </div>
                                   <div className="space-y-4 w-full">
                                     <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
-                                      {isFlipped ? "Answer" : "Question"}
+                                      Question
                                     </p>
                                     <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
-                                      {isFlipped
-                                        ? currentCard?.answer
-                                        : currentCard?.question}
+                                      {currentCard?.question}
                                     </p>
                                   </div>
-                                  <p className="text-xs text-muted-foreground mt-8">
-                                    {isFlipped
-                                      ? "Click to see question"
-                                      : "Click to reveal answer"}
-                                  </p>
+                                  <div className="mt-auto pt-8">
+                                    <p className="text-xs text-muted-foreground">
+                                      Click to reveal answer
+                                    </p>
+                                  </div>
                                 </CardContent>
                               </Card>
                             </motion.div>
-                          </AnimatePresence>
-                        </motion.div>
+
+                            {/* Back of Card (Answer) */}
+                            <motion.div
+                              className="absolute inset-0 w-full h-full"
+                              style={{
+                                backfaceVisibility: 'hidden',
+                                WebkitBackfaceVisibility: 'hidden',
+                                rotateY: 180
+                              }}
+                            >
+                              <Card className="border-2 h-full shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20">
+                                <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center h-full min-h-[450px]">
+                                  <div className="mb-6">
+                                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                                      <Sparkles className="w-8 h-8 text-primary" />
+                                    </div>
+                                  </div>
+                                  <div className="space-y-4 w-full">
+                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
+                                      Answer
+                                    </p>
+                                    <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
+                                      {currentCard?.answer}
+                                    </p>
+                                  </div>
+                                  <div className="mt-auto pt-8">
+                                    <p className="text-xs text-muted-foreground">
+                                      Click to see question
+                                    </p>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </motion.div>
+                          </motion.div>
+                        </div>
                       </div>
 
                       {/* Controls */}
@@ -442,6 +487,7 @@ export default function FlashcardsPage() {
                           className="flex-1 sm:flex-none"
                           disabled={filteredCards.length <= 1}
                         >
+                          <ArrowLeft className="w-4 h-4 mr-2" />
                           Previous
                         </Button>
                         <Button
@@ -470,6 +516,7 @@ export default function FlashcardsPage() {
                           disabled={filteredCards.length <= 1}
                         >
                           Next
+                          <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
                       </div>
                     </div>
