@@ -32,7 +32,7 @@ interface Flashcard {
 }
 
 // O-Level syllabus chapters for Secondary level
-const SYLLABUS_CHAPTERS = [
+const SECONDARY_CHAPTERS = [
   "1. The Basic Economic Problem",
   "1.1 Nature of Economic Problem",
   "1.2 Factors of Production",
@@ -78,6 +78,31 @@ const SYLLABUS_CHAPTERS = [
   "6.2 Globalisation, Free Trade and Protection",
   "6.3 Foreign Exchange Rates",
   "6.4 Current Account of Balance of Payments",
+];
+
+// H2 A-Level syllabus chapters for JC level (Syllabus 9570, 2026)
+const JC_CHAPTERS = [
+  "Theme 1: The Central Economic Problem",
+  "1.1 Scarcity, Choice and Resource Allocation",
+  "1.2 Decision-Making Process of Economic Agents",
+  "Theme 2: Markets",
+  "2.1 Price Mechanism and its Functions",
+  "2.2 Demand and Supply Analysis",
+  "2.3 Government Intervention in Markets",
+  "2.4 Objectives of Firms",
+  "2.5 Cost and Revenue",
+  "2.6 Firms' Decisions and Strategies",
+  "2.7 Governments' Microeconomic Objectives",
+  "2.8 Market Failure and its Causes",
+  "2.9 Microeconomic Policies",
+  "Theme 3: The National and International Economy",
+  "3.1 Circular Flow of Income",
+  "3.2 Aggregate Demand and Aggregate Supply",
+  "3.3 Standard of Living and Macroeconomic Indicators",
+  "3.4 Macroeconomic Issues",
+  "3.5 Macroeconomic Policies",
+  "3.6 Globalisation and International Trade",
+  "3.7 Economic Co-operation and Protectionism",
 ];
 
 // Helper function to format answer text into point form
@@ -142,6 +167,11 @@ export function FlashcardManager() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Get chapters based on selected level
+  const getChaptersForLevel = (level: string) => {
+    return level === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS;
   };
 
   // Get unique chapters for filter dropdown
@@ -380,7 +410,12 @@ export function FlashcardManager() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="chapter">Chapter * (Align with O-Level Syllabus 2286)</Label>
+                  <Label htmlFor="chapter">
+                    Chapter * 
+                    {formData.level === "JC" 
+                      ? " (H2 A-Level Syllabus 9570)" 
+                      : " (O-Level Syllabus 2286)"}
+                  </Label>
                   <Select
                     value={formData.chapter}
                     onValueChange={(value) =>
@@ -391,7 +426,7 @@ export function FlashcardManager() {
                       <SelectValue placeholder="Select syllabus chapter" />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
-                      {SYLLABUS_CHAPTERS.map((chapter) => (
+                      {getChaptersForLevel(formData.level).map((chapter) => (
                         <SelectItem key={chapter} value={chapter}>
                           {chapter}
                         </SelectItem>
@@ -399,7 +434,9 @@ export function FlashcardManager() {
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Based on Cambridge O-Level Economics Syllabus 2286 (2026)
+                    {formData.level === "JC"
+                      ? "Based on Singapore-Cambridge GCE A-Level H2 Economics Syllabus 9570 (2026)"
+                      : "Based on Cambridge O-Level Economics Syllabus 2286 (2026)"}
                   </p>
                 </div>
 
