@@ -392,7 +392,6 @@ export default function FlashcardsPage() {
                           className="relative w-full max-w-2xl cursor-pointer"
                           style={{ 
                             perspective: '1000px',
-                            minHeight: '450px'
                           }}
                           onClick={handleFlip}
                         >
@@ -400,7 +399,6 @@ export default function FlashcardsPage() {
                             className="relative w-full h-full"
                             style={{ 
                               transformStyle: 'preserve-3d',
-                              minHeight: '450px'
                             }}
                             animate={{ rotateY: isFlipped ? 180 : 0 }}
                             transition={{
@@ -418,22 +416,22 @@ export default function FlashcardsPage() {
                                 WebkitBackfaceVisibility: 'hidden'
                               }}
                             >
-                              <Card className="border-2 h-full shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20">
-                                <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center h-full min-h-[450px]">
-                                  <div className="mb-6">
+                              <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20">
+                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[400px] max-h-[600px]">
+                                  <div className="flex-none mb-6">
                                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                       <BookOpen className="w-8 h-8 text-primary" />
                                     </div>
                                   </div>
-                                  <div className="space-y-4 w-full">
-                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
+                                  <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center text-center px-2">
+                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide flex-none">
                                       Question
                                     </p>
-                                    <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
+                                    <p className="text-base sm:text-lg lg:text-xl font-medium leading-relaxed flex-none">
                                       {currentCard?.question}
                                     </p>
                                   </div>
-                                  <div className="mt-auto pt-8">
+                                  <div className="flex-none pt-6 text-center">
                                     <p className="text-xs text-muted-foreground">
                                       Click to reveal answer
                                     </p>
@@ -451,22 +449,22 @@ export default function FlashcardsPage() {
                                 rotateY: 180
                               }}
                             >
-                              <Card className="border-2 h-full shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20">
-                                <CardContent className="p-8 sm:p-12 flex flex-col items-center justify-center text-center h-full min-h-[450px]">
-                                  <div className="mb-6">
+                              <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20">
+                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[400px] max-h-[600px]">
+                                  <div className="flex-none mb-6">
                                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                       <Sparkles className="w-8 h-8 text-primary" />
                                     </div>
                                   </div>
-                                  <div className="space-y-4 w-full">
-                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
+                                  <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center text-center px-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide flex-none">
                                       Answer
                                     </p>
-                                    <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
+                                    <p className="text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-left max-w-prose">
                                       {currentCard?.answer}
                                     </p>
                                   </div>
-                                  <div className="mt-auto pt-8">
+                                  <div className="flex-none pt-6 text-center">
                                     <p className="text-xs text-muted-foreground">
                                       Click to see question
                                     </p>
