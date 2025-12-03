@@ -80,6 +80,22 @@ const SYLLABUS_CHAPTERS = [
   "6.4 Current Account of Balance of Payments",
 ];
 
+// Helper function to format answer text into point form
+const formatAnswerAsPoints = (answer: string) => {
+  // Split by newlines and filter empty lines
+  const lines = answer.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+  
+  return lines.map((line, index) => {
+    // Remove common bullet point characters if they exist at the start
+    const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
+    return (
+      <li key={index} className="text-sm text-muted-foreground">
+        {cleanedLine}
+      </li>
+    );
+  });
+};
+
 export function FlashcardManager() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -542,9 +558,9 @@ export function FlashcardManager() {
                       <Sparkles className="w-4 h-4 text-primary" />
                       Answer
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      {flashcard.answer}
-                    </p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      {formatAnswerAsPoints(flashcard.answer)}
+                    </ul>
                   </div>
                 </div>
                 <div className="flex gap-2">
