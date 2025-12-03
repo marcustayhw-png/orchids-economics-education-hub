@@ -31,6 +31,20 @@ type Flashcard = {
 
 type Step = "economics-type" | "chapter" | "study";
 
+// Helper function to format answer text into point form
+const formatAnswerAsPoints = (answer: string) => {
+  const lines = answer.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+  
+  return lines.map((line, index) => {
+    const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
+    return (
+      <li key={index} className="text-sm leading-relaxed">
+        {cleanedLine}
+      </li>
+    );
+  });
+};
+
 export default function FlashcardsPage() {
   const [selectedLevel, setSelectedLevel] = useState("Secondary");
   const [selectedEconomicsType, setSelectedEconomicsType] = useState("");
@@ -189,7 +203,9 @@ export default function FlashcardsPage() {
             Economics Flashcards
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Test your knowledge with interactive flashcards. Select your focus area to begin.
+            {selectedLevel === "JC" 
+              ? "Master H2 Economics with interactive flashcards aligned to Syllabus 9570 (2026)"
+              : "Master O-Level Economics with interactive flashcards aligned to Syllabus 2286 (2026)"}
           </p>
         </div>
 
@@ -312,7 +328,9 @@ export default function FlashcardsPage() {
                       Select a Chapter
                     </h2>
                     <p className="text-muted-foreground">
-                      Choose the H2 Economics chapter you want to study
+                      {selectedLevel === "JC"
+                        ? "Choose the H2 Economics chapter from Syllabus 9570 (2026)"
+                        : "Choose the O-Level Economics chapter from Syllabus 2286 (2026)"}
                     </p>
                   </div>
 
@@ -336,8 +354,8 @@ export default function FlashcardsPage() {
                                 className="w-full py-4 px-6 rounded-lg border-2 border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary hover:shadow-md transition-all duration-300 flex items-center justify-between group overflow-hidden relative"
                               >
                                 <span className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                <span className="font-medium relative z-10">{chapter}</span>
-                                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 relative z-10" />
+                                <span className="font-medium relative z-10 text-left">{chapter}</span>
+                                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 relative z-10 flex-shrink-0 ml-2" />
                               </motion.button>
                             ))}
                           </div>
@@ -557,7 +575,7 @@ export default function FlashcardsPage() {
                               </Card>
                             </motion.div>
 
-                            {/* Back of Card (Answer) */}
+                            {/* Back of Card (Answer) - Updated with point-form display */}
                             <motion.div
                               className="absolute inset-0 w-full"
                               style={{
@@ -574,13 +592,13 @@ export default function FlashcardsPage() {
                                       <Sparkles className="w-8 h-8 text-primary" />
                                     </div>
                                   </div>
-                                  <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center text-center px-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide flex-none">
+                                  <div className="flex-1 overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                                    <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide mb-4 text-center">
                                       Answer
                                     </p>
-                                    <p className="text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-left max-w-prose">
-                                      {currentCard?.answer}
-                                    </p>
+                                    <ul className="list-disc list-inside space-y-2 text-left max-w-prose mx-auto">
+                                      {formatAnswerAsPoints(currentCard?.answer || "")}
+                                    </ul>
                                   </div>
                                   <div className="flex-none pt-6 text-center">
                                     <p className="text-xs text-muted-foreground">
@@ -669,7 +687,10 @@ export default function FlashcardsPage() {
                   • Swipe left/right to navigate between cards
                 </p>
                 <p className="hidden sm:block">
-                  • Use sequential mode for comprehensive coverage or random mode for varied practice
+                  • Use sequential navigation for comprehensive coverage
+                </p>
+                <p>
+                  • Focus on succinct, point-form answers aligned with {selectedLevel === "JC" ? "H2 A-Level" : "O-Level"} syllabus
                 </p>
                 <p>
                   • Revisit difficult cards multiple times until mastered
