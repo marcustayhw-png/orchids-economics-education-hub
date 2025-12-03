@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -56,35 +56,22 @@ function TabsContent({
   children,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
-  const [isVisible, setIsVisible] = React.useState(false)
-  
-  React.useEffect(() => {
-    setIsVisible(true)
-  }, [])
-
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
       className={cn("flex-1 outline-none", className)}
-      forceMount
       {...props}
     >
-      <AnimatePresence mode="wait">
-        {props.value === (props as any)['data-state'] && (
-          <motion.div
-            key={props.value}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{
-              duration: 0.3,
-              ease: [0.4, 0, 0.2, 1]
-            }}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.4,
+          ease: [0.4, 0, 0.2, 1]
+        }}
+      >
+        {children}
+      </motion.div>
     </TabsPrimitive.Content>
   )
 }
