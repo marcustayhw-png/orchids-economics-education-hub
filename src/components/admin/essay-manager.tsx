@@ -42,6 +42,10 @@ export function EssayManager() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
 
+  // Filter states
+  const [filterLevel, setFilterLevel] = useState<string>("All");
+  const [filterTopic, setFilterTopic] = useState<string>("All");
+
   const [formData, setFormData] = useState({
     essayId: "",
     question: "",
@@ -80,6 +84,18 @@ export function EssayManager() {
       setIsLoading(false);
     }
   };
+
+  // Get unique topics for filter dropdown
+  const uniqueTopics = Array.from(
+    new Set(essays.map((e) => e.topic).filter(Boolean))
+  ).sort();
+
+  // Filter essays based on selected filters
+  const filteredEssays = essays.filter((essay) => {
+    const matchesLevel = filterLevel === "All" || essay.level === filterLevel;
+    const matchesTopic = filterTopic === "All" || essay.topic === filterTopic;
+    return matchesLevel && matchesTopic;
+  });
 
   const resetForm = () => {
     setFormData({
@@ -410,12 +426,58 @@ export function EssayManager() {
         </Card>
       )}
 
+      {/* Filter Controls */}
+      {!showForm && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Filter Essays</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="filterLevel">Level</Label>
+                <Select value={filterLevel} onValueChange={setFilterLevel}>
+                  <SelectTrigger id="filterLevel">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Levels</SelectItem>
+                    <SelectItem value="JC">JC</SelectItem>
+                    <SelectItem value="Secondary">Secondary</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="filterTopic">Topic</Label>
+                <Select value={filterTopic} onValueChange={setFilterTopic}>
+                  <SelectTrigger id="filterTopic">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Topics</SelectItem>
+                    {uniqueTopics.map((topic) => (
+                      <SelectItem key={topic} value={topic}>
+                        {topic}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Essays List */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
-          All Essays ({essays.length})
+          {filterLevel === "All" && filterTopic === "All"
+            ? `All Essays (${essays.length})`
+            : `Filtered Essays (${filteredEssays.length} of ${essays.length})`
+          }
         </h3>
-        {essays.map((essay) => (
+        {filteredEssays.map((essay) => (
           <Card key={essay.id}>
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
