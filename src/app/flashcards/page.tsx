@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft, Users, Globe } from "lucide-react";
+import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft, Users, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 
 type Flashcard = {
@@ -42,6 +42,7 @@ export default function FlashcardsPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
 
   useEffect(() => {
     fetchFlashcards();
@@ -52,6 +53,15 @@ export default function FlashcardsPage() {
       applyFilters();
     }
   }, [flashcards, selectedLevel, selectedEconomicsType, selectedChapter]);
+
+  useEffect(() => {
+    // Hide swipe hint after first interaction or after 5 seconds
+    const timer = setTimeout(() => {
+      setShowSwipeHint(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [currentStep]);
 
   const fetchFlashcards = async () => {
     setIsLoading(true);
@@ -108,6 +118,9 @@ export default function FlashcardsPage() {
 
   const handleSwipe = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const swipeThreshold = 50;
+    
+    // Hide hint after first swipe
+    setShowSwipeHint(false);
     
     if (info.offset.x > swipeThreshold) {
       // Swiped right - go to previous
@@ -372,12 +385,31 @@ export default function FlashcardsPage() {
                     </motion.button>
                   </div>
 
-                  {/* Swipe instruction for mobile */}
-                  <div className="text-center sm:hidden">
-                    <p className="text-xs text-muted-foreground">
-                      💡 Swipe left/right to navigate • Tap to flip
-                    </p>
-                  </div>
+                  {/* Enhanced Swipe instruction for mobile */}
+                  <motion.div 
+                    className="text-center sm:hidden"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-2 border-primary/20">
+                      <motion.div
+                        animate={{ x: [-3, 3, -3] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <ChevronLeft className="w-4 h-4 text-primary" />
+                      </motion.div>
+                      <span className="text-sm font-medium text-primary">
+                        Swipe to navigate • Tap to flip
+                      </span>
+                      <motion.div
+                        animate={{ x: [3, -3, 3] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <ChevronRight className="w-4 h-4 text-primary" />
+                      </motion.div>
+                    </div>
+                  </motion.div>
 
                   {/* Flashcard Display */}
                   {filteredCards.length === 0 ? (
@@ -399,8 +431,65 @@ export default function FlashcardsPage() {
                         <Badge>{currentCard?.topic}</Badge>
                       </div>
 
-                      {/* 3D Flip Card Container with Swipe */}
-                      <div className="perspective-1000 w-full flex justify-center mb-16">
+                      {/* 3D Flip Card Container with Swipe and Animated Indicators */}
+                      <div className="perspective-1000 w-full flex justify-center mb-16 relative">
+                        {/* Animated Swipe Indicators - Only on Mobile */}
+                        <AnimatePresence>
+                          {showSwipeHint && (
+                            <>
+                              {/* Left Swipe Indicator */}
+                              <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 sm:hidden pointer-events-none"
+                              >
+                                <motion.div
+                                  animate={{ 
+                                    x: [-8, 0, -8],
+                                    opacity: [0.4, 1, 0.4]
+                                  }}
+                                  transition={{ 
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <div className="w-12 h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
+                                    <ChevronLeft className="w-6 h-6 text-primary" />
+                                  </div>
+                                </motion.div>
+                              </motion.div>
+
+                              {/* Right Swipe Indicator */}
+                              <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 20 }}
+                                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 sm:hidden pointer-events-none"
+                              >
+                                <motion.div
+                                  animate={{ 
+                                    x: [8, 0, 8],
+                                    opacity: [0.4, 1, 0.4]
+                                  }}
+                                  transition={{ 
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <div className="w-12 h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
+                                    <ChevronRight className="w-6 h-6 text-primary" />
+                                  </div>
+                                </motion.div>
+                              </motion.div>
+                            </>
+                          )}
+                        </AnimatePresence>
+
                         <motion.div 
                           className="relative w-full max-w-2xl cursor-pointer touch-pan-y"
                           style={{ 
