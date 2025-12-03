@@ -403,13 +403,15 @@ export default function FlashcardsPage() {
                           className="relative w-full max-w-2xl cursor-pointer"
                           style={{ 
                             perspective: '1000px',
+                            minHeight: '400px',
                           }}
                           onClick={handleFlip}
                         >
                           <motion.div
-                            className="relative w-full h-full"
+                            className="relative w-full"
                             style={{ 
                               transformStyle: 'preserve-3d',
+                              minHeight: '400px',
                             }}
                             animate={{ rotateY: isFlipped ? 180 : 0 }}
                             transition={{
@@ -421,14 +423,14 @@ export default function FlashcardsPage() {
                           >
                             {/* Front of Card (Question) */}
                             <motion.div
-                              className="absolute inset-0 w-full h-full"
+                              className="absolute inset-0 w-full"
                               style={{
                                 backfaceVisibility: 'hidden',
                                 WebkitBackfaceVisibility: 'hidden'
                               }}
                             >
                               <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20">
-                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[400px] max-h-[600px]">
+                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[400px]">
                                   <div className="flex-none mb-6">
                                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                       <BookOpen className="w-8 h-8 text-primary" />
@@ -453,7 +455,7 @@ export default function FlashcardsPage() {
 
                             {/* Back of Card (Answer) */}
                             <motion.div
-                              className="absolute inset-0 w-full h-full"
+                              className="absolute inset-0 w-full"
                               style={{
                                 backfaceVisibility: 'hidden',
                                 WebkitBackfaceVisibility: 'hidden',
@@ -461,7 +463,7 @@ export default function FlashcardsPage() {
                               }}
                             >
                               <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20">
-                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[400px] max-h-[600px]">
+                                <CardContent className="p-8 sm:p-12 flex flex-col min-h-[400px]">
                                   <div className="flex-none mb-6">
                                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                       <Sparkles className="w-8 h-8 text-primary" />
