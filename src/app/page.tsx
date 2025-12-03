@@ -4,7 +4,20 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, FileText, PenTool, Target, Award, Users, Sparkles, Loader2 } from "lucide-react";
+import { BookOpen, FileText, PenTool, Target, Award, Users, Sparkles, Loader2, Download } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
+type Note = {
+  id: number;
+  title: string;
+  category: string;
+  level: string;
+  topics: string[];
+  description: string;
+  pdfUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export default function Home() {
   const [stats, setStats] = useState({
@@ -14,6 +27,9 @@ export default function Home() {
     flashcards: 0,
     isLoading: true
   });
+
+  const [recentNotes, setRecentNotes] = useState<Note[]>([]);
+  const [notesLoading, setNotesLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -45,7 +61,22 @@ export default function Home() {
       }
     };
 
+    const fetchRecentNotes = async () => {
+      try {
+        const response = await fetch("/api/notes?limit=5");
+        if (response.ok) {
+          const notes = await response.json();
+          setRecentNotes(notes.filter((note: Note) => note.pdfUrl !== null));
+        }
+      } catch (error) {
+        console.error("Error fetching recent notes:", error);
+      } finally {
+        setNotesLoading(false);
+      }
+    };
+
     fetchStats();
+    fetchRecentNotes();
   }, []);
 
   return (
@@ -119,6 +150,67 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Latest Resources Section */}
+      {recentNotes.length > 0 && (
+        <section className="py-10 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-muted/20">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 px-2">Latest Resources</h2>
+              <p className="text-sm sm:text-base text-muted-foreground px-2">
+                Recently uploaded study materials available for download
+              </p>
+            </div>
+
+            {notesLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin" />
+              </div>
+            ) : (
+              <div className="grid gap-4 sm:gap-6 max-w-4xl mx-auto">
+                {recentNotes.map((note) => (
+                  <Card key={note.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
+                    <CardHeader>
+                      <div className="flex items-start justify-between gap-3 sm:gap-4 flex-wrap">
+                        <div className="space-y-2 flex-1 min-w-0">
+                          <div className="flex gap-2 flex-wrap">
+                            <Badge variant="secondary" className="whitespace-nowrap">{note.category}</Badge>
+                            <Badge variant="outline" className="whitespace-nowrap">{note.level}</Badge>
+                          </div>
+                          <CardTitle className="text-lg sm:text-xl break-words">{note.title}</CardTitle>
+                          <CardDescription className="text-sm break-words">{note.description}</CardDescription>
+                        </div>
+                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                        <Button asChild className="w-full sm:w-auto">
+                          <a href={note.pdfUrl!} download target="_blank" rel="noopener noreferrer">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download PDF
+                          </a>
+                        </Button>
+                        <Button asChild variant="outline" className="w-full sm:w-auto">
+                          <Link href="/notes">
+                            View All Notes
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            <div className="text-center mt-6 sm:mt-8">
+              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+                <Link href="/notes">Browse All Notes →</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className="py-10 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
