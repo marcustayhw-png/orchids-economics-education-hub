@@ -38,7 +38,7 @@ const formatAnswerAsPoints = (answer: string) => {
   return lines.map((line, index) => {
     const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
     return (
-      <li key={index} className="text-sm leading-relaxed">
+      <li key={index} className="text-sm leading-relaxed mb-3">
         {cleanedLine}
       </li>
     );
