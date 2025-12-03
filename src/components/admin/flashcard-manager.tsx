@@ -114,7 +114,7 @@ const formatAnswerAsPoints = (answer: string) => {
     // Remove common bullet point characters if they exist at the start
     const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
     return (
-      <li key={index} className="text-sm text-muted-foreground">
+      <li key={index} className="text-sm text-muted-foreground mb-3">
         {cleanedLine}
       </li>
     );
