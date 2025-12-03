@@ -537,7 +537,7 @@ export default function FlashcardsPage() {
                   • Try to answer the question before flipping the card
                 </p>
                 <p>
-                  • Use sequential mode for comprehensive coverage or random mode for varied practice
+                  • Navigate through cards sequentially or use shuffle for random practice
                 </p>
                 <p>
                   • Revisit difficult cards multiple times until mastered
