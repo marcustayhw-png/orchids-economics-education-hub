@@ -66,7 +66,9 @@ export default function Home() {
         const response = await fetch("/api/notes?limit=5");
         if (response.ok) {
           const notes = await response.json();
-          setRecentNotes(notes.filter((note: Note) => note.pdfUrl !== null));
+          const notesWithPDF = notes.filter((note: Note) => note.pdfUrl !== null);
+          console.log("Recent notes with PDFs:", notesWithPDF);
+          setRecentNotes(notesWithPDF);
         }
       } catch (error) {
         console.error("Error fetching recent notes:", error);
@@ -78,6 +80,20 @@ export default function Home() {
     fetchStats();
     fetchRecentNotes();
   }, []);
+
+  const handleDownload = (pdfUrl: string, title: string) => {
+    console.log("Download clicked:", pdfUrl);
+    
+    // Create a temporary anchor element for download
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -185,11 +201,12 @@ export default function Home() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                        <Button asChild className="w-full sm:w-auto">
-                          <a href={note.pdfUrl!} download target="_blank" rel="noopener noreferrer">
-                            <Download className="w-4 h-4 mr-2" />
-                            Download PDF
-                          </a>
+                        <Button 
+                          onClick={() => handleDownload(note.pdfUrl!, note.title)}
+                          className="w-full sm:w-auto"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Download PDF
                         </Button>
                         <Button asChild variant="outline" className="w-full sm:w-auto">
                           <Link href="/notes">
