@@ -2,7 +2,8 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Clock, Users, Star, CheckCircle2, DollarSign } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { GraduationCap, Clock, Users, Star, CheckCircle2, DollarSign, Gift, Sparkles } from "lucide-react";
 
 export default function TuitionPage() {
   const handleGetStarted = () => {
@@ -13,8 +14,14 @@ export default function TuitionPage() {
     <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Hero Section */}
-        <Card className="border-2 border-primary bg-gradient-to-br from-primary/5 to-primary/10">
+        <Card className="border-2 border-primary bg-gradient-to-br from-primary/5 to-primary/10 relative overflow-hidden">
           <CardHeader className="text-center pb-4">
+            <div className="relative">
+              <Badge className="mb-4 text-base px-4 py-2 bg-green-600 hover:bg-green-700 text-white">
+                <Gift className="w-4 h-4 mr-2" />
+                FREE Trial Lesson Available!
+              </Badge>
+            </div>
             <GraduationCap className="w-16 h-16 text-primary mx-auto mb-4" />
             <CardTitle className="text-3xl mb-2">Private Economics Tuition</CardTitle>
             <CardDescription className="text-base">
@@ -25,6 +32,60 @@ export default function TuitionPage() {
             <p className="text-center text-muted-foreground">
               Get personalized guidance tailored to your learning style and pace. Whether you're struggling with concepts or aiming for top grades, I'm here to help you succeed.
             </p>
+          </CardContent>
+        </Card>
+
+        {/* Free Trial Highlight Card */}
+        <Card className="border-2 border-green-600 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
+          <CardHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <Sparkles className="w-8 h-8 text-green-600" />
+              <CardTitle className="text-2xl">Start with a FREE Trial Lesson</CardTitle>
+            </div>
+            <CardDescription className="text-base">
+              Experience personalized economics tuition risk-free
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-muted-foreground">
+              Not sure if private tuition is right for you? Try it out with a <strong className="text-green-700 dark:text-green-400">completely free trial lesson</strong> with no obligations! This gives you the opportunity to:
+            </p>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium">Meet Your Tutor</p>
+                  <p className="text-sm text-muted-foreground">Get to know my teaching style and approach</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium">Identify Your Learning Gaps</p>
+                  <p className="text-sm text-muted-foreground">We'll assess your current understanding and pinpoint areas for improvement</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium">Create a Personalized Learning Plan</p>
+                  <p className="text-sm text-muted-foreground">Develop a customized roadmap to achieve your academic goals</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium">No Commitment Required</p>
+                  <p className="text-sm text-muted-foreground">Decide if tuition is right for you after experiencing it firsthand</p>
+                </div>
+              </div>
+            </div>
+            <div className="pt-4 flex justify-center">
+              <Button size="lg" className="w-full max-w-xs bg-green-600 hover:bg-green-700 text-white" onClick={handleGetStarted}>
+                <Gift className="w-4 h-4 mr-2" />
+                Book Your FREE Trial Now
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
@@ -47,7 +108,7 @@ export default function TuitionPage() {
                 <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium">Junior College Economics</p>
-                  <p className="text-sm text-muted-foreground !whitespace-pre-line">JC1-2 / private candidate students preparing for A-Levels</p>
+                  <p className="text-sm text-muted-foreground">JC1-2 / private candidate students preparing for A-Levels</p>
                 </div>
               </div>
             </CardContent>
@@ -75,7 +136,6 @@ export default function TuitionPage() {
                 <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                 <p>1.5-2 hour sessions</p>
               </div>
-
             </CardContent>
           </Card>
         </div>
@@ -144,8 +204,8 @@ export default function TuitionPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium !whitespace-pre-line">Free Consultation</p>
-                    <p className="text-sm text-muted-foreground !whitespace-pre-line">Complimentary consultation to further aid you in your learning </p>
+                    <p className="font-medium">FREE Trial Lesson</p>
+                    <p className="text-sm text-muted-foreground">Experience the teaching approach with no commitment required</p>
                   </div>
                 </div>
               </div>
@@ -169,7 +229,7 @@ export default function TuitionPage() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-primary !whitespace-pre-line">$40</span>
+                    <span className="text-3xl font-bold text-primary">$40</span>
                     <span className="text-muted-foreground">/hour</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -185,7 +245,7 @@ export default function TuitionPage() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-primary !whitespace-pre-line">$55</span>
+                    <span className="text-3xl font-bold text-primary">$55</span>
                     <span className="text-muted-foreground">/hour</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -196,8 +256,12 @@ export default function TuitionPage() {
             </div>
 
             <div className="mt-6 p-4 bg-muted/50 rounded-lg space-y-2">
-              <p className="text-sm font-medium !whitespace-pre-line">What's also Included:</p>
+              <p className="text-sm font-medium">What's Included:</p>
               <ul className="text-sm text-muted-foreground space-y-1">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span><strong>FREE trial lesson</strong> to experience the teaching approach</span>
+                </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
                   <span>Customized lesson materials and notes</span>
@@ -220,23 +284,33 @@ export default function TuitionPage() {
         </Card>
 
         {/* CTA */}
-        <Card className="border-2 border-primary">
+        <Card className="border-2 border-green-600 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
           <CardHeader className="text-center">
-            <CardTitle>Interested in Private Tuition?</CardTitle>
-            <CardDescription>
-              Get in touch to discuss your learning goals and schedule a trial lesson
+            <Badge className="mb-4 text-base px-4 py-2 bg-green-600 hover:bg-green-700 text-white mx-auto w-fit">
+              <Gift className="w-4 h-4 mr-2" />
+              Limited Slots Available
+            </Badge>
+            <CardTitle className="text-2xl">Ready to Excel in Economics?</CardTitle>
+            <CardDescription className="text-base">
+              Start with a FREE trial lesson - no payment required, no obligations
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-4">
-            <p className="text-muted-foreground text-center">
-              Limited slots available. Contact me to learn more about rates and availability.
-            </p>
-            <Button size="lg" className="w-full max-w-xs" onClick={handleGetStarted}>
-              Get Started
+            <div className="text-center space-y-2">
+              <p className="text-muted-foreground">
+                Book your complimentary trial lesson today and experience personalized economics tuition firsthand.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Contact me via WhatsApp to schedule your free trial and discuss your learning goals.
+              </p>
+            </div>
+            <Button size="lg" className="w-full max-w-xs bg-green-600 hover:bg-green-700 text-white" onClick={handleGetStarted}>
+              <Gift className="w-4 h-4 mr-2" />
+              Claim Your FREE Trial Lesson
             </Button>
           </CardContent>
         </Card>
       </div>
-    </div>);
-
+    </div>
+  );
 }
