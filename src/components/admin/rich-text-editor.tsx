@@ -38,6 +38,12 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface RichTextEditorProps {
   content: string;
@@ -76,10 +82,10 @@ export function RichTextEditor({
         placeholder,
       }),
       ImagePlus.configure({
-        inline: true,
+        inline: false,
         allowBase64: false,
         HTMLAttributes: {
-          class: "rounded-md border border-border",
+          class: "rounded-md border border-border max-w-full h-auto my-4",
         },
       }),
     ],
@@ -137,7 +143,7 @@ export function RichTextEditor({
         const data = await response.json();
         // Insert image at current cursor position
         editor.chain().focus().setImage({ src: data.fileUrl }).run();
-        toast.success('Image uploaded and inserted!');
+        toast.success('Graph/diagram inserted successfully!');
       } else {
         const error = await response.json();
         toast.error(error.error || 'Failed to upload image');
@@ -408,22 +414,39 @@ export function RichTextEditor({
 
         <div className="w-px h-6 bg-border mx-1" />
 
-        {/* Image Upload Button */}
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploadingImage}
-          className="h-8 w-8 p-0"
-          title="Upload Image"
-        >
-          {isUploadingImage ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <ImageIcon className="w-4 h-4" />
-          )}
-        </Button>
+        {/* Image Upload Button - Enhanced with tooltip */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                type="button"
+                size="sm"
+                variant="default"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploadingImage}
+                className="h-8 px-3 bg-primary text-primary-foreground hover:bg-primary/90"
+                title="Insert Graph/Diagram"
+              >
+                {isUploadingImage ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                    <span className="text-xs">Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-4 h-4 mr-1.5" />
+                    <span className="text-xs font-medium">Insert Image</span>
+                  </>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="font-semibold">Insert Graph/Diagram</p>
+              <p className="text-xs text-muted-foreground">Click to upload images, graphs, or diagrams</p>
+              <p className="text-xs text-muted-foreground">Position your cursor where you want it inserted</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         <div className="w-px h-6 bg-border mx-1" />
 
@@ -458,6 +481,11 @@ export function RichTextEditor({
         style={{ minHeight }}
         className="rich-text-editor"
       />
+      
+      {/* Helpful Instructions */}
+      <div className="bg-muted/50 px-3 py-2 border-t text-xs text-muted-foreground">
+        💡 <span className="font-medium">Tip:</span> Position your cursor anywhere in the text and click <span className="font-medium">"Insert Image"</span> to add graphs/diagrams at that exact location
+      </div>
     </div>
   );
 }
