@@ -219,7 +219,6 @@ export function RichTextEditor({
         accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
         onChange={handleImageUpload}
         className="hidden"
-        capture="environment"
       />
 
       {/* Mobile-Optimized Image Upload Button - Shown prominently at top on mobile */}
@@ -230,7 +229,7 @@ export function RichTextEditor({
           variant="default"
           onClick={handleImageButtonClick}
           disabled={isUploadingImage}
-          className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 touch-manipulation"
+          className="w-full h-14 bg-primary text-primary-foreground hover:bg-primary/90 touch-manipulation text-base font-semibold"
         >
           {isUploadingImage ? (
             <>
@@ -240,12 +239,12 @@ export function RichTextEditor({
           ) : (
             <>
               <ImageIcon className="w-5 h-5 mr-2" />
-              <span className="font-medium">📷 Insert Image / Diagram</span>
+              <span className="font-medium">📷 Tap to Insert Image/Diagram</span>
             </>
           )}
         </Button>
-        <p className="text-xs text-center text-muted-foreground mt-2">
-          Tap to upload graphs, diagrams, or images
+        <p className="text-xs text-center text-muted-foreground mt-2 font-medium">
+          Choose from camera or gallery • Position cursor first, then tap button
         </p>
       </div>
 
