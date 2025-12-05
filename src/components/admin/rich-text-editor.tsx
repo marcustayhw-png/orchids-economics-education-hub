@@ -160,6 +160,14 @@ export function RichTextEditor({
     }
   };
 
+  const handleImageButtonClick = () => {
+    // Ensure editor is focused before opening file picker
+    if (editor) {
+      editor.commands.focus();
+    }
+    fileInputRef.current?.click();
+  };
+
   if (!editor) {
     return null;
   }
@@ -211,268 +219,300 @@ export function RichTextEditor({
         accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
         onChange={handleImageUpload}
         className="hidden"
+        capture="environment"
       />
 
-      {/* Toolbar */}
-      <div className="bg-muted p-2 border-b flex flex-wrap gap-1 items-center">
-        {/* Font Family */}
-        <Select
-          value={editor.getAttributes("textStyle").fontFamily || ""}
-          onValueChange={(value) =>
-            value
-              ? editor.chain().focus().setFontFamily(value).run()
-              : editor.chain().focus().unsetFontFamily().run()
-          }
-        >
-          <SelectTrigger className="w-[140px] h-8 text-xs">
-            <SelectValue placeholder="Font" />
-          </SelectTrigger>
-          <SelectContent>
-            {fonts.map((font) => (
-              <SelectItem key={font.value} value={font.value || "default"}>
-                {font.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Font Size */}
-        <Select
-          onValueChange={(value) =>
-            editor.chain().focus().setMark("textStyle", { fontSize: value }).run()
-          }
-        >
-          <SelectTrigger className="w-[100px] h-8 text-xs">
-            <SelectValue placeholder="Size" />
-          </SelectTrigger>
-          <SelectContent>
-            {fontSizes.map((size) => (
-              <SelectItem key={size.value} value={size.value}>
-                {size.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Headings */}
+      {/* Mobile-Optimized Image Upload Button - Shown prominently at top on mobile */}
+      <div className="md:hidden bg-primary/10 p-3 border-b">
         <Button
           type="button"
-          size="sm"
-          variant={editor.isActive("heading", { level: 1 }) ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className="h-8 w-8 p-0"
-          title="Heading 1"
+          size="lg"
+          variant="default"
+          onClick={handleImageButtonClick}
+          disabled={isUploadingImage}
+          className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 touch-manipulation"
         >
-          <Heading1 className="w-4 h-4" />
+          {isUploadingImage ? (
+            <>
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              <span className="font-medium">Uploading Image...</span>
+            </>
+          ) : (
+            <>
+              <ImageIcon className="w-5 h-5 mr-2" />
+              <span className="font-medium">📷 Insert Image / Diagram</span>
+            </>
+          )}
         </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("heading", { level: 2 }) ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className="h-8 w-8 p-0"
-          title="Heading 2"
-        >
-          <Heading2 className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("heading", { level: 3 }) ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className="h-8 w-8 p-0"
-          title="Heading 3"
-        >
-          <Heading3 className="w-4 h-4" />
-        </Button>
+        <p className="text-xs text-center text-muted-foreground mt-2">
+          Tap to upload graphs, diagrams, or images
+        </p>
+      </div>
 
-        <div className="w-px h-6 bg-border mx-1" />
+      {/* Toolbar - Horizontally scrollable on mobile */}
+      <div className="bg-muted p-2 border-b overflow-x-auto">
+        <div className="flex gap-1 items-center min-w-max">
+          {/* Font Family */}
+          <Select
+            value={editor.getAttributes("textStyle").fontFamily || ""}
+            onValueChange={(value) =>
+              value
+                ? editor.chain().focus().setFontFamily(value).run()
+                : editor.chain().focus().unsetFontFamily().run()
+            }
+          >
+            <SelectTrigger className="w-[140px] h-9 text-xs touch-manipulation">
+              <SelectValue placeholder="Font" />
+            </SelectTrigger>
+            <SelectContent>
+              {fonts.map((font) => (
+                <SelectItem key={font.value} value={font.value || "default"}>
+                  {font.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        {/* Text Formatting */}
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("bold") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className="h-8 w-8 p-0"
-          title="Bold (⌘+B)"
-        >
-          <Bold className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("italic") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className="h-8 w-8 p-0"
-          title="Italic (⌘+I)"
-        >
-          <Italic className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("underline") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className="h-8 w-8 p-0"
-          title="Underline (⌘+U)"
-        >
-          <UnderlineIcon className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("strike") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className="h-8 w-8 p-0"
-          title="Strikethrough"
-        >
-          <Strikethrough className="w-4 h-4" />
-        </Button>
+          {/* Font Size */}
+          <Select
+            onValueChange={(value) =>
+              editor.chain().focus().setMark("textStyle", { fontSize: value }).run()
+            }
+          >
+            <SelectTrigger className="w-[100px] h-9 text-xs touch-manipulation">
+              <SelectValue placeholder="Size" />
+            </SelectTrigger>
+            <SelectContent>
+              {fontSizes.map((size) => (
+                <SelectItem key={size.value} value={size.value}>
+                  {size.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <div className="w-px h-6 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
 
-        {/* Text Color */}
-        <div className="flex gap-0.5 items-center bg-background rounded px-1">
-          <Type className="w-3 h-3 text-muted-foreground" />
-          {colors.map((color) => (
-            <button
-              key={color}
-              type="button"
-              onClick={() => editor.chain().focus().setColor(color).run()}
-              className="w-5 h-5 rounded border border-border hover:scale-110 transition-transform"
-              style={{ backgroundColor: color }}
-              title={`Text color: ${color}`}
-            />
-          ))}
-        </div>
+          {/* Headings */}
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("heading", { level: 1 }) ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Heading 1"
+          >
+            <Heading1 className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("heading", { level: 2 }) ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Heading 2"
+          >
+            <Heading2 className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("heading", { level: 3 }) ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Heading 3"
+          >
+            <Heading3 className="w-4 h-4" />
+          </Button>
 
-        {/* Highlight Color */}
-        <div className="flex gap-0.5 items-center bg-background rounded px-1">
-          <Highlighter className="w-3 h-3 text-muted-foreground" />
-          {highlights.map((color) => (
-            <button
-              key={color}
-              type="button"
-              onClick={() => editor.chain().focus().toggleHighlight({ color }).run()}
-              className="w-5 h-5 rounded border border-border hover:scale-110 transition-transform"
-              style={{ backgroundColor: color }}
-              title={`Highlight: ${color}`}
-            />
-          ))}
-        </div>
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
 
-        <div className="w-px h-6 bg-border mx-1" />
+          {/* Text Formatting */}
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("bold") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Bold"
+          >
+            <Bold className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("italic") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Italic"
+          >
+            <Italic className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("underline") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Underline"
+          >
+            <UnderlineIcon className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("strike") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Strikethrough"
+          >
+            <Strikethrough className="w-4 h-4" />
+          </Button>
 
-        {/* Lists */}
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("bulletList") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className="h-8 w-8 p-0"
-          title="Bullet List"
-        >
-          <List className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("orderedList") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className="h-8 w-8 p-0"
-          title="Numbered List"
-        >
-          <ListOrdered className="w-4 h-4" />
-        </Button>
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
 
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Quote and Code */}
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("blockquote") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className="h-8 w-8 p-0"
-          title="Quote"
-        >
-          <Quote className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={editor.isActive("code") ? "secondary" : "ghost"}
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          className="h-8 w-8 p-0"
-          title="Code"
-        >
-          <Code className="w-4 h-4" />
-        </Button>
-
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Image Upload Button - Enhanced with tooltip */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
+          {/* Text Color */}
+          <div className="flex gap-0.5 items-center bg-background rounded px-1 flex-shrink-0">
+            <Type className="w-3 h-3 text-muted-foreground" />
+            {colors.map((color) => (
+              <button
+                key={color}
                 type="button"
-                size="sm"
-                variant="default"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploadingImage}
-                className="h-8 px-3 bg-primary text-primary-foreground hover:bg-primary/90"
-                title="Insert Graph/Diagram"
-              >
-                {isUploadingImage ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-                    <span className="text-xs">Uploading...</span>
-                  </>
-                ) : (
-                  <>
-                    <ImageIcon className="w-4 h-4 mr-1.5" />
-                    <span className="text-xs font-medium">Insert Image</span>
-                  </>
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="font-semibold">Insert Graph/Diagram</p>
-              <p className="text-xs text-muted-foreground">Click to upload images, graphs, or diagrams</p>
-              <p className="text-xs text-muted-foreground">Position your cursor where you want it inserted</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+                onClick={() => editor.chain().focus().setColor(color).run()}
+                className="w-6 h-6 rounded border border-border hover:scale-110 transition-transform touch-manipulation"
+                style={{ backgroundColor: color }}
+                title={`Text color: ${color}`}
+              />
+            ))}
+          </div>
 
-        <div className="w-px h-6 bg-border mx-1" />
+          {/* Highlight Color */}
+          <div className="flex gap-0.5 items-center bg-background rounded px-1 flex-shrink-0">
+            <Highlighter className="w-3 h-3 text-muted-foreground" />
+            {highlights.map((color) => (
+              <button
+                key={color}
+                type="button"
+                onClick={() => editor.chain().focus().toggleHighlight({ color }).run()}
+                className="w-6 h-6 rounded border border-border hover:scale-110 transition-transform touch-manipulation"
+                style={{ backgroundColor: color }}
+                title={`Highlight: ${color}`}
+              />
+            ))}
+          </div>
 
-        {/* Undo/Redo */}
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-          className="h-8 w-8 p-0"
-          title="Undo (⌘+Z)"
-        >
-          <Undo className="w-4 h-4" />
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-          className="h-8 w-8 p-0"
-          title="Redo (⌘+Shift+Z)"
-        >
-          <Redo className="w-4 h-4" />
-        </Button>
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
+
+          {/* Lists */}
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("bulletList") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Bullet List"
+          >
+            <List className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("orderedList") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Numbered List"
+          >
+            <ListOrdered className="w-4 h-4" />
+          </Button>
+
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
+
+          {/* Quote and Code */}
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("blockquote") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Quote"
+          >
+            <Quote className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={editor.isActive("code") ? "secondary" : "ghost"}
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Code"
+          >
+            <Code className="w-4 h-4" />
+          </Button>
+
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
+
+          {/* Desktop Image Upload Button - Only shown on desktop */}
+          <div className="hidden md:block">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="default"
+                    onClick={handleImageButtonClick}
+                    disabled={isUploadingImage}
+                    className="h-9 px-3 bg-primary text-primary-foreground hover:bg-primary/90 whitespace-nowrap touch-manipulation"
+                    title="Insert Graph/Diagram"
+                  >
+                    {isUploadingImage ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                        <span className="text-xs">Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <ImageIcon className="w-4 h-4 mr-1.5" />
+                        <span className="text-xs font-medium">Insert Image</span>
+                      </>
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="font-semibold">Insert Graph/Diagram</p>
+                  <p className="text-xs text-muted-foreground">Click to upload images, graphs, or diagrams</p>
+                  <p className="text-xs text-muted-foreground">Position your cursor where you want it inserted</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
+
+          {/* Undo/Redo */}
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Undo"
+          >
+            <Undo className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+            className="h-9 w-9 p-0 flex-shrink-0 touch-manipulation"
+            title="Redo"
+          >
+            <Redo className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Editor */}
@@ -484,7 +524,8 @@ export function RichTextEditor({
       
       {/* Helpful Instructions */}
       <div className="bg-muted/50 px-3 py-2 border-t text-xs text-muted-foreground">
-        💡 <span className="font-medium">Tip:</span> Position your cursor anywhere in the text and click <span className="font-medium">"Insert Image"</span> to add graphs/diagrams at that exact location
+        <span className="hidden md:inline">💡 <span className="font-medium">Tip:</span> Position your cursor anywhere in the text and click <span className="font-medium">"Insert Image"</span> to add graphs/diagrams at that exact location</span>
+        <span className="md:hidden">💡 <span className="font-medium">Mobile Tip:</span> Tap the big blue button above to insert images. The toolbar scrolls left/right for more options.</span>
       </div>
     </div>
   );
