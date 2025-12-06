@@ -65,12 +65,7 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-            <p className="text-muted-foreground mt-2">
-              Welcome back, {session.user.name || session.user.email}
-            </p>
-          </div>
+          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
           <Button
             variant="outline"
             onClick={handleSignOut}
