@@ -82,10 +82,15 @@ export function RichTextEditor({
         placeholder,
       }),
       ImagePlus.configure({
-        inline: false,
+        inline: true, // Allow inline images
         allowBase64: false,
+        resizable: true, // Enable resizing
+        uploadFn: async (file: File) => {
+          // This won't be used as we handle uploads separately
+          return "";
+        },
         HTMLAttributes: {
-          class: "rounded-md border border-border max-w-full h-auto my-4",
+          class: "rounded-md border border-border max-w-full h-auto",
         },
       }),
     ],
@@ -141,9 +146,17 @@ export function RichTextEditor({
 
       if (response.ok) {
         const data = await response.json();
-        // Insert image at current cursor position
-        editor.chain().focus().setImage({ src: data.fileUrl }).run();
-        toast.success('Graph/diagram inserted successfully!');
+        // Insert image at current cursor position with default width
+        editor
+          .chain()
+          .focus()
+          .setImage({ 
+            src: data.fileUrl,
+            width: 400, // Default width
+            height: 'auto',
+          })
+          .run();
+        toast.success('Image inserted! Click and drag corners to resize.');
       } else {
         const error = await response.json();
         toast.error(error.error || 'Failed to upload image');
