@@ -105,8 +105,55 @@ export default function EssaysPage() {
     );
   }
 
+  const generateStructuredData = () => {
+    const currentData = selectedTab === "essays" ? filteredEssays : filteredCSQs;
+    if (currentData.length === 0) return null;
+
+    if (selectedTab === "essays") {
+      return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": filteredEssays.slice(0, 10).map(essay => ({
+          "@type": "Question",
+          "name": essay.question,
+          "eduQuestionType": "Essay",
+          "educationalLevel": essay.level,
+          "learningResourceType": "Model Answer",
+          "about": {
+            "@type": "Thing",
+            "name": essay.topic
+          }
+        }))
+      };
+    } else {
+      return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": filteredCSQs.slice(0, 10).map(csq => ({
+          "@type": "Question",
+          "name": csq.title,
+          "eduQuestionType": "Case Study",
+          "educationalLevel": csq.level,
+          "learningResourceType": "Model Answer",
+          "about": {
+            "@type": "Thing",
+            "name": csq.topic
+          }
+        }))
+      };
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      {(filteredEssays.length > 0 || filteredCSQs.length > 0) && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateStructuredData())
+          }}
+        />
+      )}
       <div className="max-w-7xl mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12 space-y-3 sm:space-y-4">
