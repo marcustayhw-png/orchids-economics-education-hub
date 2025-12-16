@@ -137,3 +137,16 @@ export const flashcards = sqliteTable('flashcards', {
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
+
+// Econ News table
+export const econNews = sqliteTable('econ_news', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  title: text('title').notNull(),
+  summary: text('summary').notNull(),
+  level: text('level').notNull(),
+  topics: text('topics', { mode: 'json' }).notNull(),
+  theories: text('theories', { mode: 'json' }).notNull(),
+  publishedDate: text('published_date').notNull(),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
