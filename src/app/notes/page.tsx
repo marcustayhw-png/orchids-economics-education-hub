@@ -94,59 +94,61 @@ export default function NotesPage() {
               </Card>
             ) : (
               <div className="grid gap-4 sm:gap-6">
-                {secondaryNotes.map((note) => (
-                  <Card key={note.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-3 sm:gap-4">
-                        <div className="space-y-2 flex-1 min-w-0">
-                          <CardTitle className="text-xl sm:text-2xl break-words leading-tight">{note.title}</CardTitle>
-                          <Badge variant="secondary" className="whitespace-nowrap">{note.category}</Badge>
-                        </div>
-                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-                      </div>
-                      <CardDescription className="text-sm sm:text-base break-words">{note.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {note.pdfUrl ? (
-                        <div className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                            <div className="flex items-center gap-2 min-w-0">
-                              <FileText className="w-5 h-5 text-primary flex-shrink-0" />
-                              <span className="font-semibold text-sm sm:text-base break-words">Full Notes PDF Available</span>
-                            </div>
-                            <Button asChild size="sm" className="w-full sm:w-auto whitespace-nowrap">
-                              <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
-                                <Download className="w-4 h-4 mr-2 flex-shrink-0" />
-                                <span className="truncate">Download PDF</span>
-                              </a>
-                            </Button>
+                  {secondaryNotes.map((note) => (
+                    <Card key={note.id} className="border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                      <CardHeader>
+                        <div className="flex items-start justify-between gap-3 sm:gap-4">
+                          <div className="space-y-3 flex-1 min-w-0">
+                            <CardTitle className="text-xl sm:text-2xl font-bold break-words leading-tight tracking-tight">{note.title}</CardTitle>
+                            <Badge variant="secondary" className="whitespace-nowrap text-xs font-semibold px-3 py-1">{note.category}</Badge>
                           </div>
+                          <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary/70 flex-shrink-0" />
                         </div>
-                      ) : (
-                        <Accordion type="single" collapsible>
-                          <AccordionItem value="topics" className="border-none">
-                            <AccordionTrigger className="text-sm font-semibold break-words">
-                              View Topics Covered ({note.topics.length})
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <div className="space-y-3 sm:space-y-4 pt-2">
-                                {note.topics.map((topic, idx) => (
-                                  <div key={idx} className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
-                                    <h4 className="font-semibold mb-2 text-sm sm:text-base break-words">{topic}</h4>
-                                    <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                                      Detailed explanation of {topic.toLowerCase()} including definitions, diagrams, 
-                                      real-world examples, and common exam questions.
-                                    </p>
-                                  </div>
-                                ))}
+                        <CardDescription className="text-sm sm:text-base leading-relaxed break-words">{note.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {note.pdfUrl ? (
+                          <div className="p-4 sm:p-5 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl overflow-hidden border border-border/50">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
+                                  <FileText className="w-5 h-5 text-primary flex-shrink-0" />
+                                </div>
+                                <span className="font-semibold text-sm sm:text-base break-words">Complete Study Notes</span>
                               </div>
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
+                              <Button asChild size="default" className="w-full sm:w-auto whitespace-nowrap font-medium shadow-sm hover:shadow-md transition-shadow">
+                                <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
+                                  <Download className="w-4 h-4 mr-2 flex-shrink-0" />
+                                  <span className="truncate">Download PDF</span>
+                                </a>
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <Accordion type="single" collapsible>
+                            <AccordionItem value="topics" className="border-none">
+                              <AccordionTrigger className="text-sm font-semibold break-words hover:no-underline hover:text-primary transition-colors">
+                                View Topics Covered ({note.topics.length})
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <div className="space-y-3 sm:space-y-4 pt-2">
+                                  {note.topics.map((topic, idx) => (
+                                    <div key={idx} className="p-4 sm:p-5 bg-gradient-to-br from-muted/40 to-muted/20 rounded-lg overflow-hidden border border-border/30">
+                                      <h4 className="font-bold mb-2 text-sm sm:text-base break-words tracking-tight">{topic}</h4>
+                                      <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed break-words">
+                                        Detailed explanation of {topic.toLowerCase()} including definitions, diagrams, 
+                                        real-world examples, and common exam questions.
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
               </div>
             )}
           </TabsContent>
@@ -160,59 +162,61 @@ export default function NotesPage() {
               </Card>
             ) : (
               <div className="grid gap-4 sm:gap-6">
-                {jcNotes.map((note) => (
-                  <Card key={note.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-3 sm:gap-4">
-                        <div className="space-y-2 flex-1 min-w-0">
-                          <CardTitle className="text-xl sm:text-2xl break-words leading-tight">{note.title}</CardTitle>
-                          <Badge variant="secondary" className="whitespace-nowrap">{note.category}</Badge>
-                        </div>
-                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-                      </div>
-                      <CardDescription className="text-sm sm:text-base break-words">{note.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {note.pdfUrl ? (
-                        <div className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                            <div className="flex items-center gap-2 min-w-0">
-                              <FileText className="w-5 h-5 text-primary flex-shrink-0" />
-                              <span className="font-semibold text-sm sm:text-base break-words">Full Notes PDF Available</span>
-                            </div>
-                            <Button asChild size="sm" className="w-full sm:w-auto whitespace-nowrap">
-                              <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
-                                <Download className="w-4 h-4 mr-2 flex-shrink-0" />
-                                <span className="truncate">Download PDF</span>
-                              </a>
-                            </Button>
+                  {jcNotes.map((note) => (
+                    <Card key={note.id} className="border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                      <CardHeader>
+                        <div className="flex items-start justify-between gap-3 sm:gap-4">
+                          <div className="space-y-3 flex-1 min-w-0">
+                            <CardTitle className="text-xl sm:text-2xl font-bold break-words leading-tight tracking-tight">{note.title}</CardTitle>
+                            <Badge variant="secondary" className="whitespace-nowrap text-xs font-semibold px-3 py-1">{note.category}</Badge>
                           </div>
+                          <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary/70 flex-shrink-0" />
                         </div>
-                      ) : (
-                        <Accordion type="single" collapsible>
-                          <AccordionItem value="topics" className="border-none">
-                            <AccordionTrigger className="text-sm font-semibold break-words">
-                              View Topics Covered ({note.topics.length})
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <div className="space-y-3 sm:space-y-4 pt-2">
-                                {note.topics.map((topic, idx) => (
-                                  <div key={idx} className="p-3 sm:p-4 bg-muted rounded-lg overflow-hidden">
-                                    <h4 className="font-semibold mb-2 text-sm sm:text-base break-words">{topic}</h4>
-                                    <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                                      In-depth coverage of {topic.toLowerCase()} with advanced economic analysis, 
-                                      mathematical models where applicable, case studies, and examination techniques.
-                                    </p>
-                                  </div>
-                                ))}
+                        <CardDescription className="text-sm sm:text-base leading-relaxed break-words">{note.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {note.pdfUrl ? (
+                          <div className="p-4 sm:p-5 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl overflow-hidden border border-border/50">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
+                                  <FileText className="w-5 h-5 text-primary flex-shrink-0" />
+                                </div>
+                                <span className="font-semibold text-sm sm:text-base break-words">Complete Study Notes</span>
                               </div>
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
+                              <Button asChild size="default" className="w-full sm:w-auto whitespace-nowrap font-medium shadow-sm hover:shadow-md transition-shadow">
+                                <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
+                                  <Download className="w-4 h-4 mr-2 flex-shrink-0" />
+                                  <span className="truncate">Download PDF</span>
+                                </a>
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <Accordion type="single" collapsible>
+                            <AccordionItem value="topics" className="border-none">
+                              <AccordionTrigger className="text-sm font-semibold break-words hover:no-underline hover:text-primary transition-colors">
+                                View Topics Covered ({note.topics.length})
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <div className="space-y-3 sm:space-y-4 pt-2">
+                                  {note.topics.map((topic, idx) => (
+                                    <div key={idx} className="p-4 sm:p-5 bg-gradient-to-br from-muted/40 to-muted/20 rounded-lg overflow-hidden border border-border/30">
+                                      <h4 className="font-bold mb-2 text-sm sm:text-base break-words tracking-tight">{topic}</h4>
+                                      <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed break-words">
+                                        In-depth coverage of {topic.toLowerCase()} with advanced economic analysis, 
+                                        mathematical models where applicable, case studies, and examination techniques.
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
               </div>
             )}
           </TabsContent>
