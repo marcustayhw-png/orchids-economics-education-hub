@@ -205,157 +205,149 @@ export function CurrentAffairsManager() {
     );
   }
 
-  return (
-    <div className="space-y-6">
-      {!showForm && (
-        <Button onClick={() => setShowForm(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Article
-        </Button>
-      )}
+  const renderEditForm = () => (
+    <Card className="border-2 border-primary animate-in slide-in-from-top-2">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle>{editingId ? "Edit Article" : "Add New Article"}</CardTitle>
+          <Button variant="ghost" size="sm" onClick={resetForm}>
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="title">Title *</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              placeholder="e.g., Singapore Economy Grows 4.4% in 2024"
+              required
+            />
+          </div>
 
-      {showForm && (
-        <Card className="border-2 border-primary">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>{editingId ? "Edit Article" : "Add New Article"}</CardTitle>
-              <Button variant="ghost" size="sm" onClick={resetForm}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="title">Title *</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                  placeholder="e.g., Singapore Economy Grows 4.4% in 2024"
-                  required
-                />
-              </div>
+          <div>
+            <Label htmlFor="summary">Summary * (1-2 paragraphs)</Label>
+            <Textarea
+              id="summary"
+              value={formData.summary}
+              onChange={(e) =>
+                setFormData({ ...formData, summary: e.target.value })
+              }
+              placeholder="Write 1-2 paragraphs connecting current events to economic theories..."
+              rows={8}
+              required
+            />
+          </div>
 
-              <div>
-                <Label htmlFor="summary">Summary * (1-2 paragraphs)</Label>
-                <Textarea
-                  id="summary"
-                  value={formData.summary}
-                  onChange={(e) =>
-                    setFormData({ ...formData, summary: e.target.value })
-                  }
-                  placeholder="Write 1-2 paragraphs connecting current events to economic theories..."
-                  rows={8}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="level">Level *</Label>
-                  <Select
-                    value={formData.level}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, level: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Both">Both Levels</SelectItem>
-                      <SelectItem value="JC">JC</SelectItem>
-                      <SelectItem value="Secondary">Secondary</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="publishedDate">Published Date *</Label>
-                  <Input
-                    id="publishedDate"
-                    type="date"
-                    value={formData.publishedDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, publishedDate: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="topics">Topics * (comma-separated)</Label>
-                <Input
-                  id="topics"
-                  value={formData.topics}
-                  onChange={(e) =>
-                    setFormData({ ...formData, topics: e.target.value })
-                  }
-                  placeholder="e.g., Economic Growth, GDP, Trade, Manufacturing"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="theories">Economic Theories * (comma-separated)</Label>
-                <Input
-                  id="theories"
-                  value={formData.theories}
-                  onChange={(e) =>
-                    setFormData({ ...formData, theories: e.target.value })
-                  }
-                  placeholder="e.g., AD-AS Model, Supply Shocks, Export-Led Growth, Multiplier Effect"
-                  required
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>{editingId ? "Update" : "Create"} Article</>
-                  )}
-                </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-
-      {!showForm && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Filter Articles</CardTitle>
-          </CardHeader>
-          <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="filterLevel">Level</Label>
-              <Select value={filterLevel} onValueChange={setFilterLevel}>
-                <SelectTrigger id="filterLevel">
+              <Label htmlFor="level">Level *</Label>
+              <Select
+                value={formData.level}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, level: value })
+                }
+              >
+                <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="All">All Levels</SelectItem>
+                  <SelectItem value="Both">Both Levels</SelectItem>
                   <SelectItem value="JC">JC</SelectItem>
                   <SelectItem value="Secondary">Secondary</SelectItem>
-                  <SelectItem value="Both">Both</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-          </CardContent>
-        </Card>
-      )}
+
+            <div>
+              <Label htmlFor="publishedDate">Published Date *</Label>
+              <Input
+                id="publishedDate"
+                type="date"
+                value={formData.publishedDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, publishedDate: e.target.value })
+                }
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="topics">Topics * (comma-separated)</Label>
+            <Input
+              id="topics"
+              value={formData.topics}
+              onChange={(e) =>
+                setFormData({ ...formData, topics: e.target.value })
+              }
+              placeholder="e.g., Economic Growth, GDP, Trade, Manufacturing"
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="theories">Economic Theories * (comma-separated)</Label>
+            <Input
+              id="theories"
+              value={formData.theories}
+              onChange={(e) =>
+                setFormData({ ...formData, theories: e.target.value })
+              }
+              placeholder="e.g., AD-AS Model, Supply Shocks, Export-Led Growth, Multiplier Effect"
+              required
+            />
+          </div>
+
+          <div className="flex gap-2">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>{editingId ? "Update" : "Create"} Article</>
+              )}
+            </Button>
+            <Button type="button" variant="outline" onClick={resetForm}>
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Button onClick={() => { setEditingId(null); setShowForm(true); }}>
+          <Plus className="w-4 h-4 mr-2" />
+          Add New Article
+        </Button>
+        
+        <div className="w-64">
+          <Select value={filterLevel} onValueChange={setFilterLevel}>
+            <SelectTrigger>
+              <SelectValue placeholder="Filter by level" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All Levels</SelectItem>
+              <SelectItem value="JC">JC</SelectItem>
+              <SelectItem value="Secondary">Secondary</SelectItem>
+              <SelectItem value="Both">Both</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {showForm && !editingId && renderEditForm()}
 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
@@ -365,54 +357,58 @@ export function CurrentAffairsManager() {
           }
         </h3>
         {filteredArticles.map((article) => (
-          <Card key={article.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2 flex-1">
-                  <div className="flex gap-2 flex-wrap">
-                    <Badge variant="outline">{article.level}</Badge>
-                    <Badge variant="secondary">
-                      {new Date(article.publishedDate).toLocaleDateString()}
-                    </Badge>
-                  </div>
-                  <p className="font-semibold text-lg">{article.title}</p>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {article.summary}
-                  </p>
-                  <div className="flex gap-2 flex-wrap">
-                    {article.topics.slice(0, 3).map((topic, idx) => (
-                      <Badge key={idx} variant="outline">
-                        {topic}
+          <div key={article.id} className="space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2 flex-1">
+                    <div className="flex gap-2 flex-wrap">
+                      <Badge variant="outline">{article.level}</Badge>
+                      <Badge variant="secondary">
+                        {new Date(article.publishedDate).toLocaleDateString()}
                       </Badge>
-                    ))}
+                    </div>
+                    <p className="font-semibold text-lg">{article.title}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {article.summary}
+                    </p>
+                    <div className="flex gap-2 flex-wrap">
+                      {article.topics.slice(0, 3).map((topic, idx) => (
+                        <Badge key={idx} variant="outline">
+                          {topic}
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="flex gap-2 flex-wrap">
+                      {article.theories.slice(0, 3).map((theory, idx) => (
+                        <Badge key={idx}>
+                          {theory}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex gap-2 flex-wrap">
-                    {article.theories.slice(0, 3).map((theory, idx) => (
-                      <Badge key={idx}>
-                        {theory}
-                      </Badge>
-                    ))}
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleEdit(article)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(article.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleEdit(article)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(article.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
+              </CardHeader>
+            </Card>
+            
+            {editingId === article.id && renderEditForm()}
+          </div>
         ))}
       </div>
     </div>
