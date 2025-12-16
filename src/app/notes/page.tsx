@@ -176,16 +176,17 @@ export default function NotesPage() {
                                 </div>
                               </AccordionContent>
                             </AccordionItem>
-                          </Accordion>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-              </div>
-            )}
-          </TabsContent>
+                            </Accordion>
+                          )}
+                          <SuggestedPath noteId={note.id} noteTitle={note.title} />
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              )}
+            </TabsContent>
 
-          <TabsContent value="jc" className="space-y-4 sm:space-y-6">
+            <TabsContent value="jc" className="space-y-4 sm:space-y-6">
             {jcNotes.length === 0 ? (
               <Card className="border-2 border-dashed overflow-hidden">
                 <CardContent className="py-8 sm:py-12 text-center">
