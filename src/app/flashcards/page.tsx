@@ -224,8 +224,35 @@ export default function FlashcardsPage() {
     );
   }
 
+  const generateStructuredData = () => {
+    if (filteredCards.length === 0) return null;
+
+    const qaList = filteredCards.map(card => ({
+      "@type": "Question",
+      "name": card.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": card.answer
+      }
+    }));
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": qaList.slice(0, 10)
+    };
+  };
+
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      {filteredCards.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateStructuredData())
+          }}
+        />
+      )}
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12 space-y-3 sm:space-y-4">
