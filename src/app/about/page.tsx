@@ -285,13 +285,13 @@ export default function AboutPage() {
                   Why I Built EconStack
                 </CardTitle>
             </CardHeader>
-              <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  I created EconStack to address a gap I observed: while there are many economics resources 
-                  available, few provide a comprehensive, well-organized collection specifically tailored to 
-                  the Singapore syllabus for both secondary and JC levels. Students often struggle to find 
-                  quality materials that progressively build understanding.
-                </p>
+            <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                I created EconStack to address a gap I observed: while there are many economics resources 
+                available, few provide a comprehensive, well-organized collection specifically tailored to 
+                the Singapore syllabus for both secondary and JC levels. Students often struggle to find 
+                quality materials that progressively build understanding.
+              </p>
               <p>
                 This project represents hundreds of hours of work - researching syllabus requirements, 
                 crafting clear explanations, developing model answers, and organizing content in an 
@@ -396,57 +396,9 @@ export default function AboutPage() {
               </p>
             </CardContent>
           </Card>
-
-          {/* Message to MOE */}
-          <Card className="border-2 border-primary">
-            <CardHeader>
-              <CardTitle className="text-2xl">A Message to the Ministry of Education</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                This platform represents more than just a collection of resources - it's a testament to my 
-                dedication to Singapore's education system and my commitment to making a meaningful contribution 
-                as an economics educator.
-              </p>
-              <p>
-                I understand that being a teacher is both a privilege and a responsibility. It requires not 
-                just subject knowledge, but empathy, patience, creativity, and an unwavering commitment to 
-                student success. Through this project, I hope to demonstrate that I possess these qualities 
-                and am ready to dedicate myself to nurturing the next generation of economically literate citizens.
-              </p>
-              <p className="font-medium text-foreground">
-                I am eager to bring my passion, skills, and innovative approach to Singapore's classrooms, 
-                and I look forward to the opportunity to contribute to our nation's excellent education system.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Project Impact</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold text-primary">200+</div>
-              <div className="text-sm text-muted-foreground">Hours of Development</div>
-            </div>
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold text-primary">50+</div>
-              <div className="text-sm text-muted-foreground">Study Notes Created</div>
-            </div>
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold text-primary">30+</div>
-              <div className="text-sm text-muted-foreground">Model Essays Written</div>
-            </div>
-            <div className="text-center space-y-2">
-              <div className="text-4xl font-bold text-primary">100+</div>
-              <div className="text-sm text-muted-foreground">Practice Questions</div>
-            </div>
-          </div>
         </div>
       </section>
     </div>
   );
 }
+
