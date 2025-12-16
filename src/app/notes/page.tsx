@@ -91,7 +91,6 @@ export default function NotesPage() {
         />
       )}
       <div className="max-w-7xl mx-auto w-full">
-          {/* Header */}
           <div className="text-center mb-12 sm:mb-16 space-y-4 sm:space-y-5">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight break-words px-2 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
               Economics Notes
@@ -101,7 +100,6 @@ export default function NotesPage() {
             </p>
           </div>
 
-          {/* Level Selector - Mobile Optimized */}
           <Tabs defaultValue="secondary" className="space-y-8 sm:space-y-10 w-full" onValueChange={setSelectedLevel}>
             <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-11 p-1 gap-1 bg-muted/50 backdrop-blur-sm">
               <TabsTrigger 
@@ -257,7 +255,6 @@ export default function NotesPage() {
           </TabsContent>
         </Tabs>
 
-        {/* Study Tips */}
         <Card className="mt-10 sm:mt-14 bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50 overflow-hidden">
           <CardHeader>
             <CardTitle className="break-words text-xl sm:text-2xl font-bold tracking-tight">Study Guide</CardTitle>
