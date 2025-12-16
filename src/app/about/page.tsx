@@ -54,10 +54,10 @@ export default function AboutPage() {
           {/* Why This Project */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-2xl flex items-center gap-3">
-                <Target className="w-6 h-6 text-primary" />
-                Why I Built EconHub
-              </CardTitle>
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <Target className="w-6 h-6 text-primary" />
+                  Why I Built EconStack
+                </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
