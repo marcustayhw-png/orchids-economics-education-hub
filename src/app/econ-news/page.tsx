@@ -19,22 +19,12 @@ type EconNewsItem = {
 };
 
 function formatSummary(text: string) {
-  const paragraphs = text.split('\n\n');
-  
-  return paragraphs.map((paragraph, pIdx) => {
-    const parts = paragraph.split(/(\*\*.*?\*\*)/g);
-    const content = parts.map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i} className="text-foreground font-semibold">{part.slice(2, -2)}</strong>;
-      }
-      return part;
-    });
-    
-    return (
-      <p key={pIdx} className="mb-4 last:mb-0 leading-relaxed">
-        {content}
-      </p>
-    );
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return part;
   });
 }
 
@@ -118,9 +108,9 @@ export default function EconNewsPage() {
               Current Affairs
             </h1>
           </div>
-            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground max-w-3xl mx-auto break-words px-2">
-              Comprehensive summaries connecting current events to economic theories and concepts from the syllabus
-            </p>
+          <p className="text-base sm:text-lg leading-relaxed text-muted-foreground/90 max-w-3xl mx-auto break-words px-2">
+            Weekly summaries connecting current events to economic theories and concepts from the syllabus
+          </p>
         </div>
 
         <Tabs defaultValue="both" className="space-y-8 sm:space-y-10 w-full" onValueChange={setSelectedLevel}>
@@ -154,11 +144,11 @@ export default function EconNewsPage() {
               </Card>
             ) : (
               <div className="grid gap-6 sm:gap-8">
-                  {filteredNews.map((item) => (
-                    <Card 
-                      key={item.id} 
-                      className="border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden bg-card"
-                    >
+                {filteredNews.map((item) => (
+                  <Card 
+                    key={item.id} 
+                    className="border border-border/50 hover:border-primary/50 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  >
                       <CardHeader className="space-y-4">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1 min-w-0">
