@@ -15,6 +15,20 @@ export default function Home() {
     isLoading: true
   });
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "EconStack",
+    "description": "Comprehensive economics education platform providing study notes, model essays, CSQ answers, and interactive flashcards for JC and Secondary School Economics students in Singapore",
+    "url": typeof window !== "undefined" ? window.location.origin : "",
+    "educationalCredentialAwarded": "Economics Study Resources",
+    "offers": {
+      "@type": "Offer",
+      "category": "Educational Resources",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -50,6 +64,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema)
+        }}
+      />
       {/* Hero Section */}
       <section className="relative py-8 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
