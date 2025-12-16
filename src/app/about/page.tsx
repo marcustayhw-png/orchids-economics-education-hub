@@ -150,11 +150,11 @@ export default function AboutPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                As a future economics teacher in Singapore's education system, I envision creating a classroom
-                environment where students feel empowered to ask questions, challenge assumptions, and apply economic
-                thinking to real-world issues. I want to be the teacher who makes economics come alive - not through dry
-                textbook definitions, but through engaging discussions, current events, and relatable examples.
+              <p>As an economics teacher in Singapore's education system, I envision creating a classroom environment where students feel empowered to ask questions, challenge assumptions, and apply economic thinking to real-world issues. I want to be the teacher who makes economics come alive - not through dry textbook definitions, but through engaging discussions, current events, and relatable examples.
+
+
+
+
               </p>
               <p>
                 I'm committed to continuous professional development and staying updated with pedagogical best practices.
@@ -170,6 +170,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
