@@ -58,24 +58,32 @@ export default function NotesPage() {
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
       <div className="max-w-7xl mx-auto w-full">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 space-y-3 sm:space-y-4">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold break-words px-2">Economics Notes</h1>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto break-words px-2">
-            Comprehensive study notes organized by topic and difficulty level. Click on any topic to expand and view detailed content.
-          </p>
-        </div>
+          {/* Header */}
+          <div className="text-center mb-12 sm:mb-16 space-y-4 sm:space-y-5">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight break-words px-2 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Economics Notes
+            </h1>
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground/90 max-w-2xl mx-auto break-words px-2">
+              Comprehensive study notes organized by topic and difficulty level
+            </p>
+          </div>
 
-        {/* Level Selector - Mobile Optimized */}
-        <Tabs defaultValue="secondary" className="space-y-6 sm:space-y-8 w-full" onValueChange={setSelectedLevel}>
-          <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-9 p-1 gap-1">
-            <TabsTrigger value="secondary" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
-              Secondary School
-            </TabsTrigger>
-            <TabsTrigger value="jc" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
-              Junior College
-            </TabsTrigger>
-          </TabsList>
+          {/* Level Selector - Mobile Optimized */}
+          <Tabs defaultValue="secondary" className="space-y-8 sm:space-y-10 w-full" onValueChange={setSelectedLevel}>
+            <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-11 p-1 gap-1 bg-muted/50 backdrop-blur-sm">
+              <TabsTrigger 
+                value="secondary" 
+                className="w-full text-sm sm:text-base py-3 sm:py-2 font-medium data-[state=active]:bg-background data-[state=active]:shadow-md transition-all"
+              >
+                Secondary School
+              </TabsTrigger>
+              <TabsTrigger 
+                value="jc" 
+                className="w-full text-sm sm:text-base py-3 sm:py-2 font-medium data-[state=active]:bg-background data-[state=active]:shadow-md transition-all"
+              >
+                Junior College
+              </TabsTrigger>
+            </TabsList>
 
           <TabsContent value="secondary" className="space-y-4 sm:space-y-6">
             {secondaryNotes.length === 0 ? (
