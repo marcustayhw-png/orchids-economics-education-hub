@@ -1,4 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EconStack
+
+EconStack is a comprehensive economics education platform designed for JC and Secondary School students in Singapore.
+
+## Features
+
+- **Study Notes**: Comprehensive economics notes organized by topic and level
+- **Model Essays**: High-quality sample essays for exam preparation
+- **Flashcards**: Interactive flashcards for concept revision
+- **Admin Dashboard**: Manage content, users, and resources
 
 ## Getting Started
 
