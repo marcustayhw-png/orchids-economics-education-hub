@@ -15,20 +15,6 @@ export default function Home() {
     isLoading: true
   });
 
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "EconStack",
-    "description": "Comprehensive economics education platform providing study notes, model essays, CSQ answers, and interactive flashcards for JC and Secondary School Economics students in Singapore",
-    "url": typeof window !== "undefined" ? window.location.origin : "",
-    "educationalCredentialAwarded": "Economics Study Resources",
-    "offers": {
-      "@type": "Offer",
-      "category": "Educational Resources",
-      "availability": "https://schema.org/InStock"
-    }
-  };
-
   useEffect(() => {
     const fetchStats = async () => {
       try {
