@@ -170,9 +170,9 @@ export default function EconNewsPage() {
                           </CardTitle>
                         </div>
                       </div>
-                      <CardDescription className="text-base sm:text-lg leading-relaxed break-words whitespace-pre-wrap">
-                        {item.summary}
-                      </CardDescription>
+                        <CardDescription className="text-base sm:text-lg leading-relaxed break-words whitespace-pre-wrap">
+                          {formatSummary(item.summary)}
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-5">
                       <div className="space-y-3">
