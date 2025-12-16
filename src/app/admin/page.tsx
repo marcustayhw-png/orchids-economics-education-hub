@@ -87,11 +87,12 @@ export default function AdminPage() {
 
         {/* Content Management Tabs */}
         <Tabs defaultValue="essays" className="space-y-6">
-          <TabsList className="grid w-full max-w-3xl grid-cols-4">
+          <TabsList className="grid w-full max-w-4xl grid-cols-5">
             <TabsTrigger value="essays">Essays</TabsTrigger>
             <TabsTrigger value="csqs">CSQs</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
             <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
+            <TabsTrigger value="current-affairs">Current Affairs</TabsTrigger>
           </TabsList>
 
           <TabsContent value="essays">
