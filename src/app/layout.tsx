@@ -6,8 +6,8 @@ import Script from "next/script";
 import { Navigation } from "@/components/ui/navigation";
 
 export const metadata: Metadata = {
-  title: "EconHub - Economics Education Resources",
-  description: "Comprehensive economics education resources for JC and Secondary School students",
+  title: "EconStack - Economics Education Platform",
+  description: "Comprehensive economics education platform for JC and Secondary School students in Singapore",
 };
 
 export default function RootLayout({
