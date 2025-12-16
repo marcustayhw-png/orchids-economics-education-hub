@@ -55,8 +55,40 @@ export default function NotesPage() {
     );
   }
 
+  const generateStructuredData = () => {
+    if (notes.length === 0) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": notes.slice(0, 20).map((note, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Course",
+          "name": note.title,
+          "description": note.description,
+          "educationalLevel": note.level,
+          "courseCode": note.category,
+          "about": {
+            "@type": "Thing",
+            "name": note.topics.join(", ")
+          }
+        }
+      }))
+    };
+  };
+
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      {notes.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateStructuredData())
+          }}
+        />
+      )}
       <div className="max-w-7xl mx-auto w-full">
           {/* Header */}
           <div className="text-center mb-12 sm:mb-16 space-y-4 sm:space-y-5">
