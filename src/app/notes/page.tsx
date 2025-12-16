@@ -223,16 +223,32 @@ export default function NotesPage() {
         </Tabs>
 
         {/* Study Tips */}
-        <Card className="mt-8 sm:mt-12 bg-muted/50 border-2 overflow-hidden">
+        <Card className="mt-10 sm:mt-14 bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50 overflow-hidden">
           <CardHeader>
-            <CardTitle className="break-words">How to Use These Notes Effectively</CardTitle>
+            <CardTitle className="break-words text-xl sm:text-2xl font-bold tracking-tight">Study Guide</CardTitle>
+            <CardDescription className="text-sm sm:text-base">Maximize your learning with these proven strategies</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
-            <p className="break-words">• Read through the notes systematically, starting from basic concepts before moving to advanced topics</p>
-            <p className="break-words">• Draw your own diagrams to reinforce understanding of economic models</p>
-            <p className="break-words">• Attempt to explain concepts in your own words to test comprehension</p>
-            <p className="break-words">• Link theoretical concepts to real-world examples from current affairs</p>
-            <p className="break-words">• Use these notes alongside model essays and practice questions for comprehensive exam preparation</p>
+          <CardContent className="space-y-3 sm:space-y-4 text-sm sm:text-base text-muted-foreground/90">
+            <div className="flex gap-3 items-start">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">1</div>
+              <p className="break-words leading-relaxed">Read through the notes systematically, starting from basic concepts before moving to advanced topics</p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">2</div>
+              <p className="break-words leading-relaxed">Draw your own diagrams to reinforce understanding of economic models</p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">3</div>
+              <p className="break-words leading-relaxed">Attempt to explain concepts in your own words to test comprehension</p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">4</div>
+              <p className="break-words leading-relaxed">Link theoretical concepts to real-world examples from current affairs</p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">5</div>
+              <p className="break-words leading-relaxed">Use these notes alongside model essays and practice questions for comprehensive exam preparation</p>
+            </div>
           </CardContent>
         </Card>
       </div>
