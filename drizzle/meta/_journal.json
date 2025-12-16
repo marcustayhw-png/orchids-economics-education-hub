@@ -50,6 +50,13 @@
       "when": 1764391116133,
       "tag": "0006_wealthy_doctor_faustus",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1765904208904,
+      "tag": "0007_romantic_red_skull",
+      "breakpoints": true
     }
   ]
 }
