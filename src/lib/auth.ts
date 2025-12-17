@@ -15,8 +15,13 @@ export const auth = betterAuth({
 	plugins: [bearer()]
 });
 
-// Session validation helper
 export async function getCurrentUser(request: NextRequest) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  return session?.user || null;
+  const headersList = await headers();
+  const session = await auth.api.getSession({ headers: headersList });
+  
+  if (!session?.user) {
+    return null;
+  }
+  
+  return session.user;
 }
