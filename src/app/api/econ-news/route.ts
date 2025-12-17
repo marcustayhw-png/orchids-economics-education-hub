@@ -154,6 +154,14 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const user = await getCurrentUser(request);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');
 
