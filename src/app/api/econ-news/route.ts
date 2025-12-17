@@ -215,18 +215,18 @@ export async function PUT(request: NextRequest) {
     const sanitizedPublishedDate = publishedDate || existingNews[0].publishedDate;
     const now = new Date().toISOString();
 
-    const updatedNews = await db.update(econNews)
-      .set({
-        title: sanitizedTitle,
-        summary: sanitizedSummary,
-        level,
-        topics: JSON.stringify(topics),
-        theories: JSON.stringify(theories),
-        publishedDate: sanitizedPublishedDate,
-        updatedAt: now
-      })
-      .where(eq(econNews.id, parseInt(id)))
-      .returning();
+      const updatedNews = await db.update(econNews)
+        .set({
+          title: sanitizedTitle,
+          summary: sanitizedSummary,
+          level: sanitizedLevel,
+          topics: JSON.stringify(topics),
+          theories: JSON.stringify(theories),
+          publishedDate: sanitizedPublishedDate,
+          updatedAt: now
+        })
+        .where(eq(econNews.id, parseInt(id)))
+        .returning();
 
     return NextResponse.json(parseEconNews(updatedNews[0]), { status: 200 });
 
