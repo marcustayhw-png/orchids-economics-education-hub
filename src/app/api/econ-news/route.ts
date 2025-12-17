@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { econNews } from '@/db/schema';
 import { eq, like, or, and, desc } from 'drizzle-orm';
+import { getCurrentUser } from '@/lib/auth';
 
 function parseEconNews(news: any) {
   return {
