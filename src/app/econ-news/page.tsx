@@ -17,31 +17,6 @@ type EconNewsItem = {
   updatedAt: string;
 };
 
-function formatSummary(text: string) {
-  const paragraphs = text.split('\n\n');
-  
-  return paragraphs.map((paragraph, pIdx) => {
-    const parts = paragraph.split(/(\*\*.*?\*\*|\d+\.)/g);
-    const content = parts.map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i} className="text-foreground font-bold">{part.slice(2, -2)}</strong>;
-      }
-      if (/^\d+\.$/.test(part)) {
-        return <strong key={i} className="text-foreground font-bold mr-2">{part}</strong>;
-      }
-      return part;
-    });
-    
-    const isListItem = /^\d+\./.test(paragraph);
-    
-    return (
-      <p key={pIdx} className={`${isListItem ? 'mb-3' : 'mb-4'} last:mb-0 leading-[1.8] text-foreground/80`}>
-        {content}
-      </p>
-    );
-  });
-}
-
 export default function EconNewsPage() {
   const [news, setNews] = useState<EconNewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
