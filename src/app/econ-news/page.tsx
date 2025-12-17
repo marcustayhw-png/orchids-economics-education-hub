@@ -154,9 +154,10 @@ export default function EconNewsPage() {
                         </CardTitle>
                       </div>
                     </div>
-                    <div className="prose prose-sm sm:prose-base max-w-none text-muted-foreground">
-                      {formatSummary(item.summary)}
-                    </div>
+                      <div 
+                        className="prose prose-sm sm:prose-base max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary"
+                        dangerouslySetInnerHTML={{ __html: item.summary }}
+                      />
                   </CardHeader>
                   <CardContent className="space-y-6 pt-6 border-t border-border/50">
                     <div className="space-y-4">
