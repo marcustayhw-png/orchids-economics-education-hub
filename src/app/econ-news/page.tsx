@@ -141,16 +141,13 @@ export default function EconNewsPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-4">
                           <TrendingUp className="w-5 h-5 text-primary flex-shrink-0" />
-                          <Badge variant="outline" className="text-xs font-semibold border-primary/30">
-                            {new Date(item.publishedDate).toLocaleDateString('en-US', { 
-                              year: 'numeric', 
-                              month: 'long', 
-                              day: 'numeric' 
-                            })}
-                          </Badge>
-                          <Badge variant="secondary" className="text-xs font-semibold bg-primary/20 text-primary">
-                            {item.level}
-                          </Badge>
+                            <Badge variant="outline" className="text-xs font-semibold border-primary/30">
+                              {new Date(item.publishedDate).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                              })}
+                            </Badge>
                         </div>
                         <CardTitle className="text-2xl sm:text-3xl font-bold break-words leading-tight tracking-tight mb-5">
                           {item.title}
