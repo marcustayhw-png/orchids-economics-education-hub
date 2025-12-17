@@ -46,6 +46,7 @@ export function NotesManager() {
   const [isUploading, setIsUploading] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
@@ -221,12 +222,12 @@ export function NotesManager() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this note?")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
     const token = localStorage.getItem("bearer_token");
     try {
-      const response = await fetch(`/api/notes?id=${id}`, {
+      const response = await fetch(`/api/notes?id=${deleteId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -241,6 +242,8 @@ export function NotesManager() {
       }
     } catch (error) {
       toast.error("Error deleting note");
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -445,19 +448,36 @@ export function NotesManager() {
                   >
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(note.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => setDeleteId(note.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                 </div>
               </div>
             </CardHeader>
           </Card>
-        ))}
+          ))}
+        </div>
+
+        <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Note</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this note? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
-    </div>
-  );
-}
+    );
+  }
