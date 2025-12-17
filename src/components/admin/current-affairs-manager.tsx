@@ -35,6 +35,7 @@ export function CurrentAffairsManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   const [filterLevel, setFilterLevel] = useState<string>("All");
 
