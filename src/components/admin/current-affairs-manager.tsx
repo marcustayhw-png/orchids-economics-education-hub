@@ -16,6 +16,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface EconNews {
   id: number;
@@ -175,12 +185,12 @@ export function CurrentAffairsManager() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this article?")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
     const token = localStorage.getItem("bearer_token");
     try {
-      const response = await fetch(`/api/econ-news?id=${id}`, {
+      const response = await fetch(`/api/econ-news?id=${deleteId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -195,6 +205,8 @@ export function CurrentAffairsManager() {
       }
     } catch (error) {
       toast.error("Error deleting article");
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -396,22 +408,39 @@ export function CurrentAffairsManager() {
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDelete(article.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => setDeleteId(article.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                   </div>
                 </div>
               </CardHeader>
             </Card>
             
             {editingId === article.id && renderEditForm()}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
+
+        <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Article</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this article? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
-    </div>
-  );
-}
+    );
+  }
