@@ -185,30 +185,38 @@ export function CurrentAffairsManager() {
     }
   };
 
-  const handleDelete = async () => {
-    if (!deleteId) return;
+    const handleDelete = async () => {
+      if (!deleteId) return;
 
-    const token = localStorage.getItem("bearer_token");
-    try {
-      const response = await fetch(`/api/econ-news?id=${deleteId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("bearer_token");
+      console.log("Deleting article with ID:", deleteId);
+      console.log("Using token:", token ? "Token present" : "No token");
+      
+      try {
+        const response = await fetch(`/api/econ-news?id=${deleteId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (response.ok) {
-        toast.success("Article deleted successfully");
-        fetchArticles();
-      } else {
-        toast.error("Failed to delete article");
+        console.log("Delete response status:", response.status);
+        const responseData = await response.json();
+        console.log("Delete response data:", responseData);
+
+        if (response.ok) {
+          toast.success("Article deleted successfully");
+          fetchArticles();
+        } else {
+          toast.error(responseData.error || "Failed to delete article");
+        }
+      } catch (error) {
+        console.error("Delete error:", error);
+        toast.error("Error deleting article");
+      } finally {
+        setDeleteId(null);
       }
-    } catch (error) {
-      toast.error("Error deleting article");
-    } finally {
-      setDeleteId(null);
-    }
-  };
+    };
 
   if (isLoading) {
     return (
