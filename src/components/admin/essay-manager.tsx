@@ -568,13 +568,13 @@ export function EssayManager() {
                   >
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(essay.essayId)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => setDeleteId(essay.essayId)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                 </div>
               </div>
             </CardHeader>
