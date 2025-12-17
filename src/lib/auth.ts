@@ -16,12 +16,29 @@ export const auth = betterAuth({
 });
 
 export async function getCurrentUser(request: NextRequest) {
-  const headersList = await headers();
-  const session = await auth.api.getSession({ headers: headersList });
-  
-  if (!session?.user) {
+  try {
+    const authHeader = request.headers.get("authorization");
+    
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return null;
+    }
+
+    const token = authHeader.slice(7);
+    
+    if (!token) {
+      return null;
+    }
+
+    const headersList = await headers();
+    const session = await auth.api.getSession({ headers: headersList });
+    
+    if (!session?.user) {
+      return null;
+    }
+    
+    return session.user;
+  } catch (error) {
+    console.error("getCurrentUser error:", error);
     return null;
   }
-  
-  return session.user;
 }
