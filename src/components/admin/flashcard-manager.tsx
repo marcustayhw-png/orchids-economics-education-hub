@@ -280,12 +280,12 @@ export function FlashcardManager() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this flashcard?")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
     const token = localStorage.getItem("bearer_token");
     try {
-      const response = await fetch(`/api/flashcards?id=${id}`, {
+      const response = await fetch(`/api/flashcards?id=${deleteId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -300,6 +300,8 @@ export function FlashcardManager() {
       }
     } catch (error) {
       toast.error("Error deleting flashcard");
+    } finally {
+      setDeleteId(null);
     }
   };
 
