@@ -79,6 +79,7 @@ export function EssayManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   // Filter states
   const [filterLevel, setFilterLevel] = useState<string>("All");
