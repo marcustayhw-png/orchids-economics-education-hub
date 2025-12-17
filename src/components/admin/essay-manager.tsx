@@ -239,12 +239,12 @@ export function EssayManager() {
     }
   };
 
-  const handleDelete = async (essayId: string) => {
-    if (!confirm("Are you sure you want to delete this essay?")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
     const token = localStorage.getItem("bearer_token");
     try {
-      const response = await fetch(`/api/essays?essay_id=${essayId}`, {
+      const response = await fetch(`/api/essays?essay_id=${deleteId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -259,6 +259,8 @@ export function EssayManager() {
       }
     } catch (error) {
       toast.error("Error deleting essay");
+    } finally {
+      setDeleteId(null);
     }
   };
 
