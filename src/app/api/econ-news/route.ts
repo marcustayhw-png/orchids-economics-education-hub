@@ -379,12 +379,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    if (!level || (level !== 'JC' && level !== 'Secondary' && level !== 'Both')) {
-      return NextResponse.json({ 
-        error: "Level is required and must be either 'JC', 'Secondary', or 'Both'",
-        code: "INVALID_LEVEL" 
-      }, { status: 400 });
-    }
+    const sanitizedLevel = level && (level === 'JC' || level === 'Secondary' || level === 'Both') ? level : 'Both';
 
     if (!topics || !Array.isArray(topics)) {
       return NextResponse.json({ 
