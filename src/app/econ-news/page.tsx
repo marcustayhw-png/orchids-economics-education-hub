@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Newspaper, TrendingUp } from "lucide-react";
+import { Loader2, Newspaper, TrendingUp, Globe, Building2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type EconNewsItem = {
   id: number;
   title: string;
   summary: string;
-  level: string;
+  newsCategory: string;
   topics: string[];
   theories: string[];
   publishedDate: string;
@@ -20,6 +21,7 @@ type EconNewsItem = {
 export default function EconNewsPage() {
   const [news, setNews] = useState<EconNewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
 
   useEffect(() => {
     fetchNews();
@@ -40,6 +42,14 @@ export default function EconNewsPage() {
     }
   };
 
+  const filteredNews = news.filter((item) => {
+    if (activeCategory === "all") return true;
+    return item.newsCategory === activeCategory;
+  });
+
+  const singaporeCount = news.filter(n => n.newsCategory === "Singapore").length;
+  const internationalCount = news.filter(n => n.newsCategory === "International").length;
+
   const generateStructuredData = () => {
     if (news.length === 0) return null;
 
@@ -57,7 +67,6 @@ export default function EconNewsPage() {
           "about": {
             "@type": "EducationalOccupationalCredential",
             "name": "Economics Current Affairs",
-            "educationalLevel": item.level,
             "about": item.topics.join(", ")
           },
           "keywords": [...item.topics, ...item.theories].join(", ")
@@ -74,6 +83,87 @@ export default function EconNewsPage() {
     );
   }
 
+  const renderNewsCard = (item: EconNewsItem) => (
+    <Card 
+      key={item.id} 
+      className="border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden bg-card"
+    >
+      <CardHeader className="space-y-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {item.newsCategory === "Singapore" ? (
+                <Building2 className="w-5 h-5 text-primary flex-shrink-0" />
+              ) : (
+                <Globe className="w-5 h-5 text-blue-500 flex-shrink-0" />
+              )}
+              <Badge 
+                variant={item.newsCategory === "Singapore" ? "default" : "secondary"}
+                className="text-xs font-semibold"
+              >
+                {item.newsCategory === "Singapore" ? "Singapore" : "International"}
+              </Badge>
+              <Badge variant="outline" className="text-xs font-semibold border-primary/30">
+                {new Date(item.publishedDate).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </Badge>
+            </div>
+            <CardTitle className="text-2xl sm:text-3xl font-bold break-words leading-tight tracking-tight mb-5">
+              {item.title}
+            </CardTitle>
+          </div>
+        </div>
+          <div 
+            className="prose prose-sm sm:prose-base max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary"
+            dangerouslySetInnerHTML={{ __html: item.summary }}
+          />
+      </CardHeader>
+      <CardContent className="space-y-6 pt-6 border-t border-border/50">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="h-1 w-1 rounded-full bg-primary"></div>
+            <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">
+              Related Topics
+            </h4>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {item.topics.map((topic, idx) => (
+              <Badge 
+                key={idx} 
+                variant="secondary" 
+                className="text-xs font-medium px-3 py-1.5 bg-primary/10 hover:bg-primary/20 transition-colors shadow-sm"
+              >
+                {topic}
+              </Badge>
+            ))}
+          </div>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="h-1 w-1 rounded-full bg-primary"></div>
+            <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">
+              Economic Theories Applied
+            </h4>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {item.theories.map((theory, idx) => (
+              <Badge 
+                key={idx} 
+                className="text-xs font-medium px-3 py-1.5 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all shadow-sm"
+              >
+                {theory}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
       {news.length > 0 && (
@@ -89,93 +179,45 @@ export default function EconNewsPage() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <Newspaper className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight break-words bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Singapore Current Affairs
+              Economics Current Affairs
             </h1>
           </div>
           <p className="text-base sm:text-lg leading-relaxed text-muted-foreground max-w-3xl mx-auto break-words px-2">
-            Latest Singapore economic developments connected to key theories and concepts
+            Latest economic developments connected to JC syllabus theories and concepts
           </p>
         </div>
 
+        <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full mb-8">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
+            <TabsTrigger value="all" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              All ({news.length})
+            </TabsTrigger>
+            <TabsTrigger value="Singapore" className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              Singapore ({singaporeCount})
+            </TabsTrigger>
+            <TabsTrigger value="International" className="flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              International ({internationalCount})
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         <div className="space-y-6">
-          {news.length === 0 ? (
+          {filteredNews.length === 0 ? (
             <Card className="border-2 border-dashed overflow-hidden">
               <CardContent className="py-8 sm:py-12 text-center">
-                <p className="text-muted-foreground break-words px-2">No current affairs articles available yet.</p>
+                <p className="text-muted-foreground break-words px-2">
+                  {activeCategory === "all" 
+                    ? "No current affairs articles available yet."
+                    : `No ${activeCategory} news articles available yet.`}
+                </p>
               </CardContent>
             </Card>
           ) : (
             <div className="grid gap-6 sm:gap-8">
-              {news.map((item) => (
-                <Card 
-                  key={item.id} 
-                  className="border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden bg-card"
-                >
-                  <CardHeader className="space-y-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-4">
-                          <TrendingUp className="w-5 h-5 text-primary flex-shrink-0" />
-                            <Badge variant="outline" className="text-xs font-semibold border-primary/30">
-                              {new Date(item.publishedDate).toLocaleDateString('en-US', { 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                              })}
-                            </Badge>
-                        </div>
-                        <CardTitle className="text-2xl sm:text-3xl font-bold break-words leading-tight tracking-tight mb-5">
-                          {item.title}
-                        </CardTitle>
-                      </div>
-                    </div>
-                      <div 
-                        className="prose prose-sm sm:prose-base max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary"
-                        dangerouslySetInnerHTML={{ __html: item.summary }}
-                      />
-                  </CardHeader>
-                  <CardContent className="space-y-6 pt-6 border-t border-border/50">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1 w-1 rounded-full bg-primary"></div>
-                        <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">
-                          Related Topics
-                        </h4>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {item.topics.map((topic, idx) => (
-                          <Badge 
-                            key={idx} 
-                            variant="secondary" 
-                            className="text-xs font-medium px-3 py-1.5 bg-primary/10 hover:bg-primary/20 transition-colors shadow-sm"
-                          >
-                            {topic}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1 w-1 rounded-full bg-primary"></div>
-                        <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">
-                          Economic Theories Applied
-                        </h4>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {item.theories.map((theory, idx) => (
-                          <Badge 
-                            key={idx} 
-                            className="text-xs font-medium px-3 py-1.5 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all shadow-sm"
-                          >
-                            {theory}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              {filteredNews.map(renderNewsCard)}
             </div>
           )}
         </div>
