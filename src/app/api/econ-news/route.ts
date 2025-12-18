@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') ?? '10'), 100);
     const offset = parseInt(searchParams.get('offset') ?? '0');
     const search = searchParams.get('search');
-    const level = searchParams.get('level');
+    const category = searchParams.get('category');
 
     let query = db.select().from(econNews);
 
@@ -59,8 +59,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (level) {
-      conditions.push(eq(econNews.level, level));
+    if (category && category !== 'All') {
+      conditions.push(eq(econNews.newsCategory, category));
     }
 
     if (conditions.length > 0) {
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, summary, level, topics, theories, publishedDate } = body;
+    const { title, summary, newsCategory, topics, theories, publishedDate } = body;
 
     if (!title || typeof title !== 'string' || title.trim() === '') {
       return NextResponse.json({ 
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const sanitizedLevel = level && (level === 'JC' || level === 'Secondary' || level === 'Both') ? level : 'Both';
+    const sanitizedCategory = newsCategory && (newsCategory === 'International' || newsCategory === 'Singapore') ? newsCategory : 'International';
 
     if (!topics || !Array.isArray(topics)) {
       return NextResponse.json({ 
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
       .values({
         title: sanitizedTitle,
         summary: sanitizedSummary,
-        level: sanitizedLevel,
+        newsCategory: sanitizedCategory,
         topics: JSON.stringify(topics),
         theories: JSON.stringify(theories),
         publishedDate: sanitizedPublishedDate,
@@ -174,7 +174,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, summary, level, topics, theories, publishedDate } = body;
+    const { title, summary, newsCategory, topics, theories, publishedDate } = body;
 
     if (!title || typeof title !== 'string' || title.trim() === '') {
       return NextResponse.json({ 
@@ -190,7 +190,7 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const sanitizedLevel = level && (level === 'JC' || level === 'Secondary' || level === 'Both') ? level : 'Both';
+    const sanitizedCategory = newsCategory && (newsCategory === 'International' || newsCategory === 'Singapore') ? newsCategory : 'International';
 
     if (!topics || !Array.isArray(topics)) {
       return NextResponse.json({ 
@@ -227,7 +227,7 @@ export async function PUT(request: NextRequest) {
       .set({
         title: sanitizedTitle,
         summary: sanitizedSummary,
-        level: sanitizedLevel,
+        newsCategory: sanitizedCategory,
         topics: JSON.stringify(topics),
         theories: JSON.stringify(theories),
         publishedDate: sanitizedPublishedDate,
