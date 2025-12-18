@@ -143,7 +143,7 @@ export const econNews = sqliteTable('econ_news', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   title: text('title').notNull(),
   summary: text('summary').notNull(),
-  level: text('level').notNull(),
+  newsCategory: text('news_category').notNull().default('International'),
   topics: text('topics', { mode: 'json' }).notNull(),
   theories: text('theories', { mode: 'json' }).notNull(),
   publishedDate: text('published_date').notNull(),
