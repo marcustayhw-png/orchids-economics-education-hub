@@ -17,8 +17,8 @@ export const auth = betterAuth({
 
 export async function getCurrentUser(request: NextRequest) {
   try {
-    const headersList = await headers();
-    const session = await auth.api.getSession({ headers: headersList });
+    // Use the request headers directly for proper bearer token support
+    const session = await auth.api.getSession({ headers: request.headers });
     return session?.user || null;
   } catch (error) {
     console.error("getCurrentUser error:", error);
