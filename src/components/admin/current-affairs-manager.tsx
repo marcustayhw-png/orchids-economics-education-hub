@@ -31,7 +31,7 @@ interface EconNews {
   id: number;
   title: string;
   summary: string;
-  level: string;
+  newsCategory: string;
   topics: string[];
   theories: string[];
   publishedDate: string;
@@ -47,12 +47,12 @@ export function CurrentAffairsManager() {
   const [showForm, setShowForm] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
-  const [filterLevel, setFilterLevel] = useState<string>("All");
+  const [filterCategory, setFilterCategory] = useState<string>("All");
 
   const [formData, setFormData] = useState({
     title: "",
     summary: "",
-    level: "Both",
+    newsCategory: "International",
     topics: "",
     theories: "",
     publishedDate: new Date().toISOString().split('T')[0],
@@ -85,15 +85,15 @@ export function CurrentAffairsManager() {
   };
 
   const filteredArticles = articles.filter((article) => {
-    const matchesLevel = filterLevel === "All" || article.level === filterLevel || article.level === "Both";
-    return matchesLevel;
+    const matchesCategory = filterCategory === "All" || article.newsCategory === filterCategory;
+    return matchesCategory;
   });
 
   const resetForm = () => {
     setFormData({
       title: "",
       summary: "",
-      level: "Both",
+      newsCategory: "International",
       topics: "",
       theories: "",
       publishedDate: new Date().toISOString().split('T')[0],
@@ -106,7 +106,7 @@ export function CurrentAffairsManager() {
     setFormData({
       title: article.title,
       summary: article.summary,
-      level: article.level,
+      newsCategory: article.newsCategory || "International",
       topics: article.topics.join(", "),
       theories: article.theories.join(", "),
       publishedDate: article.publishedDate.split('T')[0],
@@ -134,7 +134,7 @@ export function CurrentAffairsManager() {
     const payload = {
       title: formData.title,
       summary: formData.summary,
-      level: formData.level,
+      newsCategory: formData.newsCategory,
       topics: topicsArray,
       theories: theoriesArray,
       publishedDate: new Date(formData.publishedDate).toISOString(),
@@ -185,38 +185,32 @@ export function CurrentAffairsManager() {
     }
   };
 
-    const handleDelete = async () => {
-      if (!deleteId) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
-      const token = localStorage.getItem("bearer_token");
-      console.log("Deleting article with ID:", deleteId);
-      console.log("Using token:", token ? "Token present" : "No token");
-      
-      try {
-        const response = await fetch(`/api/econ-news?id=${deleteId}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    const token = localStorage.getItem("bearer_token");
+    
+    try {
+      const response = await fetch(`/api/econ-news?id=${deleteId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        console.log("Delete response status:", response.status);
+      if (response.ok) {
+        toast.success("Article deleted successfully");
+        fetchArticles();
+      } else {
         const responseData = await response.json();
-        console.log("Delete response data:", responseData);
-
-        if (response.ok) {
-          toast.success("Article deleted successfully");
-          fetchArticles();
-        } else {
-          toast.error(responseData.error || "Failed to delete article");
-        }
-      } catch (error) {
-        console.error("Delete error:", error);
-        toast.error("Error deleting article");
-      } finally {
-        setDeleteId(null);
+        toast.error(responseData.error || "Failed to delete article");
       }
-    };
+    } catch (error) {
+      toast.error("Error deleting article");
+    } finally {
+      setDeleteId(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -252,31 +246,30 @@ export function CurrentAffairsManager() {
           </div>
 
           <div>
-            <Label htmlFor="summary">Summary * (1-2 paragraphs with formatting)</Label>
+            <Label htmlFor="summary">Summary * (Include economic theory, concepts, evaluations)</Label>
             <RichTextEditor
               content={formData.summary}
               onChange={(html) => setFormData({ ...formData, summary: html })}
-              placeholder="Write 1-2 paragraphs connecting current events to economic theories. Use the toolbar to format text, add headings, colors, and more..."
+              placeholder="Write about the economic event, linking to JC syllabus concepts. For policy articles (e.g., price floors), include how it works, strengths, limitations, and evaluations..."
               minHeight="300px"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="level">Level *</Label>
+              <Label htmlFor="newsCategory">Category *</Label>
               <Select
-                value={formData.level}
+                value={formData.newsCategory}
                 onValueChange={(value) =>
-                  setFormData({ ...formData, level: value })
+                  setFormData({ ...formData, newsCategory: value })
                 }
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Both">Both Levels</SelectItem>
-                  <SelectItem value="JC">JC</SelectItem>
-                  <SelectItem value="Secondary">Secondary</SelectItem>
+                  <SelectItem value="International">International News</SelectItem>
+                  <SelectItem value="Singapore">Singapore News</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -309,14 +302,14 @@ export function CurrentAffairsManager() {
           </div>
 
           <div>
-            <Label htmlFor="theories">Economic Theories * (comma-separated)</Label>
+            <Label htmlFor="theories">Economic Theories/Concepts * (comma-separated)</Label>
             <Input
               id="theories"
               value={formData.theories}
               onChange={(e) =>
                 setFormData({ ...formData, theories: e.target.value })
               }
-              placeholder="e.g., AD-AS Model, Supply Shocks, Export-Led Growth, Multiplier Effect"
+              placeholder="e.g., AD-AS Model, Supply Shocks, Price Floor, Multiplier Effect"
               required
             />
           </div>
@@ -350,15 +343,14 @@ export function CurrentAffairsManager() {
         </Button>
         
         <div className="w-64">
-          <Select value={filterLevel} onValueChange={setFilterLevel}>
+          <Select value={filterCategory} onValueChange={setFilterCategory}>
             <SelectTrigger>
-              <SelectValue placeholder="Filter by level" />
+              <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="All">All Levels</SelectItem>
-              <SelectItem value="JC">JC</SelectItem>
-              <SelectItem value="Secondary">Secondary</SelectItem>
-              <SelectItem value="Both">Both</SelectItem>
+              <SelectItem value="All">All Categories</SelectItem>
+              <SelectItem value="International">International News</SelectItem>
+              <SelectItem value="Singapore">Singapore News</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -368,7 +360,7 @@ export function CurrentAffairsManager() {
 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
-          {filterLevel === "All"
+          {filterCategory === "All"
             ? `All Articles (${articles.length})`
             : `Filtered Articles (${filteredArticles.length} of ${articles.length})`
           }
@@ -380,8 +372,10 @@ export function CurrentAffairsManager() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-2 flex-1">
                     <div className="flex gap-2 flex-wrap">
-                      <Badge variant="outline">{article.level}</Badge>
-                      <Badge variant="secondary">
+                      <Badge variant={article.newsCategory === "Singapore" ? "default" : "secondary"}>
+                        {article.newsCategory === "Singapore" ? "Singapore" : "International"}
+                      </Badge>
+                      <Badge variant="outline">
                         {new Date(article.publishedDate).toLocaleDateString()}
                       </Badge>
                     </div>
