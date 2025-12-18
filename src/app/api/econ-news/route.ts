@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/auth';
 function parseEconNews(news: any) {
   return {
     ...news,
+    newsCategory: news.newsCategory || news.news_category || 'International',
     topics: typeof news.topics === 'string' ? JSON.parse(news.topics) : news.topics,
     theories: typeof news.theories === 'string' ? JSON.parse(news.theories) : news.theories
   };
