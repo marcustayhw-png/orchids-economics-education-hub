@@ -30,7 +30,12 @@ import { RichTextEditor } from "@/components/admin/rich-text-editor";
 interface EconNews {
   id: number;
   title: string;
-  summary: string;
+  content: string;
+  theoryDescription: string;
+  howItWorks: string;
+  strengths: string;
+  limitations: string;
+  evaluation: string;
   newsCategory: string;
   topics: string[];
   theories: string[];
@@ -51,7 +56,12 @@ export function CurrentAffairsManager() {
 
   const [formData, setFormData] = useState({
     title: "",
-    summary: "",
+    content: "",
+    theoryDescription: "",
+    howItWorks: "",
+    strengths: "",
+    limitations: "",
+    evaluation: "",
     newsCategory: "International",
     topics: "",
     theories: "",
@@ -65,12 +75,7 @@ export function CurrentAffairsManager() {
   const fetchArticles = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("bearer_token");
-      const response = await fetch("/api/econ-news?limit=100", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch("/api/econ-news?limit=100");
       if (response.ok) {
         const data = await response.json();
         setArticles(data);
@@ -92,7 +97,12 @@ export function CurrentAffairsManager() {
   const resetForm = () => {
     setFormData({
       title: "",
-      summary: "",
+      content: "",
+      theoryDescription: "",
+      howItWorks: "",
+      strengths: "",
+      limitations: "",
+      evaluation: "",
       newsCategory: "International",
       topics: "",
       theories: "",
@@ -105,7 +115,12 @@ export function CurrentAffairsManager() {
   const handleEdit = (article: EconNews) => {
     setFormData({
       title: article.title,
-      summary: article.summary,
+      content: article.content || "",
+      theoryDescription: article.theoryDescription || "",
+      howItWorks: article.howItWorks || "",
+      strengths: article.strengths || "",
+      limitations: article.limitations || "",
+      evaluation: article.evaluation || "",
       newsCategory: article.newsCategory || "International",
       topics: article.topics.join(", "),
       theories: article.theories.join(", "),
@@ -133,7 +148,12 @@ export function CurrentAffairsManager() {
 
     const payload = {
       title: formData.title,
-      summary: formData.summary,
+      content: formData.content,
+      theoryDescription: formData.theoryDescription,
+      howItWorks: formData.howItWorks,
+      strengths: formData.strengths,
+      limitations: formData.limitations,
+      evaluation: formData.evaluation,
       newsCategory: formData.newsCategory,
       topics: topicsArray,
       theories: theoriesArray,
@@ -141,42 +161,25 @@ export function CurrentAffairsManager() {
     };
 
     try {
-      if (editingId) {
-        const response = await fetch(`/api/econ-news?id=${editingId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        });
+      const method = editingId ? "PUT" : "POST";
+      const url = editingId ? `/api/econ-news?id=${editingId}` : "/api/econ-news";
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-        if (response.ok) {
-          toast.success("Article updated successfully");
-          fetchArticles();
-          resetForm();
-        } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to update article");
-        }
+      if (response.ok) {
+        toast.success(`Article ${editingId ? "updated" : "created"} successfully`);
+        fetchArticles();
+        resetForm();
       } else {
-        const response = await fetch("/api/econ-news", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-          toast.success("Article created successfully");
-          fetchArticles();
-          resetForm();
-        } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to create article");
-        }
+        const error = await response.json();
+        toast.error(error.error || "Failed to save article");
       }
     } catch (error) {
       toast.error("An error occurred");
@@ -212,14 +215,6 @@ export function CurrentAffairsManager() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-8">
-        <Loader2 className="w-6 h-6 animate-spin" />
-      </div>
-    );
-  }
-
   const renderEditForm = () => (
     <Card className="border-2 border-primary animate-in slide-in-from-top-2">
       <CardHeader>
@@ -231,87 +226,147 @@ export function CurrentAffairsManager() {
         </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="title">Title *</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-              placeholder="e.g., Singapore Economy Grows 4.4% in 2024"
-              required
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="summary">Summary * (Include economic theory, concepts, evaluations)</Label>
-            <RichTextEditor
-              content={formData.summary}
-              onChange={(html) => setFormData({ ...formData, summary: html })}
-              placeholder="Write about the economic event, linking to JC syllabus concepts. For policy articles (e.g., price floors), include how it works, strengths, limitations, and evaluations..."
-              minHeight="300px"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="newsCategory">Category *</Label>
-              <Select
-                value={formData.newsCategory}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, newsCategory: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="International">International News</SelectItem>
-                  <SelectItem value="Singapore">Singapore News</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="publishedDate">Published Date *</Label>
+              <Label htmlFor="title">Title *</Label>
               <Input
-                id="publishedDate"
-                type="date"
-                value={formData.publishedDate}
+                id="title"
+                value={formData.title}
                 onChange={(e) =>
-                  setFormData({ ...formData, publishedDate: e.target.value })
+                  setFormData({ ...formData, title: e.target.value })
                 }
+                placeholder="e.g., Singapore Economy Grows 4.4% in 2024"
                 required
               />
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="topics">Topics * (comma-separated)</Label>
-            <Input
-              id="topics"
-              value={formData.topics}
-              onChange={(e) =>
-                setFormData({ ...formData, topics: e.target.value })
-              }
-              placeholder="e.g., Economic Growth, GDP, Trade, Manufacturing"
-              required
-            />
-          </div>
+            <div>
+              <Label htmlFor="content">Main News Content *</Label>
+              <RichTextEditor
+                content={formData.content}
+                onChange={(html) => setFormData({ ...formData, content: html })}
+                placeholder="Write the core news details here..."
+                minHeight="200px"
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="theories">Economic Theories/Concepts * (comma-separated)</Label>
-            <Input
-              id="theories"
-              value={formData.theories}
-              onChange={(e) =>
-                setFormData({ ...formData, theories: e.target.value })
-              }
-              placeholder="e.g., AD-AS Model, Supply Shocks, Price Floor, Multiplier Effect"
-              required
-            />
+            <div>
+              <Label htmlFor="theoryDescription">Theory and Economic Ideas (JC Syllabus) *</Label>
+              <RichTextEditor
+                content={formData.theoryDescription}
+                onChange={(html) => setFormData({ ...formData, theoryDescription: html })}
+                placeholder="Link this news to specific economic theories and concepts in the JC syllabus..."
+                minHeight="200px"
+              />
+            </div>
+
+            <div className="border-t pt-4">
+              <h4 className="font-semibold mb-2">Strategy/Policy Analysis (Optional)</h4>
+              <p className="text-sm text-muted-foreground mb-4">Complete these if the article discusses a specific policy or strategy (e.g., Price Floor, Monetary Policy).</p>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="howItWorks">How It Works</Label>
+                  <RichTextEditor
+                    content={formData.howItWorks}
+                    onChange={(html) => setFormData({ ...formData, howItWorks: html })}
+                    placeholder="Explain the mechanism of the policy/strategy..."
+                    minHeight="150px"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="strengths">Strengths</Label>
+                    <RichTextEditor
+                      content={formData.strengths}
+                      onChange={(html) => setFormData({ ...formData, strengths: html })}
+                      placeholder="Positive aspects/impacts..."
+                      minHeight="150px"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="limitations">Limitations</Label>
+                    <RichTextEditor
+                      content={formData.limitations}
+                      onChange={(html) => setFormData({ ...formData, limitations: html })}
+                      placeholder="Negative aspects/limitations..."
+                      minHeight="150px"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="evaluation">Evaluations</Label>
+                  <RichTextEditor
+                    content={formData.evaluation}
+                    onChange={(html) => setFormData({ ...formData, evaluation: html })}
+                    placeholder="Synthesis and overall judgment..."
+                    minHeight="150px"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="newsCategory">Category *</Label>
+                <Select
+                  value={formData.newsCategory}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, newsCategory: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="International">International News</SelectItem>
+                    <SelectItem value="Singapore">Singapore News</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="publishedDate">Published Date *</Label>
+                <Input
+                  id="publishedDate"
+                  type="date"
+                  value={formData.publishedDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, publishedDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="topics">Topics * (comma-separated)</Label>
+              <Input
+                id="topics"
+                value={formData.topics}
+                onChange={(e) =>
+                  setFormData({ ...formData, topics: e.target.value })
+                }
+                placeholder="e.g., Economic Growth, GDP, Trade, Manufacturing"
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="theories">Economic Theories/Concepts * (comma-separated)</Label>
+              <Input
+                id="theories"
+                value={formData.theories}
+                onChange={(e) =>
+                  setFormData({ ...formData, theories: e.target.value })
+                }
+                placeholder="e.g., AD-AS Model, Supply Shocks, Price Floor, Multiplier Effect"
+                required
+              />
+            </div>
           </div>
 
           <div className="flex gap-2">
@@ -381,8 +436,8 @@ export function CurrentAffairsManager() {
                     </div>
                     <p className="font-semibold text-lg">{article.title}</p>
                     <div 
-                      className="text-sm text-muted-foreground prose prose-sm max-w-none line-clamp-3"
-                      dangerouslySetInnerHTML={{ __html: article.summary }}
+                      className="text-sm text-muted-foreground prose prose-sm max-w-none line-clamp-2"
+                      dangerouslySetInnerHTML={{ __html: article.content }}
                     />
                     <div className="flex gap-2 flex-wrap">
                       {article.topics.slice(0, 3).map((topic, idx) => (
@@ -434,7 +489,9 @@ export function CurrentAffairsManager() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
