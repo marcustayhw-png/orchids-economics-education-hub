@@ -54,7 +54,8 @@ export async function GET(request: NextRequest) {
       conditions.push(
         or(
           like(econNews.title, `%${search}%`),
-          like(econNews.summary, `%${search}%`)
+          like(econNews.content, `%${search}%`),
+          like(econNews.theoryDescription, `%${search}%`)
         )
       );
     }
