@@ -94,19 +94,31 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, summary, newsCategory, topics, theories, publishedDate } = body;
+    const { 
+      title, 
+      content, 
+      theoryDescription, 
+      howItWorks, 
+      strengths, 
+      limitations, 
+      evaluation, 
+      newsCategory, 
+      topics, 
+      theories, 
+      publishedDate 
+    } = body;
 
     if (!title || typeof title !== 'string' || title.trim() === '') {
       return NextResponse.json({ 
-        error: "Title is required and must be a non-empty string",
+        error: "Title is required",
         code: "INVALID_TITLE" 
       }, { status: 400 });
     }
 
-    if (!summary || typeof summary !== 'string' || summary.trim() === '') {
+    if (!content || typeof content !== 'string' || content.trim() === '') {
       return NextResponse.json({ 
-        error: "Summary is required and must be a non-empty string",
-        code: "INVALID_SUMMARY" 
+        error: "Content is required",
+        code: "INVALID_CONTENT" 
       }, { status: 400 });
     }
 
@@ -114,31 +126,33 @@ export async function POST(request: NextRequest) {
 
     if (!topics || !Array.isArray(topics)) {
       return NextResponse.json({ 
-        error: "Topics is required and must be an array",
+        error: "Topics must be an array",
         code: "INVALID_TOPICS" 
       }, { status: 400 });
     }
 
     if (!theories || !Array.isArray(theories)) {
       return NextResponse.json({ 
-        error: "Theories is required and must be an array",
+        error: "Theories must be an array",
         code: "INVALID_THEORIES" 
       }, { status: 400 });
     }
 
-    const sanitizedTitle = title.trim();
-    const sanitizedSummary = summary.trim();
-    const sanitizedPublishedDate = publishedDate || new Date().toISOString();
     const now = new Date().toISOString();
 
     const newNews = await db.insert(econNews)
       .values({
-        title: sanitizedTitle,
-        summary: sanitizedSummary,
+        title: title.trim(),
+        content: content.trim(),
+        theoryDescription: theoryDescription?.trim(),
+        howItWorks: howItWorks?.trim(),
+        strengths: strengths?.trim(),
+        limitations: limitations?.trim(),
+        evaluation: evaluation?.trim(),
         newsCategory: sanitizedCategory,
         topics: JSON.stringify(topics),
         theories: JSON.stringify(theories),
-        publishedDate: sanitizedPublishedDate,
+        publishedDate: publishedDate || now,
         createdAt: now,
         updatedAt: now
       })
@@ -175,37 +189,19 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, summary, newsCategory, topics, theories, publishedDate } = body;
-
-    if (!title || typeof title !== 'string' || title.trim() === '') {
-      return NextResponse.json({ 
-        error: "Title is required and must be a non-empty string",
-        code: "INVALID_TITLE" 
-      }, { status: 400 });
-    }
-
-    if (!summary || typeof summary !== 'string' || summary.trim() === '') {
-      return NextResponse.json({ 
-        error: "Summary is required and must be a non-empty string",
-        code: "INVALID_SUMMARY" 
-      }, { status: 400 });
-    }
-
-    const sanitizedCategory = newsCategory && (newsCategory === 'International' || newsCategory === 'Singapore') ? newsCategory : 'International';
-
-    if (!topics || !Array.isArray(topics)) {
-      return NextResponse.json({ 
-        error: "Topics is required and must be an array",
-        code: "INVALID_TOPICS" 
-      }, { status: 400 });
-    }
-
-    if (!theories || !Array.isArray(theories)) {
-      return NextResponse.json({ 
-        error: "Theories is required and must be an array",
-        code: "INVALID_THEORIES" 
-      }, { status: 400 });
-    }
+    const { 
+      title, 
+      content, 
+      theoryDescription, 
+      howItWorks, 
+      strengths, 
+      limitations, 
+      evaluation, 
+      newsCategory, 
+      topics, 
+      theories, 
+      publishedDate 
+    } = body;
 
     const existingNews = await db.select()
       .from(econNews)
@@ -219,19 +215,21 @@ export async function PUT(request: NextRequest) {
       }, { status: 404 });
     }
 
-    const sanitizedTitle = title.trim();
-    const sanitizedSummary = summary.trim();
-    const sanitizedPublishedDate = publishedDate || existingNews[0].publishedDate;
     const now = new Date().toISOString();
 
     const updatedNews = await db.update(econNews)
       .set({
-        title: sanitizedTitle,
-        summary: sanitizedSummary,
-        newsCategory: sanitizedCategory,
-        topics: JSON.stringify(topics),
-        theories: JSON.stringify(theories),
-        publishedDate: sanitizedPublishedDate,
+        title: title?.trim() || existingNews[0].title,
+        content: content?.trim() || existingNews[0].content,
+        theoryDescription: theoryDescription?.trim() ?? existingNews[0].theoryDescription,
+        howItWorks: howItWorks?.trim() ?? existingNews[0].howItWorks,
+        strengths: strengths?.trim() ?? existingNews[0].strengths,
+        limitations: limitations?.trim() ?? existingNews[0].limitations,
+        evaluation: evaluation?.trim() ?? existingNews[0].evaluation,
+        newsCategory: newsCategory || existingNews[0].newsCategory,
+        topics: topics ? JSON.stringify(topics) : existingNews[0].topics,
+        theories: theories ? JSON.stringify(theories) : existingNews[0].theories,
+        publishedDate: publishedDate || existingNews[0].publishedDate,
         updatedAt: now
       })
       .where(eq(econNews.id, parseInt(id)))
@@ -267,21 +265,16 @@ export async function DELETE(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const existingNews = await db.select()
-      .from(econNews)
+    const deletedNews = await db.delete(econNews)
       .where(eq(econNews.id, parseInt(id)))
-      .limit(1);
+      .returning();
 
-    if (existingNews.length === 0) {
+    if (deletedNews.length === 0) {
       return NextResponse.json({ 
         error: 'News article not found',
         code: "NEWS_NOT_FOUND" 
       }, { status: 404 });
     }
-
-    const deletedNews = await db.delete(econNews)
-      .where(eq(econNews.id, parseInt(id)))
-      .returning();
 
     return NextResponse.json({
       message: 'News article deleted successfully',
