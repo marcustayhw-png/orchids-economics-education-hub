@@ -3,13 +3,18 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Newspaper, TrendingUp, Globe, Building2 } from "lucide-react";
+import { Loader2, Newspaper, TrendingUp, Globe, Building2, BookOpen, Layers, Target, ShieldCheck, AlertTriangle, Scale } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type EconNewsItem = {
   id: number;
   title: string;
-  summary: string;
+  content: string;
+  theoryDescription: string;
+  howItWorks?: string;
+  strengths?: string;
+  limitations?: string;
+  evaluation?: string;
   newsCategory: string;
   topics: string[];
   theories: string[];
@@ -50,31 +55,6 @@ export default function EconNewsPage() {
   const singaporeCount = news.filter(n => n.newsCategory === "Singapore").length;
   const internationalCount = news.filter(n => n.newsCategory === "International").length;
 
-  const generateStructuredData = () => {
-    if (news.length === 0) return null;
-
-    return {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": news.slice(0, 10).map((item, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "Article",
-          "headline": item.title,
-          "articleBody": item.summary,
-          "datePublished": item.publishedDate,
-          "about": {
-            "@type": "EducationalOccupationalCredential",
-            "name": "Economics Current Affairs",
-            "about": item.topics.join(", ")
-          },
-          "keywords": [...item.topics, ...item.theories].join(", ")
-        }
-      }))
-    };
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -83,79 +63,116 @@ export default function EconNewsPage() {
     );
   }
 
+  const renderSection = (title: string, content: string | undefined, icon: React.ReactNode, colorClass: string) => {
+    if (!content || content.trim() === "" || content === "<p></p>") return null;
+    
+    return (
+      <div className="space-y-3 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div className="flex items-center gap-2 group">
+          <div className={`p-2 rounded-lg ${colorClass} transition-transform group-hover:scale-110`}>
+            {icon}
+          </div>
+          <h4 className="text-lg font-bold text-foreground tracking-tight">
+            {title}
+          </h4>
+        </div>
+        <div 
+          className="prose prose-sm sm:prose-base max-w-none text-muted-foreground bg-muted/30 p-4 rounded-xl border border-border/50"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      </div>
+    );
+  };
+
   const renderNewsCard = (item: EconNewsItem) => (
     <Card 
       key={item.id} 
-      className="border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden bg-card"
+      className="border border-border/50 hover:border-primary/30 hover:shadow-2xl transition-all duration-500 overflow-hidden bg-card/50 backdrop-blur-sm group"
     >
-      <CardHeader className="space-y-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              {item.newsCategory === "Singapore" ? (
-                <Building2 className="w-5 h-5 text-primary flex-shrink-0" />
-              ) : (
-                <Globe className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              )}
-              <Badge 
-                variant={item.newsCategory === "Singapore" ? "default" : "secondary"}
-                className="text-xs font-semibold"
-              >
-                {item.newsCategory === "Singapore" ? "Singapore" : "International"}
-              </Badge>
-              <Badge variant="outline" className="text-xs font-semibold border-primary/30">
-                {new Date(item.publishedDate).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </Badge>
-            </div>
-            <CardTitle className="text-2xl sm:text-3xl font-bold break-words leading-tight tracking-tight mb-5">
-              {item.title}
-            </CardTitle>
-          </div>
+      <CardHeader className="space-y-6 pb-8 border-b border-border/30 bg-muted/10">
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge 
+            variant={item.newsCategory === "Singapore" ? "default" : "secondary"}
+            className="text-xs font-bold px-3 py-1 uppercase tracking-wider"
+          >
+            {item.newsCategory === "Singapore" ? (
+              <span className="flex items-center gap-1.5"><Building2 className="w-3 h-3" /> Singapore</span>
+            ) : (
+              <span className="flex items-center gap-1.5"><Globe className="w-3 h-3" /> International</span>
+            )}
+          </Badge>
+          <Badge variant="outline" className="text-xs font-semibold border-primary/20 bg-background/50">
+            {new Date(item.publishedDate).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </Badge>
         </div>
-          <div 
-            className="prose prose-sm sm:prose-base max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary"
-            dangerouslySetInnerHTML={{ __html: item.summary }}
-          />
+        
+        <CardTitle className="text-3xl sm:text-4xl lg:text-5xl font-extrabold break-words leading-[1.1] tracking-tighter text-foreground group-hover:text-primary transition-colors">
+          {item.title}
+        </CardTitle>
+
+        <div className="flex flex-wrap gap-2">
+          {item.theories.map((theory, idx) => (
+            <Badge key={idx} variant="outline" className="bg-primary/5 text-primary border-primary/20">
+              {theory}
+            </Badge>
+          ))}
+        </div>
       </CardHeader>
-      <CardContent className="space-y-6 pt-6 border-t border-border/50">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="h-1 w-1 rounded-full bg-primary"></div>
-            <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">
-              Related Topics
-            </h4>
+
+      <CardContent className="pt-8 space-y-2">
+        {/* Main Content */}
+        <div 
+          className="prose prose-base sm:prose-lg max-w-none text-foreground/90 mb-12 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: item.content }}
+        />
+
+        {/* Theory Section */}
+        {renderSection(
+          "Theory & JC Syllabus Concepts", 
+          item.theoryDescription, 
+          <BookOpen className="w-5 h-5" />, 
+          "bg-blue-500/10 text-blue-500"
+        )}
+
+        {/* Policy/Strategy Analysis Grid */}
+        {(item.howItWorks || item.strengths || item.limitations || item.evaluation) && (
+          <div className="mt-12 pt-12 border-t border-border/30">
+            <div className="flex items-center gap-3 mb-8">
+              <Layers className="w-6 h-6 text-primary" />
+              <h3 className="text-2xl font-black tracking-tight uppercase">Economic Analysis</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-6">
+              {renderSection("How It Works", item.howItWorks, <Target className="w-5 h-5" />, "bg-orange-500/10 text-orange-500")}
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {renderSection("Strengths", item.strengths, <ShieldCheck className="w-5 h-5" />, "bg-green-500/10 text-green-500")}
+                {renderSection("Limitations", item.limitations, <AlertTriangle className="w-5 h-5" />, "bg-red-500/10 text-red-500")}
+              </div>
+              
+              {renderSection("Overall Evaluation", item.evaluation, <Scale className="w-5 h-5" />, "bg-purple-500/10 text-purple-500")}
+            </div>
+          </div>
+        )}
+
+        {/* Topics Footer */}
+        <div className="mt-8 pt-6 border-t border-border/30">
+          <div className="flex items-center gap-2 mb-4">
+            <TrendingUp className="w-4 h-4 text-primary" />
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Key Topics</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {item.topics.map((topic, idx) => (
               <Badge 
                 key={idx} 
                 variant="secondary" 
-                className="text-xs font-medium px-3 py-1.5 bg-primary/10 hover:bg-primary/20 transition-colors shadow-sm"
+                className="text-xs font-medium px-4 py-1.5 rounded-full hover:bg-primary/20 transition-colors cursor-default"
               >
                 {topic}
-              </Badge>
-            ))}
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="h-1 w-1 rounded-full bg-primary"></div>
-            <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">
-              Economic Theories Applied
-            </h4>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {item.theories.map((theory, idx) => (
-              <Badge 
-                key={idx} 
-                className="text-xs font-medium px-3 py-1.5 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all shadow-sm"
-              >
-                {theory}
               </Badge>
             ))}
           </div>
@@ -165,95 +182,99 @@ export default function EconNewsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
-      {news.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateStructuredData())
-          }}
-        />
-      )}
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="text-center mb-12 sm:mb-16 space-y-4 sm:space-y-5">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Newspaper className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight break-words bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Economics Current Affairs
-            </h1>
+    <div className="min-h-screen bg-background selection:bg-primary/30 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto w-full">
+        {/* Hero Section */}
+        <div className="text-center mb-16 space-y-6 relative">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
+          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 mb-4 ring-1 ring-primary/20">
+            <Newspaper className="w-8 h-8 text-primary" />
           </div>
-          <p className="text-base sm:text-lg leading-relaxed text-muted-foreground max-w-3xl mx-auto break-words px-2">
-            Latest economic developments connected to JC syllabus theories and concepts
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent leading-[1.1]">
+            Economics <span className="text-primary">In Action</span>
+          </h1>
+          <p className="text-lg sm:text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium">
+            Bridging current global events with JC Economics syllabus theories, analysis, and evaluations.
           </p>
         </div>
 
-        <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full mb-8">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
-            <TabsTrigger value="all" className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              All ({news.length})
-            </TabsTrigger>
-            <TabsTrigger value="Singapore" className="flex items-center gap-2">
-              <Building2 className="w-4 h-4" />
-              Singapore ({singaporeCount})
-            </TabsTrigger>
-            <TabsTrigger value="International" className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              International ({internationalCount})
-            </TabsTrigger>
-          </TabsList>
+        {/* Category Tabs */}
+        <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full mb-12">
+          <div className="flex justify-center">
+            <TabsList className="h-14 p-1.5 bg-muted/50 backdrop-blur-md rounded-2xl border border-border/50">
+              <TabsTrigger value="all" className="px-6 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all">
+                All Articles
+                <Badge variant="secondary" className="ml-2 bg-muted/80">{news.length}</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="Singapore" className="px-6 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all">
+                Singapore
+                <Badge variant="secondary" className="ml-2 bg-muted/80">{singaporeCount}</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="International" className="px-6 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all">
+                International
+                <Badge variant="secondary" className="ml-2 bg-muted/80">{internationalCount}</Badge>
+              </TabsTrigger>
+            </TabsList>
+          </div>
         </Tabs>
 
-        <div className="space-y-6">
+        {/* News Grid */}
+        <div className="space-y-12">
           {filteredNews.length === 0 ? (
-            <Card className="border-2 border-dashed overflow-hidden">
-              <CardContent className="py-8 sm:py-12 text-center">
-                <p className="text-muted-foreground break-words px-2">
+            <Card className="border-2 border-dashed bg-muted/5 rounded-3xl overflow-hidden">
+              <CardContent className="py-24 text-center">
+                <div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
+                  <TrendingUp className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">No articles found</h3>
+                <p className="text-muted-foreground max-w-xs mx-auto">
                   {activeCategory === "all" 
-                    ? "No current affairs articles available yet."
+                    ? "Our economists are currently analyzing the latest news. Check back soon!"
                     : `No ${activeCategory} news articles available yet.`}
                 </p>
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-6 sm:gap-8">
+            <div className="grid gap-12">
               {filteredNews.map(renderNewsCard)}
             </div>
           )}
         </div>
 
-        <Card className="mt-10 sm:mt-14 bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50 overflow-hidden">
+        {/* Why Current Affairs Card */}
+        <Card className="mt-24 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-primary/5 border-primary/10 overflow-hidden relative group">
+          <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
           <CardHeader>
-            <CardTitle className="break-words text-xl sm:text-2xl font-bold tracking-tight">
-              Why Current Affairs Matter
+            <CardTitle className="text-3xl font-black tracking-tight">
+              Mastering the <span className="text-primary">Syllabus</span> through News
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base">
-              Understanding the connection between real-world events and economic theory
+            <CardDescription className="text-base font-medium">
+              Why linking real-world events to theory is critical for JC Economics success
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3 sm:space-y-4 text-sm sm:text-base text-muted-foreground/90">
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">1</div>
-              <p className="break-words leading-relaxed">
-                Real-world application helps solidify understanding of abstract economic concepts
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
+              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-lg font-bold text-blue-500">1</div>
+              <p className="text-sm font-semibold leading-relaxed">
+                Deepens conceptual understanding beyond abstract textbook definitions.
               </p>
             </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">2</div>
-              <p className="break-words leading-relaxed">
-                Current events provide powerful examples for use in essays and exam responses
+            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
+              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-lg font-bold text-orange-500">2</div>
+              <p className="text-sm font-semibold leading-relaxed">
+                Provides high-scoring examples for Case Study Questions (CSQs) and Essays.
               </p>
             </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">3</div>
-              <p className="break-words leading-relaxed">
-                Staying informed develops critical thinking and analytical skills essential for economics
+            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
+              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-lg font-bold text-green-500">3</div>
+              <p className="text-sm font-semibold leading-relaxed">
+                Develops the "Evaluation" (EV) skills needed for top-tier exam grades.
               </p>
             </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">4</div>
-              <p className="break-words leading-relaxed">
-                Demonstrates deeper engagement with the subject beyond textbook learning
+            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
+              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-lg font-bold text-purple-500">4</div>
+              <p className="text-sm font-semibold leading-relaxed">
+                Sharpens analytical thinking for complex global policy debates.
               </p>
             </div>
           </CardContent>
