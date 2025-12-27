@@ -619,14 +619,14 @@ export default function FlashcardsPage() {
                                           <BookOpen className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
                                         </div>
                                       </div>
-                                      <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center justify-center text-center px-6">
-                                        <p className="text-sm font-semibold text-primary uppercase tracking-wide">
-                                          Question
-                                        </p>
-                                        <p className="text-xl sm:text-2xl lg:text-3xl font-medium leading-relaxed">
-                                          {currentCard?.question}
-                                        </p>
-                                      </div>
+                                        <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center justify-center text-center px-4 sm:px-8 md:px-12">
+                                          <p className="text-sm sm:text-base font-semibold text-primary uppercase tracking-wide">
+                                            Question
+                                          </p>
+                                          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed">
+                                            {currentCard?.question}
+                                          </p>
+                                        </div>
                                       <div className="flex-none pt-6 text-center border-t border-border/50 mt-6">
                                         <p className="text-xs sm:text-sm text-muted-foreground flex items-center justify-center gap-2 font-medium">
                                           <RefreshCw className="w-4 h-4" /> Tap to reveal answer
