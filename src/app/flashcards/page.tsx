@@ -646,18 +646,18 @@ export default function FlashcardsPage() {
                                     zIndex: isFlipped ? 1 : 0
                                   }}
                                 >
-                                  <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20 h-full min-h-[650px]">
-                                    <CardContent className="p-10 sm:p-16 flex flex-col h-full justify-between min-h-[650px]">
-                                      <div className="flex-none mb-4">
-                                        <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                                          <Sparkles className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
+                                  <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20 h-full min-h-[75vh]">
+                                      <CardContent className="p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col h-full justify-between min-h-[75vh]">
+                                        <div className="flex-none mb-4">
+                                          <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                                            <Sparkles className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="flex-1 overflow-y-auto px-6 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                                        <p className="text-sm font-semibold text-primary uppercase tracking-wide mb-5 text-center">
-                                          Answer
-                                        </p>
-                                        <div className="text-left max-w-prose mx-auto">
+                                        <div className="flex-1 overflow-y-auto px-4 sm:px-8 md:px-12 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                                          <p className="text-sm sm:text-base font-semibold text-primary uppercase tracking-wide mb-6 text-center">
+                                            Answer
+                                          </p>
+                                          <div className="text-left max-w-prose mx-auto">
                                           {(() => {
                                             const formattedContent = formatAnswerAsPoints(currentCard?.answer || "");
                                             const hasNumberedPoints = currentCard?.answer && /\(\d+\)/.test(currentCard.answer);
