@@ -93,105 +93,118 @@ export default function EconNewsPage() {
     );
   };
 
-  const renderNewsCard = (item: EconNewsItem) => (
-    <Card 
-      key={item.id} 
-      className="border border-border/50 hover:border-primary/30 hover:shadow-2xl transition-all duration-500 overflow-hidden bg-card/50 backdrop-blur-sm group"
+  const renderNewsCard = (item: EconNewsItem, index: number) => (
+    <motion.div
+      key={item.id}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index % 5 * 0.1 }}
     >
-      <CardHeader className="space-y-6 pb-8 border-b border-border/30 bg-muted/10">
-        <div className="flex flex-wrap items-center gap-3">
-          <Badge 
-            variant={item.newsCategory === "Singapore" ? "default" : "secondary"}
-            className="text-xs font-bold px-3 py-1 uppercase tracking-wider"
-          >
-            {item.newsCategory === "Singapore" ? (
-              <span className="flex items-center gap-1.5"><Building2 className="w-3 h-3" /> Singapore</span>
-            ) : (
-              <span className="flex items-center gap-1.5"><Globe className="w-3 h-3" /> International</span>
-            )}
-          </Badge>
-          <Badge variant="outline" className="text-xs font-semibold border-primary/20 bg-background/50">
-            {new Date(item.publishedDate).toLocaleDateString('en-US', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}
-          </Badge>
-        </div>
+      <Card 
+        className="border-none shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden bg-card/50 backdrop-blur-md group relative"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
-        <CardTitle className="text-2xl sm:text-4xl lg:text-5xl font-extrabold break-words leading-[1.1] tracking-tighter text-foreground group-hover:text-primary transition-colors">
-          {item.title}
-        </CardTitle>
-
-        <div className="flex flex-wrap gap-2">
-          {item.theories.map((theory, idx) => (
-            <Badge key={idx} variant="outline" className="bg-primary/5 text-primary border-primary/20">
-              {theory}
-            </Badge>
-          ))}
-        </div>
-      </CardHeader>
-
-      <CardContent className="pt-8 space-y-2">
-        {/* Main Summary */}
-        <div className="mb-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Newspaper className="w-5 h-5 text-primary" />
-            <h3 className="text-xl font-bold">News Summary</h3>
-          </div>
-          <div 
-            className="prose prose-base sm:prose-lg max-w-none text-foreground/90 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: item.content }}
-          />
-        </div>
-
-        {/* Detailed Explanation and Context Sections */}
-        <div className="space-y-4 pt-8 border-t border-border/30">
-          {renderSection(
-            "Background & Context", 
-            item.context, 
-            <Globe className="w-5 h-5" />, 
-            "bg-blue-500/10 text-blue-500",
-            true
-          )}
-
-          {renderSection(
-            "Economic Explanation", 
-            item.explanation, 
-            <TrendingUp className="w-5 h-5" />, 
-            "bg-orange-500/10 text-orange-500",
-            true
-          )}
-
-          {renderSection(
-            "Theory & Syllabus Connection", 
-            item.theoryConnection, 
-            <BookOpen className="w-5 h-5" />, 
-            "bg-green-500/10 text-green-500",
-            true
-          )}
-        </div>
-
-        {/* Topics Footer */}
-        <div className="mt-8 pt-6 border-t border-border/30">
-          <div className="flex items-center gap-2 mb-4">
-            <Layers className="w-4 h-4 text-primary" />
-            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Key Topics</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {item.topics.map((topic, idx) => (
+        <CardHeader className="space-y-6 pb-8 border-b border-border/20 bg-muted/5 relative z-10">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
               <Badge 
-                key={idx} 
-                variant="secondary" 
-                className="text-xs font-medium px-4 py-1.5 rounded-full hover:bg-primary/20 transition-colors cursor-default"
+                variant={item.newsCategory === "Singapore" ? "default" : "secondary"}
+                className="text-[10px] font-black px-3 py-1 uppercase tracking-widest"
               >
-                {topic}
+                {item.newsCategory === "Singapore" ? (
+                  <span className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5" /> Singapore</span>
+                ) : (
+                  <span className="flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> International</span>
+                )}
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-bold border-primary/20 bg-background/50 px-3 py-1 uppercase tracking-widest">
+                {new Date(item.publishedDate).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </Badge>
+            </div>
+          </div>
+          
+          <CardTitle className="text-2xl sm:text-4xl lg:text-5xl font-black break-words leading-[1.05] tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
+            {item.title}
+          </CardTitle>
+
+          <div className="flex flex-wrap gap-2">
+            {item.theories.map((theory, idx) => (
+              <Badge key={idx} variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[10px] py-0.5 px-2">
+                {theory}
               </Badge>
             ))}
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardHeader>
+
+        <CardContent className="pt-8 space-y-2 relative z-10">
+          {/* Main Summary */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="p-2 rounded-xl bg-primary/10">
+                <Newspaper className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-xl font-black uppercase tracking-tight">Executive Summary</h3>
+            </div>
+            <div 
+              className="prose prose-base sm:prose-lg max-w-none text-foreground/80 leading-relaxed font-medium"
+              dangerouslySetInnerHTML={{ __html: item.content }}
+            />
+          </div>
+
+          {/* Detailed Explanation and Context Sections */}
+          <div className="grid gap-6 pt-10 border-t border-border/20">
+            {item.context && renderSection(
+              "Contextual Analysis", 
+              item.context, 
+              <Target className="w-5 h-5" />, 
+              "bg-blue-500/10 text-blue-500",
+              true
+            )}
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {item.explanation && renderSection(
+                "Economic Logic", 
+                item.explanation, 
+                <Zap className="w-5 h-5" />, 
+                "bg-orange-500/10 text-orange-500"
+              )}
+
+              {item.theoryConnection && renderSection(
+                "Syllabus Bridge", 
+                item.theoryConnection, 
+                <BookOpen className="w-5 h-5" />, 
+                "bg-green-500/10 text-green-500"
+              )}
+            </div>
+          </div>
+
+          {/* Topics Footer */}
+          <div className="mt-8 pt-6 border-t border-border/20">
+            <div className="flex items-center gap-2 mb-4">
+              <Layers className="w-4 h-4 text-muted-foreground" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Syllabus Tags</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {item.topics.map((topic, idx) => (
+                <Badge 
+                  key={idx} 
+                  variant="secondary" 
+                  className="text-[10px] font-bold px-4 py-1.5 rounded-full bg-muted/50 hover:bg-primary hover:text-primary-foreground transition-all cursor-default uppercase tracking-wider"
+                >
+                  {topic}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 
   return (
