@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Newspaper, TrendingUp, Globe, Building2, BookOpen, Layers, Target, ShieldCheck, AlertTriangle, Scale } from "lucide-react";
+import { Loader2, Newspaper, TrendingUp, Globe, Building2, BookOpen, Layers, Target, ShieldCheck, AlertTriangle, Scale, Zap } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SingaporeEconomyDashboard } from "@/components/SingaporeEconomyDashboard";
+import { motion } from "framer-motion";
 
 type EconNewsItem = {
   id: number;
@@ -108,7 +110,7 @@ export default function EconNewsPage() {
           </Badge>
         </div>
         
-        <CardTitle className="text-3xl sm:text-4xl lg:text-5xl font-extrabold break-words leading-[1.1] tracking-tighter text-foreground group-hover:text-primary transition-colors">
+        <CardTitle className="text-2xl sm:text-4xl lg:text-5xl font-extrabold break-words leading-[1.1] tracking-tighter text-foreground group-hover:text-primary transition-colors">
           {item.title}
         </CardTitle>
 
@@ -184,103 +186,111 @@ export default function EconNewsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background selection:bg-primary/30 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto w-full">
+    <div className="min-h-screen bg-background selection:bg-primary/30 py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Hero Section */}
         <div className="text-center mb-16 space-y-6 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
           <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 mb-4 ring-1 ring-primary/20">
             <Newspaper className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent leading-[1.1]">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent leading-[1.1]">
             Economics <span className="text-primary">In Action</span>
           </h1>
-          <p className="text-lg sm:text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium">
+          <p className="text-base sm:text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium">
             Bridging current global events with JC Economics syllabus theories, analysis, and evaluations.
           </p>
         </div>
 
-        {/* Category Tabs */}
-        <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full mb-12">
-          <div className="flex justify-center">
-            <TabsList className="h-14 p-1.5 bg-muted/50 backdrop-blur-md rounded-2xl border border-border/50">
-              <TabsTrigger value="all" className="px-6 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all">
-                All Articles
-                <Badge variant="secondary" className="ml-2 bg-muted/80">{news.length}</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="Singapore" className="px-6 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all">
-                Singapore
-                <Badge variant="secondary" className="ml-2 bg-muted/80">{singaporeCount}</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="International" className="px-6 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all">
-                International
-                <Badge variant="secondary" className="ml-2 bg-muted/80">{internationalCount}</Badge>
-              </TabsTrigger>
-            </TabsList>
-          </div>
-        </Tabs>
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          {/* Main Content */}
+          <div className="lg:col-span-8 space-y-12">
+            {/* Category Tabs */}
+            <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
+              <div className="flex justify-start sm:justify-center overflow-x-auto pb-4 no-scrollbar">
+                <TabsList className="h-12 p-1 bg-muted/50 backdrop-blur-md rounded-xl border border-border/50">
+                  <TabsTrigger value="all" className="px-4 sm:px-6 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm font-bold transition-all text-xs sm:text-sm">
+                    All
+                    <Badge variant="secondary" className="ml-2 bg-muted/80">{news.length}</Badge>
+                  </TabsTrigger>
+                  <TabsTrigger value="Singapore" className="px-4 sm:px-6 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm font-bold transition-all text-xs sm:text-sm">
+                    Singapore
+                    <Badge variant="secondary" className="ml-2 bg-muted/80">{singaporeCount}</Badge>
+                  </TabsTrigger>
+                  <TabsTrigger value="International" className="px-4 sm:px-6 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm font-bold transition-all text-xs sm:text-sm">
+                    International
+                    <Badge variant="secondary" className="ml-2 bg-muted/80">{internationalCount}</Badge>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </Tabs>
 
-        {/* News Grid */}
-        <div className="space-y-12">
-          {filteredNews.length === 0 ? (
-            <Card className="border-2 border-dashed bg-muted/5 rounded-3xl overflow-hidden">
-              <CardContent className="py-24 text-center">
-                <div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
-                  <TrendingUp className="w-8 h-8 text-muted-foreground" />
+            {/* News Grid */}
+            <div className="space-y-12">
+              {filteredNews.length === 0 ? (
+                <Card className="border-2 border-dashed bg-muted/5 rounded-3xl overflow-hidden">
+                  <CardContent className="py-24 text-center">
+                    <div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
+                      <TrendingUp className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">No articles found</h3>
+                    <p className="text-muted-foreground max-w-xs mx-auto">
+                      {activeCategory === "all" 
+                        ? "Our economists are currently analyzing the latest news. Check back soon!"
+                        : `No ${activeCategory} news articles available yet.`}
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid gap-12">
+                  {filteredNews.map(renderNewsCard)}
                 </div>
-                <h3 className="text-xl font-bold mb-2">No articles found</h3>
-                <p className="text-muted-foreground max-w-xs mx-auto">
-                  {activeCategory === "all" 
-                    ? "Our economists are currently analyzing the latest news. Check back soon!"
-                    : `No ${activeCategory} news articles available yet.`}
-                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-8 sticky top-24">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-2 mb-4 px-2">
+                <Zap className="w-5 h-5 text-red-500 animate-pulse" />
+                <h3 className="text-xl font-black tracking-tight uppercase">Live Indicators</h3>
+              </div>
+              <SingaporeEconomyDashboard />
+            </motion.div>
+
+            {/* Why Current Affairs Card */}
+            <Card className="rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-primary/5 border-primary/10 overflow-hidden relative group">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl font-black tracking-tight">
+                  The <span className="text-primary">Exam Advantage</span>
+                </CardTitle>
+                <CardDescription className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Linking News to Syllabus
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 pt-0">
+                {[
+                  { id: 1, color: "bg-blue-500", text: "Deepens conceptual understanding beyond abstract definitions." },
+                  { id: 2, color: "bg-orange-500", text: "Provides high-scoring examples for CSQs and Essays." },
+                  { id: 3, color: "bg-green-500", text: "Develops the 'Evaluation' (EV) skills needed for A grades." },
+                  { id: 4, color: "bg-purple-500", text: "Sharpens analytical thinking for policy debates." }
+                ].map((item) => (
+                  <div key={item.id} className="flex gap-3 p-3 rounded-xl bg-background/50 border border-border/50 transition-all hover:shadow-md">
+                    <div className={`flex-shrink-0 w-6 h-6 rounded-md ${item.color}/10 flex items-center justify-center text-[10px] font-bold text-foreground`}>{item.id}</div>
+                    <p className="text-xs font-medium leading-relaxed">
+                      {item.text}
+                    </p>
+                  </div>
+                ))}
               </CardContent>
             </Card>
-          ) : (
-            <div className="grid gap-12">
-              {filteredNews.map(renderNewsCard)}
-            </div>
-          )}
+          </aside>
         </div>
-
-        {/* Why Current Affairs Card */}
-        <Card className="mt-24 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-primary/5 border-primary/10 overflow-hidden relative group">
-          <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
-          <CardHeader>
-            <CardTitle className="text-3xl font-black tracking-tight">
-              Mastering the <span className="text-primary">Syllabus</span> through News
-            </CardTitle>
-            <CardDescription className="text-base font-medium">
-              Why linking real-world events to theory is critical for JC Economics success
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-lg font-bold text-blue-500">1</div>
-              <p className="text-sm font-semibold leading-relaxed">
-                Deepens conceptual understanding beyond abstract textbook definitions.
-              </p>
-            </div>
-            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-lg font-bold text-orange-500">2</div>
-              <p className="text-sm font-semibold leading-relaxed">
-                Provides high-scoring examples for Case Study Questions (CSQs) and Essays.
-              </p>
-            </div>
-            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-lg font-bold text-green-500">3</div>
-              <p className="text-sm font-semibold leading-relaxed">
-                Develops the "Evaluation" (EV) skills needed for top-tier exam grades.
-              </p>
-            </div>
-            <div className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border/50 transition-all hover:shadow-xl hover:-translate-y-1">
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-lg font-bold text-purple-500">4</div>
-              <p className="text-sm font-semibold leading-relaxed">
-                Sharpens analytical thinking for complex global policy debates.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
