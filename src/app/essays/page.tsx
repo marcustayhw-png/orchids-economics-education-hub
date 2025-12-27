@@ -2,8 +2,7 @@ import { Metadata } from "next";
 import { db } from "@/db";
 import { essays as essaysTable, csqs as csqsTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
-import { EssaysClient } from "./EssaysClient";
-import { Sidebar } from "@/components/Sidebar";
+import { EssaysPageClient } from "./EssaysPageClient";
 
 export const metadata: Metadata = {
   title: "Economics Model Essays & CSQ Answers | EconStack",
