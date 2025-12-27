@@ -51,7 +51,6 @@ interface CSQ {
   updatedAt: string;
 }
 
-// O-Level syllabus topics aligned with Syllabus 2286
 const SYLLABUS_TOPICS = [
   "1. The Basic Economic Problem",
   "2. Allocation of Resources",
@@ -86,7 +85,6 @@ export function CSQManager() {
   const [showForm, setShowForm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  // Filter states
   const [filterLevel, setFilterLevel] = useState<string>("All");
   const [filterTopic, setFilterTopic] = useState<string>("All");
 
@@ -109,22 +107,10 @@ export function CSQManager() {
     ],
   });
 
-  useEffect(() => {
-    fetchCSQs();
-  }, []);
-
   const fetchCSQs = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("bearer_token");
-      const headers: Record<string, string> = {};
-      if (token && token !== "null" && token !== "undefined") {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
-      const response = await fetch("/api/csqs?limit=100", {
-        headers
-      });
+      const response = await fetch("/api/csqs?limit=100");
       if (response.ok) {
         const data = await response.json();
         setCSQs(data);
@@ -140,17 +126,9 @@ export function CSQManager() {
     }
   };
 
-  // Get unique topics for filter dropdown
-  const uniqueTopics = Array.from(
-    new Set(csqs.map((c) => c.topic).filter(Boolean))
-  ).sort();
-
-  // Filter CSQs based on selected filters
-  const filteredCSQs = csqs.filter((csq) => {
-    const matchesLevel = filterLevel === "All" || csq.level === filterLevel;
-    const matchesTopic = filterTopic === "All" || csq.topic === filterTopic;
-    return matchesLevel && matchesTopic;
-  });
+  useEffect(() => {
+    fetchCSQs();
+  }, []);
 
   const resetForm = () => {
     setFormData({
@@ -197,7 +175,7 @@ export function CSQManager() {
   };
 
   const addPart = () => {
-    const nextLetter = String.fromCharCode(97 + formData.parts.length); // a, b, c, etc.
+    const nextLetter = String.fromCharCode(97 + formData.parts.length);
     setFormData({
       ...formData,
       parts: [
@@ -241,8 +219,6 @@ export function CSQManager() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const token = localStorage.getItem("bearer_token");
-
     const partsPayload = formData.parts.map((part, index) => ({
       part: part.part,
       question: part.question,
@@ -271,13 +247,9 @@ export function CSQManager() {
 
     try {
       if (editingId) {
-        // Update
         const response = await fetch(`/api/csqs?csq_id=${editingId}`, {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
@@ -286,17 +258,12 @@ export function CSQManager() {
           fetchCSQs();
           resetForm();
         } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to update CSQ");
+          toast.error("Failed to update CSQ");
         }
       } else {
-        // Create
         const response = await fetch("/api/csqs", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
@@ -305,8 +272,7 @@ export function CSQManager() {
           fetchCSQs();
           resetForm();
         } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to create CSQ");
+          toast.error("Failed to create CSQ");
         }
       }
     } catch (error) {
@@ -316,17 +282,12 @@ export function CSQManager() {
     }
   };
 
-  const handleDelete = async (csqId: string) => {
-    if (!confirm("Are you sure you want to delete this CSQ and all its parts?"))
-      return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
-    const token = localStorage.getItem("bearer_token");
     try {
-      const response = await fetch(`/api/csqs?csq_id=${csqId}`, {
+      const response = await fetch(`/api/csqs?csq_id=${deleteId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (response.ok) {
@@ -337,8 +298,20 @@ export function CSQManager() {
       }
     } catch (error) {
       toast.error("Error deleting CSQ");
+    } finally {
+      setDeleteId(null);
     }
   };
+
+  const uniqueTopics = Array.from(
+    new Set(csqs.map((c) => c.topic).filter(Boolean))
+  ).sort();
+
+  const filteredCSQs = csqs.filter((csq) => {
+    const matchesLevel = filterLevel === "All" || csq.level === filterLevel;
+    const matchesTopic = filterTopic === "All" || csq.topic === filterTopic;
+    return matchesLevel && matchesTopic;
+  });
 
   if (isLoading) {
     return (
@@ -350,7 +323,6 @@ export function CSQManager() {
 
   return (
     <div className="space-y-6">
-      {/* Add Button */}
       {!showForm && (
         <Button onClick={() => setShowForm(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -358,7 +330,6 @@ export function CSQManager() {
         </Button>
       )}
 
-      {/* Form */}
       {showForm && (
         <Card className="border-2 border-primary">
           <CardHeader>
@@ -371,7 +342,6 @@ export function CSQManager() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* CSQ Header Fields */}
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -409,7 +379,7 @@ export function CSQManager() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="topic">Topic * (Align with Syllabus 2286)</Label>
+                    <Label htmlFor="topic">Topic *</Label>
                     <Select
                       value={formData.topic}
                       onValueChange={(value) =>
@@ -427,9 +397,6 @@ export function CSQManager() {
                         ))}
                       </SelectContent>
                     </Select>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Based on Cambridge O-Level Economics Syllabus 2286 (2026)
-                    </p>
                   </div>
 
                   <div>
@@ -467,11 +434,9 @@ export function CSQManager() {
 
                 <div className="p-3 bg-muted rounded-md">
                   <p className="text-sm font-medium">Total Marks: {calculateTotalMarks()}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Calculated from all parts</p>
                 </div>
               </div>
 
-              {/* Parts */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-lg font-semibold">
@@ -509,7 +474,6 @@ export function CSQManager() {
                             onChange={(e) =>
                               updatePart(index, "part", e.target.value)
                             }
-                            placeholder="a, b, c"
                             required
                           />
                         </div>
@@ -520,67 +484,50 @@ export function CSQManager() {
                             onChange={(e) =>
                               updatePart(index, "marks", e.target.value)
                             }
-                            placeholder="e.g., 4"
                             required
                           />
                         </div>
                       </div>
 
                       <div>
-                        <Label>Question * (Use syllabus command words)</Label>
+                        <Label>Question *</Label>
                         <Textarea
                           value={part.question}
                           onChange={(e) =>
                             updatePart(index, "question", e.target.value)
                           }
-                          placeholder="e.g., Explain how an increase in consumer income affects demand. (4 marks)&#10;&#10;Command words: Define, Explain, Calculate, Analyse, Describe, Discuss"
                           rows={2}
                           required
                         />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          📘 Use command words from syllabus: Define, Explain, Calculate, Analyse, Describe, Discuss
-                        </p>
                       </div>
 
                       <div>
-                        <Label>Extract (with image upload support)</Label>
+                        <Label>Extract</Label>
                         <RichTextEditor
                           content={part.extract}
                           onChange={(html) => updatePart(index, "extract", html)}
-                          placeholder="Add extract text with images, formatting, diagrams..."
                           minHeight="200px"
                         />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Use the image button in toolbar to upload diagrams and charts
-                        </p>
                       </div>
 
                       <div>
-                        <Label>Marking Scheme * (Succinct points - one per line)</Label>
+                        <Label>Marking Scheme (One per line)</Label>
                         <Textarea
                           value={part.markingScheme}
                           onChange={(e) =>
                             updatePart(index, "markingScheme", e.target.value)
                           }
-                          placeholder="Keep points brief and exam-focused:&#10;• Define key term (1m)&#10;• Explain concept with example (2m)&#10;• Apply to context (1m)&#10;&#10;Use bullet points for clarity!"
                           rows={4}
                         />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          ✅ Best practice: Use bullet points (•) and mark allocation per point
-                        </p>
                       </div>
 
                       <div>
-                        <Label>Model Answer * (Keep succinct - use point form)</Label>
+                        <Label>Model Answer</Label>
                         <RichTextEditor
                           content={part.modelAnswer}
                           onChange={(html) => updatePart(index, "modelAnswer", html)}
-                          placeholder="Write model answer in clear point form:&#10;&#10;• Point 1: Brief explanation&#10;• Point 2: Key concept with example&#10;• Point 3: Application to context&#10;&#10;Avoid lengthy paragraphs. Keep it exam-focused and succinct!"
                           minHeight="250px"
                         />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          ✅ Use bullet points in editor toolbar. Keep answers concise and aligned with marking scheme.
-                        </p>
                       </div>
                     </CardContent>
                   </Card>
@@ -589,14 +536,7 @@ export function CSQManager() {
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>{editingId ? "Update" : "Create"} CSQ</>
-                  )}
+                  {isSubmitting ? "Saving..." : editingId ? "Update CSQ" : "Create CSQ"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   Cancel
@@ -607,7 +547,6 @@ export function CSQManager() {
         </Card>
       )}
 
-      {/* Filter Controls */}
       {!showForm && (
         <Card>
           <CardHeader>
@@ -650,7 +589,6 @@ export function CSQManager() {
         </Card>
       )}
 
-      {/* CSQs List */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
           {filterLevel === "All" && filterTopic === "All"
@@ -680,9 +618,6 @@ export function CSQManager() {
                     </Badge>
                   </div>
                   <p className="font-medium">{csq.title}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Parts: {csq.parts.map((p) => p.part).join(", ")}
-                  </p>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -695,7 +630,7 @@ export function CSQManager() {
                   <Button
                     size="sm"
                     variant="destructive"
-                    onClick={() => handleDelete(csq.csqId)}
+                    onClick={() => setDeleteId(csq.csqId)}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -705,6 +640,23 @@ export function CSQManager() {
           </Card>
         ))}
       </div>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete CSQ</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this CSQ? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
