@@ -79,9 +79,37 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)] min-h-[600px] border rounded-xl overflow-hidden bg-background">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)] min-h-[600px] border rounded-xl overflow-hidden bg-background relative">
+      {/* Mobile Toggle Bar */}
+      <div className="lg:hidden flex border-b bg-muted/30 sticky top-0 z-20">
+        <button
+          onClick={() => setActiveTabMobile("extract")}
+          className={`flex-1 py-3 px-4 text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-2 ${
+            activeTabMobile === "extract" 
+              ? "border-primary text-primary bg-background" 
+              : "border-transparent text-muted-foreground hover:bg-muted/50"
+          }`}
+        >
+          <BookOpen className="w-3.5 h-3.5" />
+          Extract
+        </button>
+        <button
+          onClick={() => setActiveTabMobile("questions")}
+          className={`flex-1 py-3 px-4 text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-2 ${
+            activeTabMobile === "questions" 
+              ? "border-primary text-primary bg-background" 
+              : "border-transparent text-muted-foreground hover:bg-muted/50"
+          }`}
+        >
+          <PenTool className="w-3.5 h-3.5" />
+          Questions
+        </button>
+      </div>
+
       {/* Left Column: Case Study Extract */}
-      <div className="w-full lg:w-1/2 flex flex-col border-r bg-muted/5">
+      <div className={`w-full lg:w-1/2 flex flex-col border-r bg-muted/5 ${
+        activeTabMobile === "extract" ? "flex" : "hidden lg:flex"
+      }`}>
         <div className="p-4 border-b bg-muted/20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-primary" />
