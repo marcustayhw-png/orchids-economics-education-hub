@@ -154,55 +154,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SG Economy Live Section - HIGH IMPACT */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-5 gap-12 items-center">
-            <div className="lg:col-span-3 space-y-6 sm:space-y-8">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="space-y-4"
-              >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold tracking-wide uppercase">
-                  <Zap className="w-3 h-3" /> Live Data
-                </div>
-                <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-                  Singapore Economy <br />
-                  <span className="text-primary">At Your Fingertips.</span>
-                </h2>
-                <p className="text-base sm:text-xl text-muted-foreground font-medium leading-relaxed max-w-xl">
-                  Don't just memorize theory—apply it. Use these real-time economic indicators to elevate your "Application" and "Evaluation" marks in essays and CSQs.
-                </p>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <div className="flex items-center gap-2 text-sm font-bold">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    Core Inflation
-                  </div>
-                  <div className="flex items-center gap-2 text-sm font-bold">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    GDP Growth
-                  </div>
-                  <div className="flex items-center gap-2 text-sm font-bold">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    S$NEER Stance
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2"
-            >
-              <SingaporeEconomyDashboard />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Features Grid */}
       <section className="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-muted/20 relative">
         <div className="max-w-7xl mx-auto">
@@ -256,6 +207,55 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SG Economy Live Section - HIGH IMPACT */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-12 items-center">
+            <div className="lg:col-span-3 space-y-6 sm:space-y-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold tracking-wide uppercase">
+                  <Zap className="w-3 h-3" /> Live Data
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                  Singapore Economy <br />
+                  <span className="text-primary">At Your Fingertips.</span>
+                </h2>
+                <p className="text-base sm:text-xl text-muted-foreground font-medium leading-relaxed max-w-xl">
+                  Don't just memorize theory—apply it. Use these real-time economic indicators to elevate your "Application" and "Evaluation" marks in essays and CSQs.
+                </p>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    Core Inflation
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    GDP Growth
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    S$NEER Stance
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="lg:col-span-2"
+            >
+              <SingaporeEconomyDashboard />
+            </motion.div>
           </div>
         </div>
       </section>
