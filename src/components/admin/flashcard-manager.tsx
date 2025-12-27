@@ -31,7 +31,6 @@ interface Flashcard {
   updatedAt: string;
 }
 
-// O-Level syllabus chapters for Secondary level
 const SECONDARY_CHAPTERS = [
   "1. The Basic Economic Problem",
   "1.1 Nature of Economic Problem",
@@ -80,7 +79,6 @@ const SECONDARY_CHAPTERS = [
   "6.4 Current Account of Balance of Payments",
 ];
 
-// H2 A-Level syllabus chapters for JC level (Syllabus 9570, 2026)
 const JC_CHAPTERS = [
   "Theme 1: The Central Economic Problem",
   "1.1 Scarcity, Choice and Resource Allocation",
@@ -105,22 +103,6 @@ const JC_CHAPTERS = [
   "3.7 Economic Co-operation and Protectionism",
 ];
 
-// Helper function to format answer text into point form
-const formatAnswerAsPoints = (answer: string) => {
-  // Split by newlines and filter empty lines
-  const lines = answer.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-  
-  return lines.map((line, index) => {
-    // Remove common bullet point characters if they exist at the start
-    const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
-    return (
-      <li key={index} className="text-sm text-muted-foreground mb-3">
-        {cleanedLine}
-      </li>
-    );
-  });
-};
-
 export function FlashcardManager() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -128,7 +110,6 @@ export function FlashcardManager() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Filter states
   const [filterLevel, setFilterLevel] = useState<string>("All");
   const [filterChapter, setFilterChapter] = useState<string>("All");
 
@@ -143,19 +124,10 @@ export function FlashcardManager() {
     chapter: "",
   });
 
-  useEffect(() => {
-    fetchFlashcards();
-  }, []);
-
   const fetchFlashcards = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("bearer_token");
-      const response = await fetch("/api/flashcards?limit=100", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch("/api/flashcards?limit=1000");
       if (response.ok) {
         const data = await response.json();
         setFlashcards(data);
@@ -169,22 +141,9 @@ export function FlashcardManager() {
     }
   };
 
-  // Get chapters based on selected level
-  const getChaptersForLevel = (level: string) => {
-    return level === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS;
-  };
-
-  // Get unique chapters for filter dropdown
-  const uniqueChapters = Array.from(
-    new Set(flashcards.map((f) => f.chapter).filter(Boolean))
-  ).sort();
-
-  // Filter flashcards based on selected filters
-  const filteredFlashcards = flashcards.filter((flashcard) => {
-    const matchesLevel = filterLevel === "All" || flashcard.level === filterLevel;
-    const matchesChapter = filterChapter === "All" || flashcard.chapter === filterChapter;
-    return matchesLevel && matchesChapter;
-  });
+  useEffect(() => {
+    fetchFlashcards();
+  }, []);
 
   const resetForm = () => {
     setFormData({
@@ -220,58 +179,22 @@ export function FlashcardManager() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const token = localStorage.getItem("bearer_token");
-
-    const payload = {
-      question: formData.question,
-      answer: formData.answer,
-      level: formData.level,
-      category: formData.category,
-      topic: formData.topic,
-      difficulty: formData.difficulty || null,
-      economicsType: formData.economicsType,
-      chapter: formData.chapter,
-    };
-
     try {
-      if (editingId) {
-        // Update
-        const response = await fetch(`/api/flashcards?id=${editingId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        });
+      const method = editingId ? "PUT" : "POST";
+      const url = editingId ? `/api/flashcards?id=${editingId}` : "/api/flashcards";
+      
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-        if (response.ok) {
-          toast.success("Flashcard updated successfully");
-          fetchFlashcards();
-          resetForm();
-        } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to update flashcard");
-        }
+      if (response.ok) {
+        toast.success(`Flashcard ${editingId ? "updated" : "created"} successfully`);
+        fetchFlashcards();
+        resetForm();
       } else {
-        // Create
-        const response = await fetch("/api/flashcards", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-          toast.success("Flashcard created successfully");
-          fetchFlashcards();
-          resetForm();
-        } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to create flashcard");
-        }
+        toast.error("Failed to save flashcard");
       }
     } catch (error) {
       toast.error("An error occurred");
@@ -283,13 +206,9 @@ export function FlashcardManager() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this flashcard?")) return;
 
-    const token = localStorage.getItem("bearer_token");
     try {
       const response = await fetch(`/api/flashcards?id=${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (response.ok) {
@@ -303,6 +222,16 @@ export function FlashcardManager() {
     }
   };
 
+  const filteredFlashcards = flashcards.filter((flashcard) => {
+    const matchesLevel = filterLevel === "All" || flashcard.level === filterLevel;
+    const matchesChapter = filterChapter === "All" || flashcard.chapter === filterChapter;
+    return matchesLevel && matchesChapter;
+  });
+
+  const uniqueChapters = Array.from(
+    new Set(flashcards.map((f) => f.chapter).filter(Boolean))
+  ).sort();
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -313,7 +242,6 @@ export function FlashcardManager() {
 
   return (
     <div className="space-y-6">
-      {/* Add Button */}
       {!showForm && (
         <Button onClick={() => setShowForm(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -321,7 +249,6 @@ export function FlashcardManager() {
         </Button>
       )}
 
-      {/* Form */}
       {showForm && (
         <Card className="border-2 border-primary">
           <CardHeader>
@@ -344,30 +271,24 @@ export function FlashcardManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, question: e.target.value })
                   }
-                  placeholder="e.g., What is the law of demand? Define opportunity cost. Explain PED."
+                  placeholder="Enter the question..."
                   rows={3}
                   required
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  📘 Use syllabus command words: Define, Explain, Calculate, Analyse, Describe
-                </p>
               </div>
 
               <div>
-                <Label htmlFor="answer">Answer * (Keep succinct - use point form)</Label>
+                <Label htmlFor="answer">Answer *</Label>
                 <Textarea
                   id="answer"
                   value={formData.answer}
                   onChange={(e) =>
                     setFormData({ ...formData, answer: e.target.value })
                   }
-                  placeholder="Use bullet points for clarity:&#10;• Point 1: Brief explanation&#10;• Point 2: Key concept&#10;• Point 3: Example if needed&#10;&#10;Keep it concise and exam-focused!"
+                  placeholder="Enter the answer (use bullet points for point form)..."
                   rows={6}
                   required
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  ✅ Best practice: Use bullet points (•) for clarity. Keep each point brief and exam-relevant.
-                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -383,8 +304,8 @@ export function FlashcardManager() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Secondary">Secondary (O-Level)</SelectItem>
-                      <SelectItem value="JC">JC (A-Level)</SelectItem>
+                      <SelectItem value="Secondary">Secondary</SelectItem>
+                      <SelectItem value="JC">JC</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -410,34 +331,24 @@ export function FlashcardManager() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="chapter">
-                    Chapter * 
-                    {formData.level === "JC" 
-                      ? " (H2 A-Level Syllabus 9570)" 
-                      : " (O-Level Syllabus 2286)"}
-                  </Label>
+                  <Label htmlFor="chapter">Chapter *</Label>
                   <Select
                     value={formData.chapter}
                     onValueChange={(value) =>
                       setFormData({ ...formData, chapter: value })
                     }
                   >
-                    <SelectTrigger id="chapter">
-                      <SelectValue placeholder="Select syllabus chapter" />
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select chapter" />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
-                      {getChaptersForLevel(formData.level).map((chapter) => (
+                      {(formData.level === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS).map((chapter) => (
                         <SelectItem key={chapter} value={chapter}>
                           {chapter}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {formData.level === "JC"
-                      ? "Based on Singapore-Cambridge GCE A-Level H2 Economics Syllabus 9570 (2026)"
-                      : "Based on Cambridge O-Level Economics Syllabus 2286 (2026)"}
-                  </p>
                 </div>
 
                 <div>
@@ -490,14 +401,7 @@ export function FlashcardManager() {
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>{editingId ? "Update" : "Create"} Flashcard</>
-                  )}
+                  {isSubmitting ? "Saving..." : editingId ? "Update" : "Create"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   Cancel
@@ -508,7 +412,6 @@ export function FlashcardManager() {
         </Card>
       )}
 
-      {/* Filter Controls */}
       {!showForm && (
         <Card>
           <CardHeader>
@@ -551,14 +454,7 @@ export function FlashcardManager() {
         </Card>
       )}
 
-      {/* Flashcards List */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">
-          {filterLevel === "All" && filterChapter === "All" 
-            ? `All Flashcards (${flashcards.length})`
-            : `Filtered Flashcards (${filteredFlashcards.length} of ${flashcards.length})`
-          }
-        </h3>
         {filteredFlashcards.map((flashcard) => (
           <Card key={flashcard.id}>
             <CardHeader>
@@ -568,36 +464,9 @@ export function FlashcardManager() {
                     <Badge variant="secondary">{flashcard.economicsType}</Badge>
                     <Badge variant="outline">{flashcard.chapter}</Badge>
                     <Badge>{flashcard.level}</Badge>
-                    <Badge variant="outline">{flashcard.category}</Badge>
-                    <Badge>{flashcard.topic}</Badge>
-                    {flashcard.difficulty && (
-                      <Badge
-                        variant={
-                          flashcard.difficulty === "Easy"
-                            ? "secondary"
-                            : flashcard.difficulty === "Medium"
-                            ? "default"
-                            : "destructive"
-                        }
-                      >
-                        {flashcard.difficulty}
-                      </Badge>
-                    )}
                   </div>
-                  <div className="space-y-2">
-                    <p className="font-semibold text-sm flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      Question
-                    </p>
-                    <p className="text-sm">{flashcard.question}</p>
-                    <p className="font-semibold text-sm flex items-center gap-2 mt-3">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      Answer
-                    </p>
-                    <ul className="list-disc list-inside space-y-1 ml-2">
-                      {formatAnswerAsPoints(flashcard.answer)}
-                    </ul>
-                  </div>
+                  <p className="font-semibold">{flashcard.question}</p>
+                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">{flashcard.answer}</p>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -618,9 +487,8 @@ export function FlashcardManager() {
               </div>
             </CardHeader>
           </Card>
-          ))}
-        </div>
-
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
+}
