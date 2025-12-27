@@ -107,12 +107,12 @@ export default function EssayDetailPage() {
             <CardHeader>
               <CardTitle className="break-words">Preamble</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div 
-                className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
-                dangerouslySetInnerHTML={{ __html: essay.preamble }}
-              />
-            </CardContent>
+              <CardContent>
+                <div 
+                  className="prose prose-sm dark:prose-invert max-w-none rich-text-content break-words overflow-x-auto"
+                  dangerouslySetInnerHTML={{ __html: essay.preamble }}
+                />
+              </CardContent>
           </Card>
         )}
 
