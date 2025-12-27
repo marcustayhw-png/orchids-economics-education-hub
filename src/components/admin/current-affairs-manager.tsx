@@ -31,11 +31,9 @@ interface EconNews {
   id: number;
   title: string;
   content: string;
-  theoryDescription: string;
-  howItWorks: string;
-  strengths: string;
-  limitations: string;
-  evaluation: string;
+  context: string;
+  explanation: string;
+  theoryConnection: string;
   newsCategory: string;
   topics: string[];
   theories: string[];
@@ -57,11 +55,9 @@ export function CurrentAffairsManager() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    theoryDescription: "",
-    howItWorks: "",
-    strengths: "",
-    limitations: "",
-    evaluation: "",
+    context: "",
+    explanation: "",
+    theoryConnection: "",
     newsCategory: "International",
     topics: "",
     theories: "",
@@ -98,11 +94,9 @@ export function CurrentAffairsManager() {
     setFormData({
       title: "",
       content: "",
-      theoryDescription: "",
-      howItWorks: "",
-      strengths: "",
-      limitations: "",
-      evaluation: "",
+      context: "",
+      explanation: "",
+      theoryConnection: "",
       newsCategory: "International",
       topics: "",
       theories: "",
@@ -116,11 +110,9 @@ export function CurrentAffairsManager() {
     setFormData({
       title: article.title,
       content: article.content || "",
-      theoryDescription: article.theoryDescription || "",
-      howItWorks: article.howItWorks || "",
-      strengths: article.strengths || "",
-      limitations: article.limitations || "",
-      evaluation: article.evaluation || "",
+      context: article.context || "",
+      explanation: article.explanation || "",
+      theoryConnection: article.theoryConnection || "",
       newsCategory: article.newsCategory || "International",
       topics: article.topics.join(", "),
       theories: article.theories.join(", "),
@@ -149,11 +141,9 @@ export function CurrentAffairsManager() {
     const payload = {
       title: formData.title,
       content: formData.content,
-      theoryDescription: formData.theoryDescription,
-      howItWorks: formData.howItWorks,
-      strengths: formData.strengths,
-      limitations: formData.limitations,
-      evaluation: formData.evaluation,
+      context: formData.context,
+      explanation: formData.explanation,
+      theoryConnection: formData.theoryConnection,
       newsCategory: formData.newsCategory,
       topics: topicsArray,
       theories: theoriesArray,
