@@ -163,5 +163,8 @@ export function SingaporeEconomyDashboard() {
           </div>
         </div>
       </CardContent>
+    </Card>
+  );
+}
   );
 }
