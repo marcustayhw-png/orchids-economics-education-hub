@@ -188,44 +188,44 @@ export default function EconNewsPage() {
     <div className="min-h-screen bg-background selection:bg-primary/30 py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
       <div className="max-w-7xl mx-auto w-full">
         {/* Hero Section */}
-        <div className="text-center mb-16 space-y-6 relative">
+        <div className="text-center mb-12 space-y-4 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
-          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 mb-4 ring-1 ring-primary/20">
-            <Newspaper className="w-8 h-8 text-primary" />
-          </div>
+          <Badge variant="outline" className="px-4 py-1 rounded-full border-primary/20 text-primary font-bold uppercase tracking-tighter text-[10px] mb-2 bg-primary/5">
+            Economic Intelligence
+          </Badge>
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent leading-[1.1]">
             Economics <span className="text-primary">In Action</span>
           </h1>
-          <p className="text-base sm:text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium">
-            Bridging current global events with JC Economics syllabus theories, analysis, and evaluations.
+          <p className="text-sm sm:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium opacity-80">
+            Analyzing global shifts through the lens of the JC syllabus.
           </p>
+        </div>
+
+        {/* Category Tabs - Moved to a more prominent, centered position */}
+        <div className="mb-12 flex justify-center sticky top-20 z-40 py-4 bg-background/80 backdrop-blur-sm -mx-4 px-4 sm:mx-0 sm:px-0">
+          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full max-w-md">
+            <TabsList className="h-12 p-1 bg-muted/30 backdrop-blur-md rounded-2xl border border-border/50 w-full grid grid-cols-3">
+              <TabsTrigger value="all" className="rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all text-xs">
+                All
+                <span className="ml-1.5 opacity-50 font-normal">{news.length}</span>
+              </TabsTrigger>
+              <TabsTrigger value="Singapore" className="rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all text-xs">
+                Singapore
+                <span className="ml-1.5 opacity-50 font-normal">{singaporeCount}</span>
+              </TabsTrigger>
+              <TabsTrigger value="International" className="rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all text-xs">
+                Global
+                <span className="ml-1.5 opacity-50 font-normal">{internationalCount}</span>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           {/* Main Content */}
-          <div className="lg:col-span-8 space-y-12">
-            {/* Category Tabs */}
-            <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-              <div className="flex justify-start sm:justify-center overflow-x-auto pb-4 no-scrollbar">
-                <TabsList className="h-12 p-1 bg-muted/50 backdrop-blur-md rounded-xl border border-border/50">
-                  <TabsTrigger value="all" className="px-4 sm:px-6 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm font-bold transition-all text-xs sm:text-sm">
-                    All
-                    <Badge variant="secondary" className="ml-2 bg-muted/80">{news.length}</Badge>
-                  </TabsTrigger>
-                  <TabsTrigger value="Singapore" className="px-4 sm:px-6 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm font-bold transition-all text-xs sm:text-sm">
-                    Singapore
-                    <Badge variant="secondary" className="ml-2 bg-muted/80">{singaporeCount}</Badge>
-                  </TabsTrigger>
-                  <TabsTrigger value="International" className="px-4 sm:px-6 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm font-bold transition-all text-xs sm:text-sm">
-                    International
-                    <Badge variant="secondary" className="ml-2 bg-muted/80">{internationalCount}</Badge>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-            </Tabs>
-
+          <div className="lg:col-span-8 space-y-10">
             {/* News Grid */}
-            <div className="space-y-12">
+            <div className="space-y-10">
               {filteredNews.length === 0 ? (
                 <Card className="border-2 border-dashed bg-muted/5 rounded-3xl overflow-hidden">
                   <CardContent className="py-24 text-center">
