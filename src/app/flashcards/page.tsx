@@ -248,43 +248,43 @@ export default function FlashcardsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-      {filteredCards.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateStructuredData())
-          }}
-        />
-      )}
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 space-y-3 sm:space-y-4">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-            Economics Flashcards
-          </h1>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            {selectedLevel === "JC" 
-              ? "Master H2 Economics with interactive flashcards aligned to Syllabus 9570 (2026)"
-              : "Master O-Level Economics with interactive flashcards aligned to Syllabus 2286 (2026)"}
-          </p>
-        </div>
+      <div className="min-h-screen bg-background py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 lg:px-8">
+        {filteredCards.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(generateStructuredData())
+            }}
+          />
+        )}
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-6 sm:mb-8 md:mb-12 space-y-2 sm:space-y-3 md:space-y-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+              Economics Flashcards
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2 md:px-4">
+              {selectedLevel === "JC" 
+                ? "Master H2 Economics with interactive flashcards aligned to Syllabus 9570 (2026)"
+                : "Master O-Level Economics with interactive flashcards aligned to Syllabus 2286 (2026)"}
+            </p>
+          </div>
 
-        {/* Level Selector */}
-        <Tabs
-          defaultValue="Secondary"
-          className="space-y-8"
-          onValueChange={(value) => {
-            setSelectedLevel(value);
-            setSelectedEconomicsType("");
-            setSelectedChapter("");
-            setCurrentStep("economics-type");
-          }}
-        >
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-            <TabsTrigger value="Secondary">Secondary School</TabsTrigger>
-            <TabsTrigger value="JC">Junior College</TabsTrigger>
-          </TabsList>
+          {/* Level Selector */}
+          <Tabs
+            defaultValue="Secondary"
+            className="space-y-6 md:space-y-8"
+            onValueChange={(value) => {
+              setSelectedLevel(value);
+              setSelectedEconomicsType("");
+              setSelectedChapter("");
+              setCurrentStep("economics-type");
+            }}
+          >
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 h-10 md:h-11">
+              <TabsTrigger value="Secondary" className="text-sm md:text-base">Secondary School</TabsTrigger>
+              <TabsTrigger value="JC" className="text-sm md:text-base">Junior College</TabsTrigger>
+            </TabsList>
 
           <TabsContent value={selectedLevel} className="space-y-8">
             <AnimatePresence mode="wait">
