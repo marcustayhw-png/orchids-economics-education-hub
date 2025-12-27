@@ -208,6 +208,21 @@ export default function Home() {
 
             <Card className="border-2 hover:border-primary transition-colors touch-manipulation active:scale-[0.98]">
               <CardHeader className="pb-2 sm:pb-4 lg:pb-6">
+                <PenTool className="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-primary mb-2 sm:mb-3 lg:mb-4" />
+                <CardTitle className="text-lg sm:text-xl">Mark My Work</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
+                  Submit your essays and CSQ answers for professional marking and personalized feedback to improve your grades
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <Button asChild variant="link" className="px-0 h-auto text-sm sm:text-base touch-manipulation">
+                  <Link href="/mark-my-work">Get Feedback →</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-primary transition-colors touch-manipulation active:scale-[0.98]">
+              <CardHeader className="pb-2 sm:pb-4 lg:pb-6">
                 <Users className="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-primary mb-2 sm:mb-3 lg:mb-4" />
                 <CardTitle className="text-lg sm:text-xl">Student-Focused</CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
