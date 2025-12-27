@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Plus, Edit, Trash2, X } from "lucide-react";
-import { ImageUploadButton } from "@/components/admin/image-upload-button";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import {
   Select,
@@ -45,7 +44,6 @@ interface Essay {
   updatedAt: string;
 }
 
-// O-Level syllabus topics aligned with Syllabus 2286
 const SYLLABUS_TOPICS = [
   "1. The Basic Economic Problem",
   "2. Allocation of Resources",
@@ -81,7 +79,6 @@ export function EssayManager() {
   const [showForm, setShowForm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  // Filter states
   const [filterLevel, setFilterLevel] = useState<string>("All");
   const [filterTopic, setFilterTopic] = useState<string>("All");
 
@@ -98,12 +95,8 @@ export function EssayManager() {
     modelAnswer: "",
   });
 
-  useEffect(() => {
-    fetchEssays();
-  }, []);
-
   const fetchEssays = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const res = await fetch("/api/essays?limit=1000");
       if (res.ok) {
@@ -113,71 +106,13 @@ export function EssayManager() {
     } catch (error) {
       toast.error("Error fetching essays");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchEssays();
   }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      const method = editingEssay ? "PUT" : "POST";
-      const res = await fetch("/api/essays", {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        toast.success(`Essay ${editingEssay ? "updated" : "created"} successfully`);
-        setIsOpen(false);
-        resetForm();
-        fetchEssays();
-      } else {
-        toast.error("Failed to save essay");
-      }
-    } catch (error) {
-      toast.error("Error saving essay");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this essay?")) return;
-
-    try {
-      const res = await fetch(`/api/essays?id=${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        toast.success("Essay deleted successfully");
-        fetchEssays();
-      } else {
-        toast.error("Failed to delete essay");
-      }
-    } catch (error) {
-      toast.error("Error deleting essay");
-    }
-  };
-
-  // Get unique topics for filter dropdown
-  const uniqueTopics = Array.from(
-    new Set(essays.map((e) => e.topic).filter(Boolean))
-  ).sort();
-
-  // Filter essays based on selected filters
-  const filteredEssays = essays.filter((essay) => {
-    const matchesLevel = filterLevel === "All" || essay.level === filterLevel;
-    const matchesTopic = filterTopic === "All" || essay.topic === filterTopic;
-    return matchesLevel && matchesTopic;
-  });
 
   const resetForm = () => {
     setFormData({
@@ -217,7 +152,6 @@ export function EssayManager() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const token = localStorage.getItem("bearer_token");
     const examinerCommentsArray = formData.examinerComments
       .split("\n")
       .filter((line) => line.trim() !== "");
@@ -237,13 +171,9 @@ export function EssayManager() {
 
     try {
       if (editingId) {
-        // Update
         const response = await fetch(`/api/essays?essay_id=${editingId}`, {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
@@ -252,17 +182,12 @@ export function EssayManager() {
           fetchEssays();
           resetForm();
         } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to update essay");
+          toast.error("Failed to update essay");
         }
       } else {
-        // Create
         const response = await fetch("/api/essays", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
@@ -271,8 +196,7 @@ export function EssayManager() {
           fetchEssays();
           resetForm();
         } else {
-          const error = await response.json();
-          toast.error(error.error || "Failed to create essay");
+          toast.error("Failed to create essay");
         }
       }
     } catch (error) {
@@ -285,13 +209,9 @@ export function EssayManager() {
   const handleDelete = async () => {
     if (!deleteId) return;
 
-    const token = localStorage.getItem("bearer_token");
     try {
       const response = await fetch(`/api/essays?essay_id=${deleteId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (response.ok) {
@@ -307,6 +227,16 @@ export function EssayManager() {
     }
   };
 
+  const uniqueTopics = Array.from(
+    new Set(essays.map((e) => e.topic).filter(Boolean))
+  ).sort();
+
+  const filteredEssays = essays.filter((essay) => {
+    const matchesLevel = filterLevel === "All" || essay.level === filterLevel;
+    const matchesTopic = filterTopic === "All" || essay.topic === filterTopic;
+    return matchesLevel && matchesTopic;
+  });
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -317,7 +247,6 @@ export function EssayManager() {
 
   return (
     <div className="space-y-6">
-      {/* Add Button */}
       {!showForm && (
         <Button onClick={() => setShowForm(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -325,7 +254,6 @@ export function EssayManager() {
         </Button>
       )}
 
-      {/* Form */}
       {showForm && (
         <Card className="border-2 border-primary">
           <CardHeader>
@@ -374,7 +302,7 @@ export function EssayManager() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="topic">Topic * (Align with Syllabus 2286)</Label>
+                  <Label htmlFor="topic">Topic *</Label>
                   <Select
                     value={formData.topic}
                     onValueChange={(value) =>
@@ -392,9 +320,6 @@ export function EssayManager() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Based on Cambridge O-Level Economics Syllabus 2286 (2026)
-                  </p>
                 </div>
 
                 <div>
@@ -431,20 +356,17 @@ export function EssayManager() {
               </div>
 
               <div>
-                <Label htmlFor="question">Question * (Use syllabus command words)</Label>
+                <Label htmlFor="question">Question *</Label>
                 <Textarea
                   id="question"
                   value={formData.question}
                   onChange={(e) =>
                     setFormData({ ...formData, question: e.target.value })
                   }
-                  placeholder="e.g., Discuss whether fiscal policy is effective in achieving macroeconomic aims. (15 marks)&#10;&#10;Command words: Explain, Analyse, Discuss, Evaluate"
+                  placeholder="Enter the essay question..."
                   rows={3}
                   required
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  📘 Use command words: Explain, Analyse, Discuss (requires AO3: Evaluation)
-                </p>
               </div>
 
               <div>
@@ -452,62 +374,45 @@ export function EssayManager() {
                 <RichTextEditor
                   content={formData.preamble}
                   onChange={(html) => setFormData({ ...formData, preamble: html })}
-                  placeholder="Add context or background information for the essay..."
+                  placeholder="Add context or background information..."
                   minHeight="150px"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Use the toolbar to format text with bold, italics, colors, and more
-                </p>
               </div>
 
               <div>
-                <Label htmlFor="structureNotes">Structure Notes (Suggested outline)</Label>
+                <Label htmlFor="structureNotes">Structure Notes</Label>
                 <Textarea
                   id="structureNotes"
                   value={formData.structureNotes}
                   onChange={(e) =>
                     setFormData({ ...formData, structureNotes: e.target.value })
                   }
-                  placeholder="Suggested structure:&#10;• Introduction: Define key terms&#10;• Body Para 1: Explain concept + example&#10;• Body Para 2: Analyse with diagram&#10;• Body Para 3: Evaluate limitations&#10;• Conclusion: Balanced judgement"
+                  placeholder="Suggested essay outline..."
                   rows={5}
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  ✅ Guide students on essay structure using bullet points
-                </p>
               </div>
 
               <div>
-                <Label htmlFor="examinerComments">
-                  Examiner Comments * (Succinct points - one per line)
-                </Label>
+                <Label htmlFor="examinerComments">Examiner Comments (One per line)</Label>
                 <Textarea
                   id="examinerComments"
                   value={formData.examinerComments}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      examinerComments: e.target.value,
-                    })
+                    setFormData({ ...formData, examinerComments: e.target.value })
                   }
-                  placeholder="Keep feedback brief and actionable:&#10;• Clear definition of key terms&#10;• Good use of real-world examples&#10;• Strong evaluation with judgement&#10;• Effective use of diagrams&#10;• Well-structured argument"
+                  placeholder="Brief actionable feedback..."
                   rows={6}
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  ✅ One point per line. Focus on assessment objectives (AO1, AO2, AO3)
-                </p>
               </div>
 
               <div>
-                <Label htmlFor="modelAnswer">Model Answer * (Succinct with clear structure)</Label>
+                <Label htmlFor="modelAnswer">Model Answer *</Label>
                 <RichTextEditor
                   content={formData.modelAnswer}
                   onChange={(html) => setFormData({ ...formData, modelAnswer: html })}
-                  placeholder="Write model answer with clear structure:&#10;&#10;Introduction:&#10;• Define key terms briefly&#10;&#10;Body Paragraphs:&#10;• Topic sentence&#10;• Explanation with example&#10;• Diagram if relevant&#10;• Evaluation/Judgement&#10;&#10;Conclusion:&#10;• Balanced judgement&#10;&#10;Use bullet points and headings for clarity!"
+                  placeholder="Write model answer here..."
                   minHeight="350px"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  ✅ Use headings (H2/H3) and bullet points. Keep explanations succinct. Show clear structure.
-                </p>
               </div>
 
               <div className="flex gap-2">
@@ -530,7 +435,6 @@ export function EssayManager() {
         </Card>
       )}
 
-      {/* Filter Controls */}
       {!showForm && (
         <Card>
           <CardHeader>
@@ -573,7 +477,6 @@ export function EssayManager() {
         </Card>
       )}
 
-      {/* Essays List */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
           {filterLevel === "All" && filterTopic === "All"
@@ -611,13 +514,13 @@ export function EssayManager() {
                   >
                     <Edit className="w-4 h-4" />
                   </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => setDeleteId(essay.essayId)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => setDeleteId(essay.essayId)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
             </CardHeader>
