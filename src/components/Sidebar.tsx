@@ -74,13 +74,54 @@ export function Sidebar({ activeTab = "essays" }: SidebarProps) {
                 </div>
               </div>
             ) : (
-              <ul className="text-xs text-muted-foreground leading-relaxed space-y-1.5">
-                <li><strong>Define</strong> – State the meaning clearly</li>
-                <li><strong>Explain</strong> – Show cause & effect with reasoning</li>
-                <li><strong>Analyse</strong> – Break down using economic theory</li>
-                <li><strong>Discuss/Evaluate</strong> – Weigh pros vs cons with judgment</li>
-              </ul>
-            )}
+                <div className="text-xs text-muted-foreground leading-relaxed space-y-3">
+                  <div className="text-[11px] font-semibold text-foreground">
+                    Case Study as an Assessment Mode
+                  </div>
+                  <div className="text-[10px] text-muted-foreground/80 uppercase tracking-wide">
+                    A-Level H2 Economics (9570)
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-[11px]">
+                    <div className="bg-muted/50 rounded px-2 py-1.5">
+                      <span className="font-semibold text-foreground">Paper 1</span>
+                      <p>2h 30min</p>
+                    </div>
+                    <div className="bg-muted/50 rounded px-2 py-1.5">
+                      <span className="font-semibold text-foreground">Marks</span>
+                      <p>60 (40%)</p>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-2">
+                    <p className="font-semibold text-foreground mb-1">Format</p>
+                    <p><strong>2 compulsory</strong> case studies, 30 marks each (20% each)</p>
+                    <p className="mt-1">Answer <strong>all questions</strong> for each case study</p>
+                  </div>
+
+                  <div className="border-t pt-2">
+                    <p className="font-semibold text-foreground mb-1">Structure</p>
+                    <ul className="space-y-1 pl-2">
+                      <li>• 2-3 pages of data (text, numerical, graphical)</li>
+                      <li>• Contemporary economic issues/policies</li>
+                      <li>• 6-7 part-questions per case study</li>
+                    </ul>
+                  </div>
+
+                  <div className="border-t pt-2">
+                    <p className="font-semibold text-foreground mb-1">Skills Tested</p>
+                    <ul className="space-y-0.5 pl-2 text-[10px]">
+                      <li>• Apply economic concepts & theories</li>
+                      <li>• Analyse & synthesise data</li>
+                      <li>• Evaluate issues, perspectives & policies</li>
+                    </ul>
+                  </div>
+
+                  <div className="border-t pt-2 text-[10px] text-muted-foreground/80">
+                    <p>💡 <strong>Tip:</strong> Always reference the data provided in your answers</p>
+                  </div>
+                </div>
+              )}
           </CardContent>
         </Card>
 
