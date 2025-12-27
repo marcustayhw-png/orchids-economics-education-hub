@@ -4,6 +4,7 @@ import { notes as notesTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { NotesClient } from "./NotesClient";
+import { Sidebar } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Economics Study Notes | EconStack",
@@ -65,36 +66,44 @@ export default async function NotesPage() {
           </p>
         </div>
 
-        <NotesClient initialNotes={notes as any} />
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1 min-w-0">
+            <NotesClient initialNotes={notes as any} />
 
-        <Card className="mt-10 sm:mt-14 bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50 overflow-hidden">
-          <CardHeader>
-            <CardTitle className="break-words text-xl sm:text-2xl font-bold tracking-tight">Study Guide</CardTitle>
-            <CardDescription className="text-sm sm:text-base">Maximize your learning with these proven strategies</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 sm:space-y-4 text-sm sm:text-base text-muted-foreground/90">
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">1</div>
-              <p className="break-words leading-relaxed">Read through the notes systematically, starting from basic concepts before moving to advanced topics</p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">2</div>
-              <p className="break-words leading-relaxed">Draw your own diagrams to reinforce understanding of economic models</p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">3</div>
-              <p className="break-words leading-relaxed">Attempt to explain concepts in your own words to test comprehension</p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">4</div>
-              <p className="break-words leading-relaxed">Link theoretical concepts to real-world examples from current affairs</p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">5</div>
-              <p className="break-words leading-relaxed">Use these notes alongside model essays and practice questions for comprehensive exam preparation</p>
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="mt-10 sm:mt-14 bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50 overflow-hidden">
+              <CardHeader>
+                <CardTitle className="break-words text-xl sm:text-2xl font-bold tracking-tight">Study Guide</CardTitle>
+                <CardDescription className="text-sm sm:text-base">Maximize your learning with these proven strategies</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 sm:space-y-4 text-sm sm:text-base text-muted-foreground/90">
+                <div className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">1</div>
+                  <p className="break-words leading-relaxed">Read through the notes systematically, starting from basic concepts before moving to advanced topics</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">2</div>
+                  <p className="break-words leading-relaxed">Draw your own diagrams to reinforce understanding of economic models</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">3</div>
+                  <p className="break-words leading-relaxed">Attempt to explain concepts in your own words to test comprehension</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">4</div>
+                  <p className="break-words leading-relaxed">Link theoretical concepts to real-world examples from current affairs</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">5</div>
+                  <p className="break-words leading-relaxed">Use these notes alongside model essays and practice questions for comprehensive exam preparation</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <aside className="w-full lg:w-80 flex-shrink-0">
+            <Sidebar />
+          </aside>
+        </div>
       </div>
     </div>
   );
