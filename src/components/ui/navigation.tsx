@@ -10,6 +10,7 @@ const navItems = [
   { href: "/notes", label: "Notes" },
   { href: "/flashcards", label: "Flashcards" },
   { href: "/essays", label: "Essays & CSQ" },
+  { href: "/mark-my-work", label: "Marking" },
   { href: "/econ-news", label: "Current Affairs" },
   { href: "/tuition", label: "Private Tuition" },
   { href: "/about", label: "About" },
