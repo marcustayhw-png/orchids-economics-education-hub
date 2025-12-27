@@ -117,14 +117,19 @@ export function CSQManager() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("bearer_token");
+      const headers: Record<string, string> = {};
+      if (token && token !== "null" && token !== "undefined") {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch("/api/csqs?limit=100", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers
       });
       if (response.ok) {
         const data = await response.json();
         setCSQs(data);
+      } else if (response.status === 401) {
+        toast.error("Session expired. Please log in again.");
       } else {
         toast.error("Failed to load CSQs");
       }
