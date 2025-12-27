@@ -101,15 +101,6 @@ export default function Home() {
             className="text-center space-y-8 sm:space-y-10"
           >
             <motion.div variants={itemVariants} className="space-y-4 sm:space-y-6">
-              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs sm:text-sm font-bold tracking-wide uppercase mb-2"
-              >
-                <Sparkles className="w-3 h-3 sm:w-4 h-4" />
-                The Ultimate Economics Hub
-              </motion.div>
               <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] px-2">
                 Master Economics <br className="hidden sm:block" />
                 <span className="text-primary drop-shadow-sm">Made Simple.</span>
