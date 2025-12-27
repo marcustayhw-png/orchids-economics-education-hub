@@ -1,4 +1,3 @@
-import { SingaporeEconomyDashboard } from "./SingaporeEconomyDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, GraduationCap, Lightbulb } from "lucide-react";
