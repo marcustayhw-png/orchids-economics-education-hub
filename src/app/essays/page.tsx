@@ -73,14 +73,14 @@ export default async function EssaysPage() {
 
             {/* Study Tips */}
             <div className="mt-8 sm:mt-12 p-6 bg-muted/50 border-2 rounded-xl overflow-hidden">
-              <h2 className="text-xl font-bold mb-4">How to Learn from Model Answers</h2>
+              <h2 className="text-xl font-bold mb-4">Tips for Using Model Essays & CSQs</h2>
               <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
-                <p className="break-words">• Study the structure and flow of arguments - note how each paragraph builds on the previous one</p>
-                <p className="break-words">• Pay attention to how economic concepts are defined and applied to the question</p>
-                <p className="break-words">• Observe how diagrams are integrated and explained within the text</p>
-                <p className="break-words">• Learn from the evaluative comments - understand why certain points earn more marks</p>
-                <p className="break-words">• Practice rewriting answers in your own words to internalize the techniques</p>
-                <p className="break-words">• Compare your own attempts with these models to identify areas for improvement</p>
+                <p className="break-words">• Read the question carefully first, then attempt your own answer before viewing the model</p>
+                <p className="break-words">• Identify the essay structure: introduction, body paragraphs (thesis & anti-thesis), and conclusion</p>
+                <p className="break-words">• Note how economic concepts are defined and linked to real-world examples</p>
+                <p className="break-words">• For CSQs, pay attention to command words (explain, analyse, discuss, evaluate) and adjust your response depth accordingly</p>
+                <p className="break-words">• Highlight key phrases and economic terminology that can be reused in your own essays</p>
+                <p className="break-words">• Practice time management by writing timed responses and comparing with these models</p>
               </div>
             </div>
           </div>
