@@ -41,27 +41,32 @@ export function MarkingManager() {
   const [adminComments, setAdminComments] = useState("");
   const [markedFileUrl, setMarkedFileUrl] = useState("");
 
-    const fetchRequests = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("bearer_token");
-        const res = await fetch("/api/marking-requests", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setRequests(data);
-        } else {
-          toast.error("Failed to fetch requests");
+      const fetchRequests = async () => {
+        setLoading(true);
+        try {
+          const token = localStorage.getItem("bearer_token");
+          const headers: Record<string, string> = {};
+          if (token && token !== "null" && token !== "undefined") {
+            headers["Authorization"] = `Bearer ${token}`;
+          }
+          
+          const res = await fetch("/api/marking-requests", {
+            headers
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setRequests(data);
+          } else if (res.status === 401) {
+            toast.error("Session expired. Please log in again.");
+          } else {
+            toast.error("Failed to fetch requests");
+          }
+        } catch (error) {
+          toast.error("Error fetching requests");
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        toast.error("Error fetching requests");
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
     useEffect(() => {
       fetchRequests();
