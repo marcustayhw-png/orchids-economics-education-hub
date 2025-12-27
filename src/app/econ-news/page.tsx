@@ -224,19 +224,21 @@ export default function EconNewsPage() {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-2 mb-4 px-2">
-                <Zap className="w-5 h-5 text-red-500 animate-pulse" />
-                <h3 className="text-xl font-black tracking-tight uppercase">Live Indicators</h3>
-              </div>
-              <SingaporeEconomyDashboard />
-            </motion.div>
+            {/* Sidebar */}
+            <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24">
+              {activeCategory === "Singapore" && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-center gap-2 mb-4 px-2">
+                    <Zap className="w-5 h-5 text-red-500 animate-pulse" />
+                    <h3 className="text-xl font-black tracking-tight uppercase">Live Indicators</h3>
+                  </div>
+                  <SingaporeEconomyDashboard />
+                </motion.div>
+              )}
 
             {/* Why Current Affairs Card */}
             <Card className="rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-primary/5 border-primary/10 overflow-hidden relative group">
