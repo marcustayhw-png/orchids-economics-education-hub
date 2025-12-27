@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, FileText, PenTool, Award, Users, Sparkles, Loader2, ArrowRight, TrendingUp } from "lucide-react";
+import { BookOpen, FileText, PenTool, Award, Users, Sparkles, Loader2, ArrowRight, TrendingUp, Globe, Zap } from "lucide-react";
 import { motion, useScroll, useSpring } from "framer-motion";
+import { SingaporeEconomyDashboard } from "@/components/SingaporeEconomyDashboard";
 
 export default function Home() {
   const [stats, setStats] = useState({
@@ -22,20 +23,6 @@ export default function Home() {
     damping: 30,
     restDelta: 0.001
   });
-
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "EconStack",
-    "description": "Comprehensive economics education platform providing study notes, model essays, CSQ answers, and interactive flashcards for JC and Secondary School Economics students in Singapore",
-    "url": typeof window !== "undefined" ? window.location.origin : "",
-    "educationalCredentialAwarded": "Economics Study Resources",
-    "offers": {
-      "@type": "Offer",
-      "category": "Educational Resources",
-      "availability": "https://schema.org/InStock"
-    }
-  };
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -92,27 +79,11 @@ export default function Home() {
     }
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { duration: 0.5 }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background selection:bg-primary/30 overflow-x-hidden">
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-primary origin-left z-50"
         style={{ scaleX }}
-      />
-      
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(websiteSchema)
-        }}
       />
       
       {/* Hero Section */}
@@ -183,6 +154,55 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SG Economy Live Section - HIGH IMPACT */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-12 items-center">
+            <div className="lg:col-span-3 space-y-6 sm:space-y-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold tracking-wide uppercase">
+                  <Zap className="w-3 h-3" /> Live Data
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                  Singapore Economy <br />
+                  <span className="text-primary">At Your Fingertips.</span>
+                </h2>
+                <p className="text-base sm:text-xl text-muted-foreground font-medium leading-relaxed max-w-xl">
+                  Don't just memorize theory—apply it. Use these real-time economic indicators to elevate your "Application" and "Evaluation" marks in essays and CSQs.
+                </p>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    Core Inflation
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    GDP Growth
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    S$NEER Stance
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="lg:col-span-2"
+            >
+              <SingaporeEconomyDashboard />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Grid */}
       <section className="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-muted/20 relative">
         <div className="max-w-7xl mx-auto">
@@ -205,13 +225,12 @@ export default function Home() {
               { title: "Model Essays", desc: "Analyze high-scoring essays with detailed examiner comments and breakdown of marking points.", icon: FileText, href: "/essays", color: "text-green-500", bg: "bg-green-500/10" },
               { title: "CSQ Mastery", desc: "Practice Case Study Questions with curated data sets and step-by-step model answers.", icon: TrendingUp, href: "/essays/csq", color: "text-purple-500", bg: "bg-purple-500/10" },
               { title: "Mark My Work", desc: "Get personalized, professional feedback on your practice answers from experienced tutors.", icon: PenTool, href: "/mark-my-work", color: "text-orange-500", bg: "bg-orange-500/10" },
-              { title: "Student-Centric", desc: "Built by students, for students. We know exactly where you struggle and how to fix it.", icon: Users, color: "text-pink-500", bg: "bg-pink-500/10" }
+              { title: "Current Affairs", desc: "Stay updated with real-world economic news linked directly to your JC syllabus topics.", icon: Globe, href: "/econ-news", color: "text-pink-500", bg: "bg-pink-500/10" }
             ].map((feature, idx) => (
               <motion.div
                 key={idx}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: idx * 0.05 }}
               >
@@ -242,7 +261,7 @@ export default function Home() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+      <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden relative border-t border-border/50">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] -z-10" />
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
