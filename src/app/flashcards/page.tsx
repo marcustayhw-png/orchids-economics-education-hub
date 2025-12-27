@@ -653,8 +653,8 @@ export default function FlashcardsPage() {
                                           <Sparkles className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
                                         </div>
                                       </div>
-                                      <div className="flex-1 overflow-y-auto px-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                                        <p className="text-sm font-semibold text-primary uppercase tracking-wide mb-4 text-center">
+                                      <div className="flex-1 overflow-y-auto px-6 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                                        <p className="text-sm font-semibold text-primary uppercase tracking-wide mb-5 text-center">
                                           Answer
                                         </p>
                                         <div className="text-left max-w-prose mx-auto">
