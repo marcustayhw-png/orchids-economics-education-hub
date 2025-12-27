@@ -17,7 +17,7 @@ interface EconData {
 }
 
 export function SingaporeEconomyDashboard() {
-  const [data] = useState<EconData[]>([
+  const data: EconData[] = [
     {
       label: "S$NEER Policy Stance",
       value: "Appreciating",
