@@ -102,11 +102,11 @@ export default function EconNewsPage() {
       transition={{ duration: 0.5, delay: index % 5 * 0.1 }}
     >
       <Card 
-        className="border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden bg-card/30 backdrop-blur-md group border border-white/5 rounded-[2rem]"
+        className="border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden bg-card/30 backdrop-blur-md group border border-white/5 rounded-[1.5rem] sm:rounded-[2.5rem]"
       >
         <div className="p-0">
-          <CardHeader className="space-y-6 pb-6 pt-10 px-8 sm:px-10 relative z-10">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+          <CardHeader className="space-y-4 sm:space-y-6 pb-4 sm:pb-6 pt-8 sm:pt-10 px-6 sm:px-10 relative z-10">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] font-black uppercase tracking-widest px-3 py-1">
                   {item.newsCategory}
@@ -121,63 +121,66 @@ export default function EconNewsPage() {
               </div>
             </div>
             
-            <CardTitle className="text-2xl sm:text-4xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300 leading-[1.1]">
+            <CardTitle className="text-xl sm:text-4xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300 leading-[1.1] sm:leading-[1.1]">
               {item.title}
             </CardTitle>
 
             <div className="flex flex-wrap gap-2">
               {item.theories.slice(0, 3).map((theory, idx) => (
-                <span key={idx} className="text-[10px] font-bold text-primary/60 uppercase tracking-widest">
+                <span key={idx} className="text-[9px] sm:text-[10px] font-bold text-primary/60 uppercase tracking-widest">
                   #{theory.replace(/\s+/g, '')}
                 </span>
               ))}
             </div>
           </CardHeader>
 
-          <CardContent className="pt-0 px-8 sm:px-10 pb-10 space-y-8 relative z-10">
+          <CardContent className="pt-0 px-6 sm:px-10 pb-8 sm:pb-10 space-y-6 sm:space-y-8 relative z-10">
             <div 
-              className="prose prose-sm sm:prose-base max-w-none text-foreground/70 leading-relaxed line-clamp-3"
+              className="prose prose-sm sm:prose-base max-w-none text-foreground/70 leading-relaxed line-clamp-3 sm:line-clamp-none"
               dangerouslySetInnerHTML={{ __html: item.content }}
             />
 
-            <div className="grid md:grid-cols-2 gap-6 pt-6 border-t border-border/50">
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-border/50">
               {item.explanation && (
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary/80">
+                  <div className="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-primary/80">
                     <Zap className="w-3 h-3" /> The Logic
                   </div>
                   <div 
-                    className="text-xs text-muted-foreground leading-relaxed line-clamp-2"
+                    className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3"
                     dangerouslySetInnerHTML={{ __html: item.explanation }}
                   />
                 </div>
               )}
               {item.theoryConnection && (
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-green-600/80">
+                  <div className="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-green-600/80">
                     <BookOpen className="w-3 h-3" /> Syllabus
                   </div>
                   <div 
-                    className="text-xs text-muted-foreground leading-relaxed line-clamp-2"
+                    className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3"
                     dangerouslySetInnerHTML={{ __html: item.theoryConnection }}
                   />
                 </div>
               )}
             </div>
 
-            <div className="flex items-center justify-between pt-4">
+            <div className="flex items-center justify-between pt-2 sm:pt-4">
               <div className="flex flex-wrap gap-1.5">
-                {item.topics.slice(0, 2).map((topic, idx) => (
+                {item.topics.slice(0, 1).map((topic, idx) => (
                   <Badge 
                     key={idx} 
                     variant="outline" 
-                    className="text-[9px] font-bold px-3 py-0.5 rounded-full border-border/50 bg-background/50 text-muted-foreground"
+                    className="text-[8px] sm:text-[9px] font-bold px-2 sm:px-3 py-0.5 rounded-full border-border/50 bg-background/50 text-muted-foreground"
                   >
                     {topic}
                   </Badge>
                 ))}
+                {item.topics.length > 1 && (
+                   <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground/50 self-center">+{item.topics.length - 1} more</span>
+                )}
               </div>
-              <Button variant="ghost" size="sm" className="text-xs font-bold text-primary hover:bg-primary/10 rounded-full group/btn">
+              <Button variant="ghost" size="sm" className="h-8 text-[10px] sm:text-xs font-bold text-primary hover:bg-primary/10 rounded-full group/btn px-3">
                 Read Analysis <ArrowRight className="w-3 h-3 ml-1 group-hover/btn:translate-x-1 transition-transform" />
               </Button>
             </div>
