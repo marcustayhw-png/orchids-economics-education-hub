@@ -65,13 +65,13 @@ export function SingaporeEconomyDashboard() {
         
         <CardHeader className="pb-4 border-b border-border/50 bg-muted/20 backdrop-blur-md relative z-10 px-8 pt-8">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-[10px] sm:text-xs font-black flex items-center gap-2 uppercase tracking-[0.2em] text-foreground/80">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/40 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                </span>
-                Terminal: SG Pulse
-              </CardTitle>
+                <CardTitle className="text-[10px] sm:text-xs font-black flex items-center gap-2 uppercase tracking-[0.2em] text-foreground/80">
+                  <span className="flex h-2 w-2 relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+                  </span>
+                  Terminal: SG Pulse
+                </CardTitle>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
