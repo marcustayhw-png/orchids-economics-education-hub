@@ -68,22 +68,27 @@ export function CurrentAffairsManager() {
     fetchArticles();
   }, []);
 
-  const fetchArticles = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/econ-news?limit=100");
-      if (response.ok) {
-        const data = await response.json();
-        setArticles(data);
-      } else {
-        toast.error("Failed to load articles");
+    const fetchArticles = async () => {
+      setIsLoading(true);
+      try {
+        const token = localStorage.getItem("bearer_token");
+        const response = await fetch("/api/econ-news?limit=100", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setArticles(data);
+        } else {
+          toast.error("Failed to load articles");
+        }
+      } catch (error) {
+        toast.error("Error loading articles");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      toast.error("Error loading articles");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
   const filteredArticles = articles.filter((article) => {
     const matchesCategory = filterCategory === "All" || article.newsCategory === filterCategory;
