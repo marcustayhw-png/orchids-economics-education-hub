@@ -142,19 +142,17 @@ export const flashcards = sqliteTable('flashcards', {
 export const econNews = sqliteTable('econ_news', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   title: text('title').notNull(),
-  content: text('content').notNull(), // Main news content
-  theoryDescription: text('theory_description'), // Economic ideas and concepts
-  howItWorks: text('how_it_works'), // For policy/strategy articles
-  strengths: text('strengths'),
-  limitations: text('limitations'),
-  evaluation: text('evaluation'),
+  content: text('content').notNull(), // Summary of news
+  context: text('context'), // Elaborated context
+  explanation: text('explanation'), // Elaborated explanation
+  theoryConnection: text('theory_connection'), // Link to syllabus
   newsCategory: text('news_category').notNull().default('International'),
   topics: text('topics', { mode: 'json' }).notNull(),
   theories: text('theories', { mode: 'json' }).notNull(),
-    publishedDate: text('published_date').notNull(),
-    createdAt: text('created_at').notNull(),
-    updatedAt: text('updated_at').notNull(),
-  });
+  publishedDate: text('published_date').notNull(),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
   
   // Marking Requests table
   export const markingRequests = sqliteTable('marking_requests', {
