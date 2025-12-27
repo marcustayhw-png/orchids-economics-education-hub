@@ -421,6 +421,24 @@
     padding: 0;
   }
   
+  .dark .rich-text-content,
+  .dark .rich-text-content p,
+  .dark .rich-text-content li,
+  .dark .rich-text-content span {
+    color: oklch(0.92 0 0);
+  }
+  
+  .dark .rich-text-content strong {
+    color: oklch(0.98 0 0);
+  }
+  
+  .dark .prose,
+  .dark .prose p,
+  .dark .prose li,
+  .dark .prose span {
+    color: oklch(0.92 0 0);
+  }
+  
   .rich-text-content img {
     max-width: 100%;
     height: auto;
