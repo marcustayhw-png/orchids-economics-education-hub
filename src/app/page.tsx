@@ -202,17 +202,17 @@ export default function Home() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden relative border-t border-border/50">
+      <section className="py-16 sm:py-20 md:py-28 lg:py-32 px-4 sm:px-6 md:px-8 lg:px-8 overflow-hidden relative border-t border-border/50">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] -z-10" />
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center space-y-10"
+          className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10"
         >
-          <div className="space-y-4">
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight">Access Quality <span className="text-primary">Everywhere.</span></h2>
-            <div className="text-base sm:text-xl text-muted-foreground space-y-6 leading-relaxed font-medium px-4">
+          <div className="space-y-3 md:space-y-4">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">Access Quality <span className="text-primary">Everywhere.</span></h2>
+            <div className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground space-y-4 md:space-y-6 leading-relaxed font-medium px-4 md:px-6">
               <p>
                 As an aspiring economics educator, I've seen firsthand how high-quality resources can transform a student's trajectory. This platform is my commitment to democratizing that quality.
               </p>
@@ -221,36 +221,36 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <Button asChild size="lg" variant="outline" className="h-14 px-10 text-base sm:text-lg rounded-2xl border-2 font-bold shadow-sm">
+          <Button asChild size="lg" variant="outline" className="h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl border-2 font-bold shadow-sm">
             <Link href="/about">Read the Full Story</Link>
           </Button>
         </motion.div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-primary rounded-[3rem] p-8 sm:p-16 lg:p-20 text-primary-foreground text-center relative overflow-hidden shadow-2xl shadow-primary/40"
+            className="bg-primary rounded-2xl md:rounded-[3rem] p-6 sm:p-10 md:p-14 lg:p-20 text-primary-foreground text-center relative overflow-hidden shadow-2xl shadow-primary/40"
           >
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-black/10 rounded-full blur-3xl" />
             
-            <div className="relative z-10 space-y-8">
-              <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-tight">
+            <div className="relative z-10 space-y-6 md:space-y-8">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter leading-tight">
                 Ready to Ace Your <br className="hidden sm:block" /> Economics Exam?
               </h2>
-              <p className="text-lg sm:text-xl lg:text-2xl opacity-90 max-w-2xl mx-auto font-medium">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 max-w-2xl mx-auto font-medium">
                 Join hundreds of students using EconStack to master the syllabus and achieve their dream grades.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto h-16 px-12 text-lg font-black rounded-2xl shadow-xl hover:scale-105 transition-transform">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
+                <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto h-12 md:h-14 lg:h-16 px-8 md:px-10 lg:px-12 text-base md:text-lg font-black rounded-xl md:rounded-2xl shadow-xl hover:scale-105 transition-transform">
                   <Link href="/notes">Get Started Free</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-16 px-12 text-lg font-bold rounded-2xl bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-white hover:text-primary transition-all">
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-14 lg:h-16 px-8 md:px-10 lg:px-12 text-base md:text-lg font-bold rounded-xl md:rounded-2xl bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-white hover:text-primary transition-all">
                   <Link href="/flashcards">Try Flashcards</Link>
                 </Button>
               </div>
@@ -260,8 +260,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t border-border/50 text-center text-muted-foreground">
-        <p className="text-sm font-medium">© {new Date().getFullYear()} EconStack. Built with passion for Economics education.</p>
+      <footer className="py-8 md:py-12 px-4 md:px-6 border-t border-border/50 text-center text-muted-foreground">
+        <p className="text-xs md:text-sm font-medium">© {new Date().getFullYear()} EconStack. Built with passion for Economics education.</p>
       </footer>
     </div>
   );
