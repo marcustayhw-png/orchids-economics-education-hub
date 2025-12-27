@@ -148,48 +148,57 @@ export function EssayManager() {
     setShowForm(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-    const examinerCommentsArray = formData.examinerComments
-      .split("\n")
-      .filter((line) => line.trim() !== "");
+      const token = localStorage.getItem("bearer_token");
 
-    const payload = {
-      essayId: formData.essayId,
-      question: formData.question,
-      level: formData.level,
-      marks: formData.marks,
-      topic: formData.topic,
-      difficulty: formData.difficulty,
-      preamble: formData.preamble || null,
-      examinerComments: examinerCommentsArray.length > 0 ? examinerCommentsArray : null,
-      structureNotes: formData.structureNotes || null,
-      modelAnswer: formData.modelAnswer || null,
-    };
+      const examinerCommentsArray = formData.examinerComments
+        .split("\n")
+        .filter((line) => line.trim() !== "");
 
-    try {
-      if (editingId) {
-        const response = await fetch(`/api/essays?essay_id=${editingId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+      const payload = {
+        essayId: formData.essayId,
+        question: formData.question,
+        level: formData.level,
+        marks: formData.marks,
+        topic: formData.topic,
+        difficulty: formData.difficulty,
+        preamble: formData.preamble || null,
+        examinerComments: examinerCommentsArray.length > 0 ? examinerCommentsArray : null,
+        structureNotes: formData.structureNotes || null,
+        modelAnswer: formData.modelAnswer || null,
+      };
 
-        if (response.ok) {
-          toast.success("Essay updated successfully");
-          fetchEssays();
-          resetForm();
+      try {
+        if (editingId) {
+          const response = await fetch(`/api/essays?essay_id=${editingId}`, {
+            method: "PUT",
+            headers: { 
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (response.ok) {
+            toast.success("Essay updated successfully");
+            fetchEssays();
+            resetForm();
+          } else {
+            toast.error("Failed to update essay");
+          }
         } else {
-          toast.error("Failed to update essay");
-        }
-      } else {
-        const response = await fetch("/api/essays", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+          const response = await fetch("/api/essays", {
+            method: "POST",
+            headers: { 
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload),
+          });
+
 
         if (response.ok) {
           toast.success("Essay created successfully");
