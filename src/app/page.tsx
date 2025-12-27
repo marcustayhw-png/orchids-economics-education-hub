@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, FileText, PenTool, Award, Users, Sparkles, Loader2, ArrowRight, TrendingUp, Globe, Zap } from "lucide-react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { SingaporeEconomyDashboard } from "@/components/SingaporeEconomyDashboard";
 
 export default function Home() {
   const [stats, setStats] = useState({
