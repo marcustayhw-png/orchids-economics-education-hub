@@ -35,6 +35,7 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const [tooltipContent, setTooltipContent] = useState("");
+  const [activeTabMobile, setActiveTabMobile] = useState<"extract" | "questions">("extract");
   const extractRef = useRef<HTMLDivElement>(null);
 
   const selectedPart = csq.parts[selectedPartIndex];
