@@ -335,10 +335,15 @@
     cursor: nwse-resize;
   }
   
-  /* Rich Text Content Display (for public pages) */
-  .rich-text-content {
-    line-height: 1.7;
-  }
+    /* Rich Text Content Display (for public pages) */
+    .rich-text-content {
+      line-height: 1.7;
+      color: var(--foreground);
+    }
+    
+    .dark .rich-text-content {
+      color: var(--foreground);
+    }
   
   .rich-text-content h1 {
     font-size: 2em;
