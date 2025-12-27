@@ -1,70 +1,42 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { Metadata } from "next";
+import { db } from "@/db";
+import { csqs as csqsTable, csqParts as csqPartsTable } from "@/db/schema";
+import { eq, asc } from "drizzle-orm";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { CSQSimulator } from "./CSQSimulator";
 
-interface CSQPart {
-  id: number;
-  part: string;
-  question: string;
-  marks: string;
-  extract: string | null;
-  markingScheme: string[] | null;
-  modelAnswer: string | null;
-  orderIndex: number;
-}
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const csq = await db.query.csqs.findFirst({
+    where: eq(csqsTable.csqId, params.id)
+  });
 
-interface CSQ {
-  id: number;
-  csqId: string;
-  title: string;
-  level: string;
-  parts: CSQPart[];
-}
+  if (!csq) return { title: "CSQ Not Found | EconStack" };
 
-export default function CSQDetailPage() {
-  const params = useParams();
-  const [csq, setCSQ] = useState<CSQ | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-
-  useEffect(() => {
-    fetchCSQ();
-  }, [params.id]);
-
-  const fetchCSQ = async () => {
-    setIsLoading(true);
-    setNotFound(false);
-    try {
-      const response = await fetch(`/api/csqs?csq_id=${params.id}`);
-      if (response.ok) {
-        const data = await response.json();
-        setCSQ(data);
-      } else if (response.status === 404) {
-        setNotFound(true);
-      }
-    } catch (error) {
-      console.error("Error fetching CSQ:", error);
-      setNotFound(true);
-    } finally {
-      setIsLoading(false);
-    }
+  return {
+    title: `${csq.title} | Case Study Question | EconStack`,
+    description: `Detailed analysis and model answers for the economics case study: ${csq.title}. Level: ${csq.level}.`,
   };
+}
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    );
-  }
+async function getCSQData(id: string) {
+  const csq = await db.query.csqs.findFirst({
+    where: eq(csqsTable.csqId, id),
+    with: {
+      parts: {
+        orderBy: [asc(csqPartsTable.orderIndex)]
+      }
+    }
+  });
 
-  if (notFound || !csq) {
+  return csq;
+}
+
+export default async function CSQDetailPage({ params }: { params: { id: string } }) {
+  const csq = await getCSQData(params.id);
+
+  if (!csq) {
     return (
       <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -83,115 +55,24 @@ export default function CSQDetailPage() {
     );
   }
 
-  const totalMarks = csq.parts.reduce((sum, part) => sum + parseInt(part.marks), 0);
-
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-6">
-        {/* Back Button */}
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Top Nav for CSQ Detail */}
+      <div className="bg-muted/30 border-b px-4 py-2 flex items-center justify-between">
         <Link href="/essays">
-          <Button variant="outline">
+          <Button variant="ghost" size="sm" className="h-8">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to All CSQs
           </Button>
         </Link>
-
-        {/* Title Card */}
-        <Card className="border-2">
-          <CardHeader>
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <Badge variant="secondary">{csq.level}</Badge>
-                <Badge variant="outline">{totalMarks} total marks</Badge>
-                <Badge>{csq.parts.length} parts</Badge>
-              </div>
-              <CardTitle className="text-2xl">{csq.title}</CardTitle>
-            </div>
-          </CardHeader>
-        </Card>
-
-        {/* Parts */}
-        {csq.parts.map((part, index) => (
-          <div key={part.id} className="space-y-4">
-            {/* Part Header */}
-            <Card className="border-2 border-primary">
-              <CardHeader>
-                <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <Badge>Part {part.part}</Badge>
-                    <Badge variant="outline">{part.marks} marks</Badge>
-                  </div>
-                  <CardTitle className="text-lg">{part.question}</CardTitle>
-                </div>
-              </CardHeader>
-            </Card>
-
-            {/* Extract */}
-            {part.extract && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Extract</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div 
-                    className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
-                    dangerouslySetInnerHTML={{ __html: part.extract }}
-                  />
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Marking Scheme */}
-            {part.markingScheme && part.markingScheme.length > 0 && (
-              <Card className="bg-muted/50">
-                <CardHeader>
-                  <CardTitle className="text-base">Marking Scheme</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {part.markingScheme.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-primary mt-1">•</span>
-                        <span className="text-muted-foreground">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Model Answer */}
-            {part.modelAnswer && (
-              <Card className="bg-primary/5 border-primary/20">
-                <CardHeader>
-                  <CardTitle className="text-base">Model Answer</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div 
-                    className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
-                    dangerouslySetInnerHTML={{ __html: part.modelAnswer }}
-                  />
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Divider between parts */}
-            {index < csq.parts.length - 1 && (
-              <div className="border-t-2 border-dashed my-8" />
-            )}
-          </div>
-        ))}
-
-        {/* Download Button */}
-        <Card>
-          <CardContent className="pt-6">
-            <Button className="w-full" disabled>
-              <Download className="w-4 h-4 mr-2" />
-              Download Complete Case Study (Coming Soon)
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground hidden sm:block">Interactive Simulator Mode</span>
+        </div>
       </div>
+
+      <main className="flex-1">
+        <CSQSimulator csq={csq as any} />
+      </main>
     </div>
   );
 }
