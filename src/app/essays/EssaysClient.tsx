@@ -78,7 +78,7 @@ export function EssaysClient({
   });
 
   return (
-    <Tabs defaultValue="essays" className="space-y-6 sm:space-y-8 w-full" onValueChange={setSelectedTab}>
+    <Tabs defaultValue="essays" className="space-y-6 sm:space-y-8 w-full" onValueChange={handleTabChange}>
       <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-9 p-1 gap-1">
         <TabsTrigger value="essays" className="w-full text-sm sm:text-base py-2.5 sm:py-1">
           Model Essays
