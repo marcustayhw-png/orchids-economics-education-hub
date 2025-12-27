@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { essays as essaysTable, csqs as csqsTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import { EssaysClient } from "./EssaysClient";
+import { Sidebar } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Economics Model Essays & CSQ Answers | EconStack",
@@ -66,19 +67,27 @@ export default async function EssaysPage() {
           </p>
         </div>
 
-        <EssaysClient initialEssays={essays as any} initialCSQs={csqs as any} />
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1 min-w-0">
+            <EssaysClient initialEssays={essays as any} initialCSQs={csqs as any} />
 
-        {/* Study Tips */}
-        <div className="mt-8 sm:mt-12 p-6 bg-muted/50 border-2 rounded-xl overflow-hidden">
-          <h2 className="text-xl font-bold mb-4">How to Learn from Model Answers</h2>
-          <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
-            <p className="break-words">• Study the structure and flow of arguments - note how each paragraph builds on the previous one</p>
-            <p className="break-words">• Pay attention to how economic concepts are defined and applied to the question</p>
-            <p className="break-words">• Observe how diagrams are integrated and explained within the text</p>
-            <p className="break-words">• Learn from the evaluative comments - understand why certain points earn more marks</p>
-            <p className="break-words">• Practice rewriting answers in your own words to internalize the techniques</p>
-            <p className="break-words">• Compare your own attempts with these models to identify areas for improvement</p>
+            {/* Study Tips */}
+            <div className="mt-8 sm:mt-12 p-6 bg-muted/50 border-2 rounded-xl overflow-hidden">
+              <h2 className="text-xl font-bold mb-4">How to Learn from Model Answers</h2>
+              <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
+                <p className="break-words">• Study the structure and flow of arguments - note how each paragraph builds on the previous one</p>
+                <p className="break-words">• Pay attention to how economic concepts are defined and applied to the question</p>
+                <p className="break-words">• Observe how diagrams are integrated and explained within the text</p>
+                <p className="break-words">• Learn from the evaluative comments - understand why certain points earn more marks</p>
+                <p className="break-words">• Practice rewriting answers in your own words to internalize the techniques</p>
+                <p className="break-words">• Compare your own attempts with these models to identify areas for improvement</p>
+              </div>
+            </div>
           </div>
+
+          <aside className="w-full lg:w-80 flex-shrink-0">
+            <Sidebar />
+          </aside>
         </div>
       </div>
     </div>
