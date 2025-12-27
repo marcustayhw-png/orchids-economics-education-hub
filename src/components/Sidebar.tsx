@@ -9,10 +9,10 @@ export function Sidebar() {
       
       <Card className="border-2 shadow-sm bg-card/50 backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold flex items-center gap-2">
-            <Lightbulb className="h-4 w-4 text-amber-500" />
-            Study Tip
-          </CardTitle>
+<CardTitle className="text-sm font-bold flex items-center gap-2">
+              <Lightbulb className="h-4 w-4 text-amber-500" />
+              Command Words Cheat Sheet
+            </CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="text-xs text-muted-foreground leading-relaxed space-y-1.5">
