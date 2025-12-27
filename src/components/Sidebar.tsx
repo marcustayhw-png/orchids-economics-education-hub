@@ -1,26 +1,50 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, GraduationCap, Lightbulb } from "lucide-react";
+import { ExternalLink, GraduationCap, Lightbulb, FileText, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
-export function Sidebar() {
+interface SidebarProps {
+  activeTab?: "essays" | "csq";
+}
+
+export function Sidebar({ activeTab = "essays" }: SidebarProps) {
   return (
     <div className="space-y-6">
       
       <Card className="border-2 shadow-sm bg-card/50 backdrop-blur-sm">
         <CardHeader className="pb-2">
-<CardTitle className="text-sm font-bold flex items-center gap-2">
-              <Lightbulb className="h-4 w-4 text-amber-500" />
-              Command Words Cheat Sheet
-            </CardTitle>
+          <CardTitle className="text-sm font-bold flex items-center gap-2">
+            {activeTab === "essays" ? (
+              <>
+                <FileText className="h-4 w-4 text-amber-500" />
+                Question Types
+              </>
+            ) : (
+              <>
+                <MessageSquare className="h-4 w-4 text-amber-500" />
+                Command Words
+              </>
+            )}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="text-xs text-muted-foreground leading-relaxed space-y-1.5">
-            <li><strong>Define</strong> – State the meaning clearly</li>
-            <li><strong>Explain</strong> – Show cause & effect with reasoning</li>
-            <li><strong>Analyse</strong> – Break down using economic theory</li>
-            <li><strong>Discuss/Evaluate</strong> – Weigh pros vs cons with judgment</li>
-          </ul>
+          {activeTab === "essays" ? (
+            <ul className="text-xs text-muted-foreground leading-relaxed space-y-1.5">
+              <li><strong>Discuss</strong> – Present multiple perspectives with evaluation</li>
+              <li><strong>Assess</strong> – Weigh evidence to reach a supported conclusion</li>
+              <li><strong>To what extent</strong> – Argue degree of agreement with judgment</li>
+              <li><strong>Compare</strong> – Examine similarities and differences</li>
+            </ul>
+          ) : (
+            <ul className="text-xs text-muted-foreground leading-relaxed space-y-1.5">
+              <li><strong>Define</strong> – State the meaning clearly</li>
+              <li><strong>Explain</strong> – Show cause & effect with reasoning</li>
+              <li><strong>Analyse</strong> – Break down using economic theory</li>
+              <li><strong>Discuss/Evaluate</strong> – Weigh pros vs cons with judgment</li>
+            </ul>
+          )}
         </CardContent>
       </Card>
 
