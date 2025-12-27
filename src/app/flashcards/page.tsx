@@ -511,8 +511,8 @@ export default function FlashcardsPage() {
                       </div>
 
                           {/* 3D Flip Card Container with Swipe and Animated Indicators */}
-                            <div className="perspective-1000 w-full flex justify-center mb-8 relative">
-                              {/* Animated Swipe Indicators - Only on Mobile */}
+                            <div className="perspective-1000 w-full flex justify-center mb-6 md:mb-8 relative">
+                              {/* Animated Swipe Indicators - Only on Mobile/Tablet */}
                               <AnimatePresence>
                                 {showSwipeHint && (
                                   <>
@@ -521,7 +521,7 @@ export default function FlashcardsPage() {
                                       initial={{ opacity: 0, x: 20 }}
                                       animate={{ opacity: 1, x: 0 }}
                                       exit={{ opacity: 0, x: -20 }}
-                                      className="absolute left-[-10px] sm:left-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
+                                      className="absolute left-[-10px] sm:left-[-30px] md:left-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
                                     >
                                       <motion.div
                                         animate={{ 
@@ -535,8 +535,8 @@ export default function FlashcardsPage() {
                                         }}
                                         className="flex items-center gap-1"
                                       >
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
-                                          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                                        <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
+                                          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-primary" />
                                         </div>
                                       </motion.div>
                                     </motion.div>
@@ -546,7 +546,7 @@ export default function FlashcardsPage() {
                                       initial={{ opacity: 0, x: -20 }}
                                       animate={{ opacity: 1, x: 0 }}
                                       exit={{ opacity: 0, x: 20 }}
-                                      className="absolute right-[-10px] sm:right-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
+                                      className="absolute right-[-10px] sm:right-[-30px] md:right-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
                                     >
                                       <motion.div
                                         animate={{ 
@@ -560,8 +560,8 @@ export default function FlashcardsPage() {
                                         }}
                                         className="flex items-center gap-1"
                                       >
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
-                                          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                                        <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
+                                          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-primary" />
                                         </div>
                                       </motion.div>
                                     </motion.div>
