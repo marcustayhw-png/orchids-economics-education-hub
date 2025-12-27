@@ -99,110 +99,139 @@ export default function EconNewsPage() {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index % 5 * 0.1 }}
+      transition={{ duration: 0.8, delay: index % 5 * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       <Card 
-        className="border-none shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden bg-card/50 backdrop-blur-md group relative"
+        className="border-none shadow-2xl hover:shadow-[0_32px_64px_-15px_rgba(0,0,0,0.2)] transition-all duration-700 overflow-hidden bg-card/40 backdrop-blur-xl group relative border border-white/5"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
         
-        <CardHeader className="space-y-6 pb-8 border-b border-border/20 bg-muted/5 relative z-10">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Badge 
-                variant={item.newsCategory === "Singapore" ? "default" : "secondary"}
-                className="text-[10px] font-black px-3 py-1 uppercase tracking-widest"
-              >
-                {item.newsCategory === "Singapore" ? (
-                  <span className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5" /> Singapore</span>
-                ) : (
-                  <span className="flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> International</span>
-                )}
-              </Badge>
-              <Badge variant="outline" className="text-[10px] font-bold border-primary/20 bg-background/50 px-3 py-1 uppercase tracking-widest">
-                {new Date(item.publishedDate).toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </Badge>
-            </div>
-          </div>
-          
-          <CardTitle className="text-2xl sm:text-4xl lg:text-5xl font-black break-words leading-[1.05] tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
-            {item.title}
-          </CardTitle>
-
-          <div className="flex flex-wrap gap-2">
-            {item.theories.map((theory, idx) => (
-              <Badge key={idx} variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[10px] py-0.5 px-2">
-                {theory}
-              </Badge>
-            ))}
-          </div>
-        </CardHeader>
-
-        <CardContent className="pt-8 space-y-2 relative z-10">
-          {/* Main Summary */}
-          <div className="mb-10">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="p-2 rounded-xl bg-primary/10">
-                <Newspaper className="w-5 h-5 text-primary" />
+        <div className="p-1">
+          <CardHeader className="space-y-8 pb-10 pt-10 px-8 sm:px-12 bg-gradient-to-b from-muted/20 to-transparent relative z-10">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className={`p-2.5 rounded-xl ${item.newsCategory === "Singapore" ? "bg-red-500/10 text-red-500" : "bg-blue-500/10 text-blue-500"} backdrop-blur-md border border-current/20`}>
+                  {item.newsCategory === "Singapore" ? <Building2 className="w-5 h-5" /> : <Globe className="w-5 h-5" />}
+                </div>
+                <div className="space-y-0.5">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 block">Category</span>
+                  <span className="text-xs font-bold uppercase tracking-wider">{item.newsCategory}</span>
+                </div>
               </div>
-              <h3 className="text-xl font-black uppercase tracking-tight">Executive Summary</h3>
+              
+              <div className="flex items-center gap-3 bg-background/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/5">
+                <Calendar className="w-4 h-4 text-primary" />
+                <span className="text-[10px] font-black uppercase tracking-widest">
+                  {new Date(item.publishedDate).toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </span>
+              </div>
             </div>
-            <div 
-              className="prose prose-base sm:prose-lg max-w-none text-foreground/80 leading-relaxed font-medium"
-              dangerouslySetInnerHTML={{ __html: item.content }}
-            />
-          </div>
+            
+            <CardTitle className="text-3xl sm:text-5xl lg:text-6xl font-black break-words leading-[0.95] tracking-tighter text-foreground group-hover:text-primary transition-colors duration-500">
+              {item.title}
+            </CardTitle>
 
-          {/* Detailed Explanation and Context Sections */}
-          <div className="grid gap-6 pt-10 border-t border-border/20">
-            {item.context && renderSection(
-              "Contextual Analysis", 
-              item.context, 
-              <Target className="w-5 h-5" />, 
-              "bg-blue-500/10 text-blue-500",
-              true
-            )}
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {item.explanation && renderSection(
-                "Economic Logic", 
-                item.explanation, 
-                <Zap className="w-5 h-5" />, 
-                "bg-orange-500/10 text-orange-500"
-              )}
-
-              {item.theoryConnection && renderSection(
-                "Syllabus Bridge", 
-                item.theoryConnection, 
-                <BookOpen className="w-5 h-5" />, 
-                "bg-green-500/10 text-green-500"
-              )}
-            </div>
-          </div>
-
-          {/* Topics Footer */}
-          <div className="mt-8 pt-6 border-t border-border/20">
-            <div className="flex items-center gap-2 mb-4">
-              <Layers className="w-4 h-4 text-muted-foreground" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Syllabus Tags</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {item.topics.map((topic, idx) => (
-                <Badge 
-                  key={idx} 
-                  variant="secondary" 
-                  className="text-[10px] font-bold px-4 py-1.5 rounded-full bg-muted/50 hover:bg-primary hover:text-primary-foreground transition-all cursor-default uppercase tracking-wider"
-                >
-                  {topic}
+            <div className="flex flex-wrap gap-2.5">
+              {item.theories.map((theory, idx) => (
+                <Badge key={idx} variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[10px] py-1.5 px-4 rounded-full font-bold uppercase tracking-wider">
+                  {theory}
                 </Badge>
               ))}
             </div>
-          </div>
-        </CardContent>
+          </CardHeader>
+
+          <CardContent className="pt-2 px-8 sm:px-12 pb-12 space-y-12 relative z-10">
+            {/* Main Summary */}
+            <div className="relative">
+              <div className="absolute -left-4 sm:-left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary/50 to-transparent rounded-full opacity-50" />
+              <div className="flex items-center gap-3 mb-8">
+                <div className="p-2 rounded-xl bg-primary/10 border border-primary/20">
+                  <Newspaper className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="text-lg font-black uppercase tracking-tight">The Lowdown</h3>
+              </div>
+              <div 
+                className="prose prose-base sm:prose-xl max-w-none text-foreground/80 leading-relaxed font-medium selection:bg-primary/20"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
+            </div>
+
+            {/* Detailed Explanation and Context Sections */}
+            <div className="grid gap-10 pt-12 border-t border-border/10">
+              {item.context && (
+                <div className="space-y-4 col-span-full">
+                   <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20">
+                      <Target className="w-5 h-5" />
+                    </div>
+                    <h4 className="text-lg font-black uppercase tracking-tight">Real-World Context</h4>
+                  </div>
+                  <div 
+                    className="prose prose-base max-w-none text-muted-foreground bg-blue-500/[0.02] p-8 rounded-[2rem] border border-blue-500/10 leading-relaxed italic shadow-inner"
+                    dangerouslySetInnerHTML={{ __html: item.context }}
+                  />
+                </div>
+              )}
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {item.explanation && (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                        <Zap className="w-5 h-5" />
+                      </div>
+                      <h4 className="text-lg font-black uppercase tracking-tight text-orange-500/90">The Logic</h4>
+                    </div>
+                    <div 
+                      className="prose prose-sm sm:prose-base max-w-none text-muted-foreground bg-orange-500/[0.02] p-6 rounded-3xl border border-orange-500/10 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: item.explanation }}
+                    />
+                  </div>
+                )}
+
+                {item.theoryConnection && (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-green-500/10 text-green-500 border border-green-500/20">
+                        <BookOpen className="w-5 h-5" />
+                      </div>
+                      <h4 className="text-lg font-black uppercase tracking-tight text-green-500/90">Syllabus Link</h4>
+                    </div>
+                    <div 
+                      className="prose prose-sm sm:prose-base max-w-none text-muted-foreground bg-green-500/[0.02] p-6 rounded-3xl border border-green-500/10 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: item.theoryConnection }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Topics Footer */}
+            <div className="pt-10 border-t border-border/10">
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2 bg-muted/30 px-4 py-2 rounded-xl border border-border/50">
+                  <Layers className="w-4 h-4 text-primary" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Syllabus Tags</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {item.topics.map((topic, idx) => (
+                    <Badge 
+                      key={idx} 
+                      variant="secondary" 
+                      className="text-[10px] font-bold px-5 py-2 rounded-full bg-background/50 hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-border/50 uppercase tracking-widest"
+                    >
+                      {topic}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </div>
       </Card>
     </motion.div>
   );
