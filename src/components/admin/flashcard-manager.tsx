@@ -175,19 +175,31 @@ export function FlashcardManager() {
     setShowForm(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-    try {
-      const method = editingId ? "PUT" : "POST";
-      const url = editingId ? `/api/flashcards?id=${editingId}` : "/api/flashcards";
-      
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const token = localStorage.getItem("bearer_token");
+
+      try {
+        const method = editingId ? "PUT" : "POST";
+        const url = editingId ? `/api/flashcards?id=${editingId}` : "/api/flashcards";
+        
+        // Fix difficulty validation: send null instead of empty string
+        const payload = {
+          ...formData,
+          difficulty: formData.difficulty === "" ? null : formData.difficulty
+        };
+
+        const response = await fetch(url, {
+          method,
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload),
+        });
+
 
       if (response.ok) {
         toast.success(`Flashcard ${editingId ? "updated" : "created"} successfully`);
