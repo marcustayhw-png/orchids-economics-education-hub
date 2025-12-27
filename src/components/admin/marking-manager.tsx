@@ -41,90 +41,103 @@ export function MarkingManager() {
   const [adminComments, setAdminComments] = useState("");
   const [markedFileUrl, setMarkedFileUrl] = useState("");
 
-  const fetchRequests = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/marking-requests");
-      if (res.ok) {
+    const fetchRequests = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("bearer_token");
+        const res = await fetch("/api/marking-requests", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setRequests(data);
+        } else {
+          toast.error("Failed to fetch requests");
+        }
+      } catch (error) {
+        toast.error("Error fetching requests");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchRequests();
+    }, []);
+
+    const handleOpenRequest = (request: MarkingRequest) => {
+      setSelectedRequest(request);
+      setStatus(request.status);
+      setAdminComments(request.adminComments || "");
+      setMarkedFileUrl(request.markedFileUrl || "");
+    };
+
+    const handleUpdate = async () => {
+      if (!selectedRequest) return;
+      setIsUpdating(true);
+      try {
+        const token = localStorage.getItem("bearer_token");
+        const res = await fetch("/api/marking-requests", {
+          method: "PATCH",
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: selectedRequest.id,
+            status,
+            adminComments,
+            markedFileUrl,
+          }),
+        });
+
+        if (res.ok) {
+          toast.success("Request updated successfully");
+          fetchRequests();
+          setSelectedRequest(null);
+        } else {
+          toast.error("Failed to update request");
+        }
+      } catch (error) {
+        toast.error("Error updating request");
+      } finally {
+        setIsUpdating(false);
+      }
+    };
+
+    const handleMarkedFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      setIsUploadingMarked(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const token = localStorage.getItem("bearer_token");
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
         const data = await res.json();
-        setRequests(data);
-      } else {
-        toast.error("Failed to fetch requests");
+        if (res.ok) {
+          setMarkedFileUrl(data.fileUrl);
+          toast.success("Marked file uploaded");
+        } else {
+          toast.error(data.error || "Upload failed");
+        }
+      } catch (error) {
+        toast.error("Upload error");
+      } finally {
+        setIsUploadingMarked(false);
       }
-    } catch (error) {
-      toast.error("Error fetching requests");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRequests();
-  }, []);
-
-  const handleOpenRequest = (request: MarkingRequest) => {
-    setSelectedRequest(request);
-    setStatus(request.status);
-    setAdminComments(request.adminComments || "");
-    setMarkedFileUrl(request.markedFileUrl || "");
-  };
-
-  const handleUpdate = async () => {
-    if (!selectedRequest) return;
-    setIsUpdating(true);
-    try {
-      const res = await fetch("/api/marking-requests", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: selectedRequest.id,
-          status,
-          adminComments,
-          markedFileUrl,
-        }),
-      });
-
-      if (res.ok) {
-        toast.success("Request updated successfully");
-        fetchRequests();
-        setSelectedRequest(null);
-      } else {
-        toast.error("Failed to update request");
-      }
-    } catch (error) {
-      toast.error("Error updating request");
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const handleMarkedFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploadingMarked(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setMarkedFileUrl(data.fileUrl);
-        toast.success("Marked file uploaded");
-      } else {
-        toast.error(data.error || "Upload failed");
-      }
-    } catch (error) {
-      toast.error("Upload error");
-    } finally {
-      setIsUploadingMarked(false);
-    }
-  };
+    };
 
   const filteredRequests = requests.filter(r => 
     r.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
