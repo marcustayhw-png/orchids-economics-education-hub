@@ -13,7 +13,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loader2, Sparkles, RefreshCw, BookOpen, ArrowRight, ArrowLeft, Users, Globe, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+type PanInfo = {
+  point: { x: number; y: number };
+  delta: { x: number; y: number };
+  offset: { x: number; y: number };
+  velocity: { x: number; y: number };
+};
 
 type Flashcard = {
   id: number;
