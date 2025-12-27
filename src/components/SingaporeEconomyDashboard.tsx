@@ -123,17 +123,17 @@ export function SingaporeEconomyDashboard() {
                 </div>
               </div>
               
-              <div className="relative h-1.5 w-full bg-muted/50 rounded-full overflow-hidden">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: index === 1 ? "85%" : index === 0 ? "45%" : "65%" }}
-                  transition={{ delay: index * 0.1 + 0.5, duration: 1.5, ease: "circOut" }}
-                  className={`h-full rounded-full relative z-10 ${
-                    item.trend === "up" ? "bg-emerald-500" : 
-                    item.trend === "down" ? "bg-red-500" : "bg-amber-500"
-                  }`} 
-                />
-              </div>
+                <div className="relative h-1 w-full bg-muted/30 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: index === 1 ? "85%" : index === 0 ? "45%" : "65%" }}
+                    transition={{ delay: index * 0.1 + 0.5, duration: 1.5, ease: "circOut" }}
+                    className={`h-full rounded-full relative z-10 ${
+                      item.trend === "up" ? "bg-primary" : 
+                      item.trend === "down" ? "bg-primary/60" : "bg-primary/40"
+                    }`} 
+                  />
+                </div>
               
               <p className="text-[11px] text-muted-foreground/70 leading-relaxed font-medium line-clamp-2">
                 {item.description}
