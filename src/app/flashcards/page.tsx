@@ -569,12 +569,12 @@ export default function FlashcardsPage() {
                               )}
                             </AnimatePresence>
   
-                            <motion.div 
-                              className="relative w-full max-w-4xl cursor-pointer touch-pan-y"
-                              style={{ 
-                                perspective: '1000px',
-                                minHeight: '650px',
-                              }}
+                              <motion.div 
+                                className="relative w-full max-w-5xl cursor-pointer touch-pan-y"
+                                style={{ 
+                                  perspective: '1000px',
+                                  minHeight: '75vh',
+                                }}
                               drag="x"
                               dragConstraints={{ left: 0, right: 0 }}
                               dragElastic={0.2}
