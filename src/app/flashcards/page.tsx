@@ -507,176 +507,176 @@ export default function FlashcardsPage() {
                       </div>
 
                         {/* 3D Flip Card Container with Swipe and Animated Indicators */}
-                        <div className="perspective-1000 w-full flex justify-center mb-16 relative">
-                          {/* Animated Swipe Indicators - Only on Mobile */}
-                          <AnimatePresence>
-                            {showSwipeHint && (
-                              <>
-                                {/* Left Swipe Indicator */}
-                                <motion.div
-                                  initial={{ opacity: 0, x: 20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  exit={{ opacity: 0, x: -20 }}
-                                  className="absolute left-[-10px] sm:left-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
-                                >
+                          <div className="perspective-1000 w-full flex justify-center mb-8 relative">
+                            {/* Animated Swipe Indicators - Only on Mobile */}
+                            <AnimatePresence>
+                              {showSwipeHint && (
+                                <>
+                                  {/* Left Swipe Indicator */}
                                   <motion.div
-                                    animate={{ 
-                                      x: [-8, 0, -8],
-                                      opacity: [0.4, 1, 0.4]
-                                    }}
-                                    transition={{ 
-                                      duration: 2,
-                                      repeat: Infinity,
-                                      ease: "easeInOut"
-                                    }}
-                                    className="flex items-center gap-1"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="absolute left-[-10px] sm:left-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
                                   >
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
-                                      <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                                    </div>
+                                    <motion.div
+                                      animate={{ 
+                                        x: [-8, 0, -8],
+                                        opacity: [0.4, 1, 0.4]
+                                      }}
+                                      transition={{ 
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
+                                      }}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
+                                        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                                      </div>
+                                    </motion.div>
                                   </motion.div>
-                                </motion.div>
   
-                                {/* Right Swipe Indicator */}
-                                <motion.div
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  exit={{ opacity: 0, x: 20 }}
-                                  className="absolute right-[-10px] sm:right-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
-                                >
+                                  {/* Right Swipe Indicator */}
                                   <motion.div
-                                    animate={{ 
-                                      x: [8, 0, 8],
-                                      opacity: [0.4, 1, 0.4]
-                                    }}
-                                    transition={{ 
-                                      duration: 2,
-                                      repeat: Infinity,
-                                      ease: "easeInOut"
-                                    }}
-                                    className="flex items-center gap-1"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 20 }}
+                                    className="absolute right-[-10px] sm:right-[-40px] top-1/2 -translate-y-1/2 z-20 pointer-events-none"
                                   >
-                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
-                                      <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                                    </div>
+                                    <motion.div
+                                      animate={{ 
+                                        x: [8, 0, 8],
+                                        opacity: [0.4, 1, 0.4]
+                                      }}
+                                      transition={{ 
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
+                                      }}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/20 backdrop-blur-sm border-2 border-primary/30 flex items-center justify-center shadow-lg">
+                                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                                      </div>
+                                    </motion.div>
                                   </motion.div>
-                                </motion.div>
-                              </>
-                            )}
-                          </AnimatePresence>
+                                </>
+                              )}
+                            </AnimatePresence>
   
-                          <motion.div 
-                            className="relative w-full max-w-2xl cursor-pointer touch-pan-y"
-                            style={{ 
-                              perspective: '1000px',
-                              minHeight: '380px',
-                            }}
-                            drag="x"
-                            dragConstraints={{ left: 0, right: 0 }}
-                            dragElastic={0.2}
-                            onDragEnd={handleSwipe}
-                            onClick={handleFlip}
-                            animate={{
-                              x: swipeDirection === "left" ? -20 : swipeDirection === "right" ? 20 : 0,
-                              opacity: swipeDirection ? 0.5 : 1
-                            }}
-                            transition={{
-                              x: { duration: 0.15 },
-                              opacity: { duration: 0.15 }
-                            }}
-                          >
-                            <motion.div
-                              className="relative w-full"
+                            <motion.div 
+                              className="relative w-full max-w-3xl cursor-pointer touch-pan-y"
                               style={{ 
-                                transformStyle: 'preserve-3d',
-                                minHeight: '380px',
+                                perspective: '1000px',
+                                minHeight: '500px',
                               }}
-                              animate={{ rotateY: isFlipped ? 180 : 0 }}
+                              drag="x"
+                              dragConstraints={{ left: 0, right: 0 }}
+                              dragElastic={0.2}
+                              onDragEnd={handleSwipe}
+                              onClick={handleFlip}
+                              animate={{
+                                x: swipeDirection === "left" ? -20 : swipeDirection === "right" ? 20 : 0,
+                                opacity: swipeDirection ? 0.5 : 1
+                              }}
                               transition={{
-                                duration: 0.6,
-                                type: "spring",
-                                stiffness: 100,
-                                damping: 15
+                                x: { duration: 0.15 },
+                                opacity: { duration: 0.15 }
                               }}
                             >
-                              {/* Front of Card (Question) */}
                               <motion.div
-                                className="absolute inset-0 w-full h-full"
-                                style={{
-                                  backfaceVisibility: 'hidden',
-                                  WebkitBackfaceVisibility: 'hidden',
-                                  zIndex: isFlipped ? 0 : 1
+                                className="relative w-full"
+                                style={{ 
+                                  transformStyle: 'preserve-3d',
+                                  minHeight: '500px',
+                                }}
+                                animate={{ rotateY: isFlipped ? 180 : 0 }}
+                                transition={{
+                                  duration: 0.6,
+                                  type: "spring",
+                                  stiffness: 100,
+                                  damping: 15
                                 }}
                               >
-                                <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20 h-full">
-                                  <CardContent className="p-6 sm:p-12 flex flex-col h-full justify-between">
-                                    <div className="flex-none mb-4 sm:mb-6">
-                                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                                        <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                                {/* Front of Card (Question) */}
+                                <motion.div
+                                  className="absolute inset-0 w-full h-full"
+                                  style={{
+                                    backfaceVisibility: 'hidden',
+                                    WebkitBackfaceVisibility: 'hidden',
+                                    zIndex: isFlipped ? 0 : 1
+                                  }}
+                                >
+                                  <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-background to-muted/20 h-full">
+                                    <CardContent className="p-8 sm:p-14 flex flex-col h-full justify-between">
+                                      <div className="flex-none mb-6">
+                                        <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                                          <BookOpen className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center justify-center text-center px-2">
-                                      <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide">
-                                        Question
-                                      </p>
-                                      <p className="text-base sm:text-lg lg:text-xl font-medium leading-relaxed">
-                                        {currentCard?.question}
-                                      </p>
-                                    </div>
-                                    <div className="flex-none pt-4 sm:pt-6 text-center border-t border-border/50 mt-4">
-                                      <p className="text-[10px] sm:text-xs text-muted-foreground flex items-center justify-center gap-2 font-medium">
-                                        <RefreshCw className="w-3 h-3" /> Tap to reveal answer
-                                      </p>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              </motion.div>
+                                      <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center justify-center text-center px-4">
+                                        <p className="text-sm font-semibold text-primary uppercase tracking-wide">
+                                          Question
+                                        </p>
+                                        <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
+                                          {currentCard?.question}
+                                        </p>
+                                      </div>
+                                      <div className="flex-none pt-6 text-center border-t border-border/50 mt-6">
+                                        <p className="text-xs sm:text-sm text-muted-foreground flex items-center justify-center gap-2 font-medium">
+                                          <RefreshCw className="w-4 h-4" /> Tap to reveal answer
+                                        </p>
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </motion.div>
   
-                              {/* Back of Card (Answer) - Updated with point-form display */}
-                              <motion.div
-                                className="absolute inset-0 w-full h-full"
-                                style={{
-                                  backfaceVisibility: 'hidden',
-                                  WebkitBackfaceVisibility: 'hidden',
-                                  rotateY: 180,
-                                  zIndex: isFlipped ? 1 : 0
-                                }}
-                              >
-                                <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20 h-full">
-                                  <CardContent className="p-6 sm:p-12 flex flex-col h-full justify-between">
-                                    <div className="flex-none mb-4 sm:mb-6">
-                                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                                        <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                                {/* Back of Card (Answer) - Updated with point-form display */}
+                                <motion.div
+                                  className="absolute inset-0 w-full h-full"
+                                  style={{
+                                    backfaceVisibility: 'hidden',
+                                    WebkitBackfaceVisibility: 'hidden',
+                                    rotateY: 180,
+                                    zIndex: isFlipped ? 1 : 0
+                                  }}
+                                >
+                                  <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20 h-full">
+                                    <CardContent className="p-8 sm:p-14 flex flex-col h-full justify-between">
+                                      <div className="flex-none mb-4">
+                                        <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                                          <Sparkles className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="flex-1 overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                                      <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wide mb-3 text-center">
-                                        Answer
-                                      </p>
-                                      <div className="text-left max-w-prose mx-auto">
-                                        {(() => {
-                                          const formattedContent = formatAnswerAsPoints(currentCard?.answer || "");
-                                          const hasNumberedPoints = currentCard?.answer && /\(\d+\)/.test(currentCard.answer);
-                                          
-                                          if (hasNumberedPoints) {
-                                            return <div className="space-y-2">{formattedContent}</div>;
-                                          } else {
-                                            return <ul className="list-disc list-inside space-y-2">{formattedContent}</ul>;
-                                          }
-                                        })()}
+                                      <div className="flex-1 overflow-y-auto px-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                                        <p className="text-sm font-semibold text-primary uppercase tracking-wide mb-4 text-center">
+                                          Answer
+                                        </p>
+                                        <div className="text-left max-w-prose mx-auto">
+                                          {(() => {
+                                            const formattedContent = formatAnswerAsPoints(currentCard?.answer || "");
+                                            const hasNumberedPoints = currentCard?.answer && /\(\d+\)/.test(currentCard.answer);
+                                            
+                                            if (hasNumberedPoints) {
+                                              return <div className="space-y-3">{formattedContent}</div>;
+                                            } else {
+                                              return <ul className="list-disc list-inside space-y-3">{formattedContent}</ul>;
+                                            }
+                                          })()}
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="flex-none pt-4 sm:pt-6 text-center border-t border-border/50 mt-4">
-                                      <p className="text-[10px] sm:text-xs text-muted-foreground flex items-center justify-center gap-2 font-medium">
-                                        <RefreshCw className="w-3 h-3" /> Tap to see question
-                                      </p>
-                                    </div>
-                                  </CardContent>
-                                </Card>
+                                      <div className="flex-none pt-6 text-center border-t border-border/50 mt-4">
+                                        <p className="text-xs sm:text-sm text-muted-foreground flex items-center justify-center gap-2 font-medium">
+                                          <RefreshCw className="w-4 h-4" /> Tap to see question
+                                        </p>
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </motion.div>
                               </motion.div>
                             </motion.div>
-                          </motion.div>
-                        </div>
+                          </div>
 
 
                       {/* Enhanced Controls */}
