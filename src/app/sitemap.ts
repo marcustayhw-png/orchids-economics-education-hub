@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { db } from '@/db';
-import { essays, csqs, notes, econNews } from '@/db/schema';
+import { essays, csqs } from '@/db/schema';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://econstack.com';
