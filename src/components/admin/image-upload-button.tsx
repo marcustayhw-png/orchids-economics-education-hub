@@ -92,10 +92,10 @@ export function ImageUploadButton({ onImageInsert, disabled }: ImageUploadButton
             Uploading...
           </>
         ) : (
-            <>
-              <ImageIcon className="w-4 h-4 mr-2" />
-              Upload Image
-            </>
+          <>
+            <ImageIcon className="w-4 h-4 mr-2" />
+            Upload Image
+          </>
         )}
       </Button>
     </>
