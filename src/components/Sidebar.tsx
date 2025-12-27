@@ -16,17 +16,17 @@ export function Sidebar({ activeTab = "essays" }: SidebarProps) {
 <Card className="border-2 shadow-sm bg-card/50 backdrop-blur-sm">
 <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
-                {activeTab === "essays" ? (
-                  <>
-                    <FileText className="h-4 w-4 text-amber-500" />
-                    Question Types
-                  </>
-                ) : (
-                  <>
-                    <MessageSquare className="h-4 w-4 text-amber-500" />
-                    Command Words
-                  </>
-                )}
+                  {activeTab === "essays" ? (
+                    <>
+                      <FileText className="h-4 w-4 text-amber-500" />
+                      Question Types
+                    </>
+                  ) : (
+                    <>
+                      <MessageSquare className="h-4 w-4 text-amber-500" />
+                      CSQ Assessment Mode
+                    </>
+                  )}
               </CardTitle>
             </CardHeader>
           <CardContent>
