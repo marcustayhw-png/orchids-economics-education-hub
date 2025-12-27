@@ -218,9 +218,13 @@ export function FlashcardManager() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this flashcard?")) return;
 
+    const token = localStorage.getItem("bearer_token");
     try {
       const response = await fetch(`/api/flashcards?id=${id}`, {
         method: "DELETE",
+        headers: { 
+          "Authorization": `Bearer ${token}`
+        },
       });
 
       if (response.ok) {
