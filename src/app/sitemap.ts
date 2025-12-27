@@ -5,12 +5,18 @@ import { essays, csqs, notes, econNews } from '@/db/schema';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://econstack.com';
 
-  const [allEssays, allCsqs, allNotes, allNews] = await Promise.all([
-    db.select({ essayId: essays.essayId, updatedAt: essays.updatedAt }).from(essays),
-    db.select({ csqId: csqs.csqId, updatedAt: csqs.updatedAt }).from(csqs),
-    db.select({ noteId: notes.noteId, updatedAt: notes.updatedAt }).from(notes),
-    db.select({ id: econNews.id, updatedAt: econNews.updatedAt }).from(econNews),
-  ]);
+  let allEssays: any[] = [];
+  let allCsqs: any[] = [];
+
+  try {
+    [allEssays, allCsqs] = await Promise.all([
+      db.select({ essayId: essays.essayId, updatedAt: essays.updatedAt }).from(essays),
+      db.select({ csqId: csqs.csqId, updatedAt: csqs.updatedAt }).from(csqs),
+    ]);
+  } catch (error) {
+    console.error('Error fetching data for sitemap:', error);
+    // Continue with empty arrays if DB fetch fails during build
+  }
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
