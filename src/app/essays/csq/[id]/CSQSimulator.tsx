@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Info, HelpCircle, CheckCircle2, ChevronRight, BookOpen, PenTool } from "lucide-react";
+import { Info, HelpCircle, CheckCircle2, ChevronRight, BookOpen, PenTool, Award } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface CSQPart {
