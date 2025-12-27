@@ -54,152 +54,132 @@ export default function EconNewsPage() {
     return item.newsCategory === activeCategory;
   });
 
-  const displayedNews = filteredNews.slice(0, displayLimit);
-  const hasMore = filteredNews.length > displayLimit;
+    const displayedNews = filteredNews.slice(0, displayLimit);
+    const hasMore = filteredNews.length > displayLimit;
 
-  const handleLoadMore = () => {
-    setDisplayLimit(prev => prev + 5);
-  };
+    const handleLoadMore = () => {
+      setDisplayLimit(prev => prev + 5);
+    };
 
-  const singaporeCount = news.filter(n => n.newsCategory === "Singapore").length;
-  const internationalCount = news.filter(n => n.newsCategory === "International").length;
+    const singaporeCount = news.filter(n => n.newsCategory === "Singapore").length;
+    const internationalCount = news.filter(n => n.newsCategory === "International").length;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    );
-  }
-
-  const renderSection = (title: string, content: string | undefined, icon: React.ReactNode, colorClass: string, isFullWidth: boolean = false) => {
-    if (!content || content.trim() === "" || content === "<p></p>") return null;
-    
-    return (
-      <div className={`space-y-3 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500 ${isFullWidth ? 'col-span-full' : ''}`}>
-        <div className="flex items-center gap-2 group">
-          <div className={`p-2 rounded-lg ${colorClass} transition-transform group-hover:scale-110`}>
-            {icon}
-          </div>
-          <h4 className="text-lg font-bold text-foreground tracking-tight">
-            {title}
-          </h4>
+    if (isLoading) {
+      return (
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
-        <div 
-          className="prose prose-sm sm:prose-base max-w-none text-muted-foreground bg-muted/30 p-5 rounded-xl border border-border/50 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      </div>
-    );
-  };
+      );
+    }
 
-  const renderNewsCard = (item: EconNewsItem, index: number) => (
-    <motion.div
-      key={item.id}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index % 5 * 0.1 }}
-    >
-      <Card 
-        className="border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden bg-card/30 backdrop-blur-md group border border-white/5 rounded-[1.5rem] sm:rounded-[2.5rem]"
+    const renderNewsCard = (item: EconNewsItem, index: number) => (
+      <motion.div
+        key={item.id}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5, delay: index % 5 * 0.1 }}
       >
-        <div className="p-0">
-          <CardHeader className="space-y-4 sm:space-y-6 pb-4 sm:pb-6 pt-8 sm:pt-10 px-6 sm:px-10 relative z-10">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] font-black uppercase tracking-widest px-3 py-1">
-                  {item.newsCategory}
-                </Badge>
-                <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                  {new Date(item.publishedDate).toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric'
-                  })}
-                </span>
+        <Card 
+          className="border-none shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden bg-card/40 backdrop-blur-xl group border border-white/5 rounded-[2rem] sm:rounded-[3rem]"
+        >
+          <div className="p-0">
+            <CardHeader className="space-y-4 sm:space-y-6 pb-2 px-8 sm:px-12 pt-10 sm:pt-14 relative z-10">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full">
+                    {item.newsCategory}
+                  </Badge>
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary/20" />
+                  <div className="flex items-center gap-1.5 text-[10px] font-black text-muted-foreground uppercase tracking-widest bg-muted/30 px-3 py-1.5 rounded-full">
+                    <Calendar className="w-3 h-3" />
+                    {new Date(item.publishedDate).toLocaleDateString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </div>
+                </div>
               </div>
+              
+              <CardTitle className="text-2xl sm:text-5xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors duration-500 leading-[1] sm:leading-[1]">
+                {item.title}
+              </CardTitle>
+
+              <div className="flex flex-wrap gap-3">
+                {item.theories.slice(0, 4).map((theory, idx) => (
+                  <span key={idx} className="text-[10px] sm:text-[11px] font-black text-primary/40 uppercase tracking-[0.15em] hover:text-primary/100 transition-colors cursor-default">
+                    #{theory.replace(/\s+/g, '')}
+                  </span>
+                ))}
+              </div>
+            </CardHeader>
+
+            <CardContent className="pt-6 px-8 sm:px-12 pb-10 sm:pb-14 space-y-8 relative z-10">
+              <div 
+                className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-foreground/70 leading-relaxed font-medium selection:bg-primary/20"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
+
+              <div className="flex flex-wrap gap-2 pt-6 border-t border-border/20">
+                {item.topics.map((topic, idx) => (
+                  <Badge 
+                    key={idx} 
+                    variant="outline" 
+                    className="text-[10px] font-black px-4 py-1.5 rounded-full border-border/50 bg-muted/20 text-muted-foreground/60 hover:bg-primary/10 hover:text-primary hover:border-primary/20 transition-all cursor-default"
+                  >
+                    {topic}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </div>
+        </Card>
+      </motion.div>
+    );
+
+    return (
+      <div className="min-h-screen bg-background selection:bg-primary/30 py-16 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="max-w-7xl mx-auto w-full">
+          {/* Hero Section */}
+          <div className="text-center mb-16 space-y-6 relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border-primary/20 text-primary font-black uppercase tracking-[0.25em] text-[10px] mb-2 bg-primary/5 backdrop-blur-sm"
+            >
+              <Zap className="w-3.5 h-3.5 fill-primary" /> Economic Terminal
+            </motion.div>
+            <h1 className="text-5xl sm:text-8xl lg:text-9xl font-black tracking-tighter bg-gradient-to-br from-foreground via-foreground to-foreground/40 bg-clip-text text-transparent leading-[0.85] py-2">
+              ECONOMICS <br /> <span className="text-primary drop-shadow-2xl">IN ACTION</span>
+            </h1>
+            <p className="text-base sm:text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium opacity-70">
+              Bridging the gap between the classroom and the real world through real-time economic intelligence.
+            </p>
+          </div>
+
+          {/* Improved Navigation - Sticky & Minimalist */}
+          <div className="mb-20 flex justify-center sticky top-8 z-50 py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="p-1.5 bg-background/40 backdrop-blur-2xl rounded-[2rem] border border-white/5 shadow-2xl shadow-black/10 w-full max-w-lg">
+              <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
+                <TabsList className="h-14 bg-transparent w-full grid grid-cols-3 gap-1">
+                  <TabsTrigger value="all" className="rounded-2xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-black transition-all text-[11px] uppercase tracking-widest">
+                    Live Feed
+                    <span className="ml-2 opacity-40 font-black text-[9px]">{news.length}</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="Singapore" className="rounded-2xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-black transition-all text-[11px] uppercase tracking-widest">
+                    Singapore
+                    <span className="ml-2 opacity-40 font-black text-[9px]">{singaporeCount}</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="International" className="rounded-2xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-black transition-all text-[11px] uppercase tracking-widest">
+                    Global
+                    <span className="ml-2 opacity-40 font-black text-[9px]">{internationalCount}</span>
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
-            
-            <CardTitle className="text-xl sm:text-4xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300 leading-[1.1] sm:leading-[1.1]">
-              {item.title}
-            </CardTitle>
-
-            <div className="flex flex-wrap gap-2">
-              {item.theories.slice(0, 3).map((theory, idx) => (
-                <span key={idx} className="text-[9px] sm:text-[10px] font-bold text-primary/60 uppercase tracking-widest">
-                  #{theory.replace(/\s+/g, '')}
-                </span>
-              ))}
-            </div>
-          </CardHeader>
-
-          <CardContent className="pt-0 px-6 sm:px-10 pb-8 sm:pb-10 space-y-6 sm:space-y-8 relative z-10">
-            <div 
-              className="prose prose-sm sm:prose-base max-w-none text-foreground/80 leading-relaxed font-medium"
-              dangerouslySetInnerHTML={{ __html: item.content }}
-            />
-
-            {/* Analysis Sections Restored */}
-            <div className="grid sm:grid-cols-2 gap-6 pt-6 border-t border-border/30">
-              {renderSection("Context", item.context, <Globe className="w-4 h-4" />, "bg-blue-500/10 text-blue-500")}
-              {renderSection("Explanation", item.explanation, <BookOpen className="w-4 h-4" />, "bg-emerald-500/10 text-emerald-500")}
-              {renderSection("Theory Connection", item.theoryConnection, <Target className="w-4 h-4" />, "bg-purple-500/10 text-purple-500", true)}
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border/30">
-              {item.topics.map((topic, idx) => (
-                <Badge 
-                  key={idx} 
-                  variant="outline" 
-                  className="text-[9px] font-bold px-3 py-1 rounded-full border-border/50 bg-muted/20 text-muted-foreground/80"
-                >
-                  {topic}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </div>
-      </Card>
-    </motion.div>
-  );
-
-  return (
-    <div className="min-h-screen bg-background selection:bg-primary/30 py-12 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto w-full">
-        {/* Hero Section */}
-        <div className="text-center mb-12 space-y-4 relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
-          <Badge variant="outline" className="px-4 py-1 rounded-full border-primary/20 text-primary font-bold uppercase tracking-tighter text-[10px] mb-2 bg-primary/5">
-            Economic Intelligence
-          </Badge>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent leading-[1.1]">
-            Economics <span className="text-primary">In Action</span>
-          </h1>
-          <p className="text-sm sm:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto font-medium opacity-80">
-            Analyzing global shifts through the lens of the JC syllabus.
-          </p>
-        </div>
-
-        {/* Category Tabs - Moved to a more prominent, centered position */}
-        <div className="mb-12 flex justify-center sticky top-20 z-40 py-4 bg-background/80 backdrop-blur-sm -mx-4 px-4 sm:mx-0 sm:px-0">
-          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full max-w-md">
-            <TabsList className="h-12 p-1 bg-muted/30 backdrop-blur-md rounded-2xl border border-border/50 w-full grid grid-cols-3">
-              <TabsTrigger value="all" className="rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all text-xs">
-                All
-                <span className="ml-1.5 opacity-50 font-normal">{news.length}</span>
-              </TabsTrigger>
-              <TabsTrigger value="Singapore" className="rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all text-xs">
-                Singapore
-                <span className="ml-1.5 opacity-50 font-normal">{singaporeCount}</span>
-              </TabsTrigger>
-              <TabsTrigger value="International" className="rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg font-bold transition-all text-xs">
-                Global
-                <span className="ml-1.5 opacity-50 font-normal">{internationalCount}</span>
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
+          </div>
 
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           {/* Main Content */}
