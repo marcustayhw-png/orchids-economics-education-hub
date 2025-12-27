@@ -188,7 +188,7 @@ export default function EconNewsPage() {
               <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
                 <TabsList className="h-14 bg-transparent w-full grid grid-cols-3 gap-1">
                   <TabsTrigger value="all" className="rounded-2xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-black transition-all text-[11px] uppercase tracking-widest">
-                    Live Feed
+                    ALL
                     <span className="ml-2 opacity-40 font-black text-[9px]">{news.length}</span>
                   </TabsTrigger>
                   <TabsTrigger value="Singapore" className="rounded-2xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-black transition-all text-[11px] uppercase tracking-widest">
