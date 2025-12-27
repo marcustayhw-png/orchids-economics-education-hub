@@ -343,29 +343,29 @@ export default function FlashcardsPage() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Card
-                        className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30 overflow-hidden group"
-                        onClick={() => handleEconomicsTypeSelect("Macroeconomics")}
-                      >
-                        <CardContent className="pt-8 pb-8 text-center space-y-4 relative">
-                          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300">
-                            <Globe className="w-8 h-8 text-primary group-hover:rotate-12 transition-transform duration-300" />
-                          </div>
-                          <h3 className="text-xl font-semibold relative z-10">Macroeconomics</h3>
-                          <p className="text-sm text-muted-foreground relative z-10">
-                            Explore national economies, GDP, inflation, and fiscal policy
-                          </p>
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative z-10 group/btn overflow-hidden"
-                          >
-                            <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
-                            <span className="relative">Select</span>
-                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300 relative" />
-                          </motion.button>
-                        </CardContent>
-                      </Card>
+                          className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30 overflow-hidden group"
+                          onClick={() => handleEconomicsTypeSelect("Macroeconomics")}
+                        >
+                          <CardContent className="pt-6 pb-6 md:pt-8 md:pb-8 text-center space-y-3 md:space-y-4 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="w-14 h-14 md:w-16 md:h-16 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300">
+                              <Globe className="w-7 h-7 md:w-8 md:h-8 text-primary group-hover:rotate-12 transition-transform duration-300" />
+                            </div>
+                            <h3 className="text-lg md:text-xl font-semibold relative z-10">Macroeconomics</h3>
+                            <p className="text-xs md:text-sm text-muted-foreground relative z-10">
+                              Explore national economies, GDP, inflation, and fiscal policy
+                            </p>
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="w-full py-2.5 md:py-3 px-5 md:px-6 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative z-10 group/btn overflow-hidden text-sm md:text-base"
+                            >
+                              <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+                              <span className="relative">Select</span>
+                              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300 relative" />
+                            </motion.button>
+                          </CardContent>
+                        </Card>
                     </motion.div>
                   </div>
                 </motion.div>
