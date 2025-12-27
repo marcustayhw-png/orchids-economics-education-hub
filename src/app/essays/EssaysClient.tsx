@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -33,20 +32,12 @@ interface CSQ {
 export function EssaysClient({ 
   initialEssays, 
   initialCSQs,
-  onTabChange
+  activeTab
 }: { 
   initialEssays: Essay[], 
   initialCSQs: CSQ[],
-  onTabChange?: (tab: "essays" | "csq") => void
+  activeTab: "essays" | "csq"
 }) {
-  const [selectedTab, setSelectedTab] = useState<"essays" | "csq">("essays");
-  
-  const handleTabChange = (tab: string) => {
-    const newTab = tab as "essays" | "csq";
-    setSelectedTab(newTab);
-    onTabChange?.(newTab);
-  };
-  
   // Essay filters
   const [essayLevel, setEssayLevel] = useState<string>("all");
   const [essayTopic, setEssayTopic] = useState<string>("all");
