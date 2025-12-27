@@ -591,10 +591,10 @@ export default function FlashcardsPage() {
                               >
                                   <motion.div
                                     className="relative w-full"
-                                    style={{ 
-                                      transformStyle: 'preserve-3d',
-                                      minHeight: '450px',
-                                    }}
+                                      style={{ 
+                                        transformStyle: 'preserve-3d',
+                                        minHeight: '550px',
+                                      }}
                                   animate={{ rotateY: isFlipped ? 180 : 0 }}
                                   transition={{
                                     duration: 0.6,
