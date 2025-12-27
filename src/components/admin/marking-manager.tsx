@@ -44,15 +44,7 @@ export function MarkingManager() {
       const fetchRequests = async () => {
         setLoading(true);
         try {
-          const token = localStorage.getItem("bearer_token");
-          const headers: Record<string, string> = {};
-          if (token && token !== "null" && token !== "undefined") {
-            headers["Authorization"] = `Bearer ${token}`;
-          }
-          
-          const res = await fetch("/api/marking-requests", {
-            headers
-          });
+          const res = await fetch("/api/marking-requests");
           if (res.ok) {
             const data = await res.json();
             setRequests(data);
@@ -83,12 +75,10 @@ export function MarkingManager() {
       if (!selectedRequest) return;
       setIsUpdating(true);
       try {
-        const token = localStorage.getItem("bearer_token");
         const res = await fetch("/api/marking-requests", {
           method: "PATCH",
           headers: { 
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             id: selectedRequest.id,
@@ -121,12 +111,8 @@ export function MarkingManager() {
       formData.append("file", file);
 
       try {
-        const token = localStorage.getItem("bearer_token");
         const res = await fetch("/api/upload", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           body: formData,
         });
 
