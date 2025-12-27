@@ -9,10 +9,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let allCsqs: any[] = [];
 
   try {
-    [allEssays, allCsqs] = await Promise.all([
-      db.select({ essayId: essays.essayId, updatedAt: essays.updatedAt }).from(essays),
-      db.select({ csqId: csqs.csqId, updatedAt: csqs.updatedAt }).from(csqs),
-    ]);
+    // Fetch essays and CSQs for dynamic routes
+    const essayResults = await db.select({ 
+      essayId: essays.essayId, 
+      updatedAt: essays.updatedAt 
+    }).from(essays).catch(() => []);
+    
+    const csqResults = await db.select({ 
+      csqId: csqs.csqId, 
+      updatedAt: csqs.updatedAt 
+    }).from(csqs).catch(() => []);
+
+    allEssays = essayResults;
+    allCsqs = csqResults;
   } catch (error) {
     console.error('Error fetching data for sitemap:', error);
     // Continue with empty arrays if DB fetch fails during build
