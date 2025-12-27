@@ -154,6 +154,5 @@ export function SingaporeEconomyDashboard() {
         </CardContent>
       </Card>
     );
-  );
 }
 
