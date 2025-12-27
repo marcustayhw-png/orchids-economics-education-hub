@@ -792,8 +792,8 @@ async function seed() {
   try {
     // Drop and recreate table to ensure correct schema
     console.log("Recreating table...");
-    await client.execute(`DROP TABLE IF EXISTS econ_news`);
-    await client.execute(\`
+    await client.execute('DROP TABLE IF EXISTS econ_news');
+    await client.execute(`
       CREATE TABLE econ_news (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
@@ -810,7 +810,7 @@ async function seed() {
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL
       )
-    \`);
+    `);
 
     // Insert new data
     console.log("Inserting data...");
