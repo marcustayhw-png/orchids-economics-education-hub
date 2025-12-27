@@ -33,47 +33,44 @@ type Step = "economics-type" | "chapter" | "study";
 
 // Helper function to format answer text into point form
 const formatAnswerAsPoints = (answer: string) => {
-  // Check if answer contains numbered points like (1), (2), etc.
-  const numberedPattern = /\((\d+)\)/g;
-  const hasNumberedPoints = numberedPattern.test(answer);
-  
-  if (hasNumberedPoints) {
-    // Split by numbered points and format as separate paragraphs
-    const points = answer.split(/\((\d+)\)/).filter(part => part.trim().length > 0);
-    const formattedPoints: JSX.Element[] = [];
+    const numberedPattern = /\((\d+)\)/g;
+    const hasNumberedPoints = numberedPattern.test(answer);
     
-    for (let i = 0; i < points.length; i += 2) {
-      if (i + 1 < points.length) {
-        const number = points[i];
-        const content = points[i + 1].trim();
-        
-        if (content) {
-          formattedPoints.push(
-            <div key={number} className="mb-4">
-              <p className="text-sm leading-relaxed">
-                <span className="font-semibold">({number})</span> {content}
-              </p>
-            </div>
-          );
+    if (hasNumberedPoints) {
+      const points = answer.split(/\((\d+)\)/).filter(part => part.trim().length > 0);
+      const formattedPoints: JSX.Element[] = [];
+      
+      for (let i = 0; i < points.length; i += 2) {
+        if (i + 1 < points.length) {
+          const number = points[i];
+          const content = points[i + 1].trim();
+          
+          if (content) {
+            formattedPoints.push(
+              <div key={number} className="mb-5">
+                <p className="text-base sm:text-lg leading-relaxed">
+                  <span className="font-semibold text-primary">({number})</span> {content}
+                </p>
+              </div>
+            );
+          }
         }
       }
+      
+      return formattedPoints;
     }
     
-    return formattedPoints;
-  }
-  
-  // Original bullet point formatting for non-numbered answers
-  const lines = answer.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-  
-  return lines.map((line, index) => {
-    const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
-    return (
-      <li key={index} className="text-sm leading-relaxed mb-3">
-        {cleanedLine}
-      </li>
-    );
-  });
-};
+    const lines = answer.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    
+    return lines.map((line, index) => {
+      const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
+      return (
+        <li key={index} className="text-base sm:text-lg leading-relaxed mb-4">
+          {cleanedLine}
+        </li>
+      );
+    });
+  };
 
 export default function FlashcardsPage() {
   const [selectedLevel, setSelectedLevel] = useState("Secondary");
