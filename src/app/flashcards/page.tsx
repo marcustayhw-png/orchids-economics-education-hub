@@ -399,20 +399,20 @@ export default function FlashcardsPage() {
                     <Card className="border-2">
                       <CardContent className="pt-4 md:pt-6 space-y-3 md:space-y-4">
                         {chapters.length === 0 ? (
-                          <div className="text-center py-8">
-                            <p className="text-muted-foreground">
+                          <div className="text-center py-6 md:py-8">
+                            <p className="text-sm md:text-base text-muted-foreground">
                               No chapters available for {selectedEconomicsType}
                             </p>
                           </div>
                         ) : (
-                          <div className="grid grid-cols-1 gap-3">
+                          <div className="grid grid-cols-1 gap-2 md:gap-3">
                             {chapters.map((chapter) => (
                               <motion.button
                                 key={chapter}
                                 whileHover={{ scale: 1.02, x: 4 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => handleChapterSelect(chapter)}
-                                className="w-full py-4 px-6 rounded-lg border-2 border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary hover:shadow-md transition-all duration-300 flex items-center justify-between group overflow-hidden relative"
+                                className="w-full py-3 md:py-4 px-4 md:px-6 rounded-lg border-2 border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary hover:shadow-md transition-all duration-300 flex items-center justify-between group overflow-hidden relative text-sm md:text-base"
                               >
                                 <span className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 <span className="font-medium relative z-10 text-left">{chapter}</span>
@@ -426,7 +426,7 @@ export default function FlashcardsPage() {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={handleBackToEconomicsType}
-                          className="w-full py-3 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center justify-center gap-2 font-medium group"
+                          className="w-full py-2.5 md:py-3 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center justify-center gap-2 font-medium group text-sm md:text-base"
                         >
                           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
                           Back to Economics Type
