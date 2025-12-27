@@ -145,21 +145,21 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-muted/20 relative">
+      <section className="py-16 sm:py-20 md:py-28 lg:py-32 px-4 sm:px-6 md:px-8 lg:px-8 bg-muted/20 relative">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12 sm:mb-20"
+            className="text-center mb-10 sm:mb-14 md:mb-16 lg:mb-20"
           >
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4 px-2">Everything You Need to Excel</h2>
-            <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4 font-medium">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3 md:mb-4 px-2">Everything You Need to Excel</h2>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4 md:px-6 font-medium">
               We've built the most comprehensive resource library to help you conquer the syllabus and ace your exams.
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
             {[
               { title: "Comprehensive Notes", desc: "Detailed, exam-oriented notes covering all major themes for H1/H2 and Secondary Economics.", icon: BookOpen, href: "/notes", color: "text-blue-500", bg: "bg-blue-500/10" },
               { title: "Interactive Flashcards", desc: "Master definitions and key concepts with our specialized flashcard system designed for retention.", icon: Sparkles, href: "/flashcards", color: "text-yellow-500", bg: "bg-yellow-500/10" },
