@@ -245,11 +245,16 @@ export function CSQManager() {
       parts: partsPayload,
     };
 
+    const token = localStorage.getItem("bearer_token");
+
     try {
       if (editingId) {
         const response = await fetch(`/api/csqs?csq_id=${editingId}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
           body: JSON.stringify(payload),
         });
 
@@ -263,7 +268,10 @@ export function CSQManager() {
       } else {
         const response = await fetch("/api/csqs", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
           body: JSON.stringify(payload),
         });
 
