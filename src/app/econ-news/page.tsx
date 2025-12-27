@@ -250,15 +250,31 @@ export default function EconNewsPage() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid gap-12">
-                  {filteredNews.map(renderNewsCard)}
-                </div>
+                <>
+                  <div className="grid gap-8 sm:gap-12">
+                    {displayedNews.map(renderNewsCard)}
+                  </div>
+                  
+                  {hasMore && (
+                    <div className="flex justify-center pt-8">
+                      <Button 
+                        variant="outline" 
+                        size="lg" 
+                        onClick={handleLoadMore}
+                        className="rounded-full px-8 font-bold border-2 hover:bg-primary hover:text-primary-foreground transition-all group"
+                      >
+                        <RefreshCw className="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-500" />
+                        Load More Articles
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
 
           {/* Sidebar */}
-          <aside className="lg:col-span-4 space-y-8 sticky top-24">
+          <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
