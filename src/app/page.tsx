@@ -121,14 +121,14 @@ export default function Home() {
             </motion.div>
 
             {/* Stats Grid */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-8 md:pt-12 max-w-5xl mx-auto px-4 md:px-6">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-8 md:pt-12 max-w-5xl mx-auto px-4 md:px-6">
               {[
                 { label: "Study Notes", value: stats.notes, icon: BookOpen },
                 { label: "Model Essays", value: stats.essays, icon: FileText },
                 { label: "CSQ Answers", value: stats.csqs, icon: TrendingUp },
                 { label: "Flashcards", value: stats.flashcards, icon: Sparkles }
               ].map((stat, i) => (
-                <div key={i} className="p-4 md:p-5 lg:p-6 rounded-2xl md:rounded-3xl bg-card/50 border border-border/50 backdrop-blur-sm shadow-sm">
+                <div key={i} className="p-4 sm:p-5 md:p-6 rounded-2xl md:rounded-3xl bg-card/50 border border-border/50 backdrop-blur-sm shadow-sm">
                   <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-1">
                     {stats.isLoading ? (
                       <Loader2 className="w-6 h-6 md:w-8 md:h-8 animate-spin mx-auto" />
