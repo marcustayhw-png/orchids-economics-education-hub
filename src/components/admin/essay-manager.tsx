@@ -102,27 +102,32 @@ export function EssayManager() {
     fetchEssays();
   }, []);
 
-  const fetchEssays = async () => {
-    setIsLoading(true);
-    try {
-      const token = localStorage.getItem("bearer_token");
-      const response = await fetch("/api/essays?limit=100", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setEssays(data);
-      } else {
-        toast.error("Failed to load essays");
+    const fetchEssays = async () => {
+      setIsLoading(true);
+      try {
+        const token = localStorage.getItem("bearer_token");
+        const headers: Record<string, string> = {};
+        if (token && token !== "null" && token !== "undefined") {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const response = await fetch("/api/essays?limit=100", {
+          headers
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setEssays(data);
+        } else if (response.status === 401) {
+          toast.error("Session expired. Please log in again.");
+        } else {
+          toast.error("Failed to load essays");
+        }
+      } catch (error) {
+        toast.error("Error loading essays");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      toast.error("Error loading essays");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
   // Get unique topics for filter dropdown
   const uniqueTopics = Array.from(
