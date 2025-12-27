@@ -86,7 +86,7 @@ export default function Home() {
       />
       
       {/* Hero Section */}
-      <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-32 lg:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-20 md:pt-24 md:pb-28 lg:pt-32 lg:pb-32 px-4 sm:px-6 md:px-8 lg:px-8 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 opacity-30 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
@@ -99,44 +99,44 @@ export default function Home() {
             variants={containerVariants}
             className="text-center space-y-8 sm:space-y-10"
           >
-            <motion.div variants={itemVariants} className="space-y-4 sm:space-y-6">
-              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] px-2">
+            <motion.div variants={itemVariants} className="space-y-4 sm:space-y-5 md:space-y-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] px-2">
                 Master Economics <br className="hidden sm:block" />
                 <span className="text-primary drop-shadow-sm">Made Simple.</span>
               </h1>
-              <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto px-4 font-medium leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto px-4 md:px-8 font-medium leading-relaxed">
                 Unlock top-tier notes, model essays, and interactive tools designed specifically for Singapore's JC and Secondary Economics students.
               </p>
             </motion.div>
             
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
-              <Button asChild size="lg" className="w-full sm:w-auto h-14 px-10 text-base sm:text-lg rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-1">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4 md:px-0">
+              <Button asChild size="lg" className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-1">
                 <Link href="/notes" className="flex items-center gap-2">
                   Start Learning <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-14 px-10 text-base sm:text-lg rounded-2xl border-2 hover:bg-muted/50 transition-all">
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl border-2 hover:bg-muted/50 transition-all">
                 <Link href="/about">Our Mission</Link>
               </Button>
             </motion.div>
 
             {/* Stats Grid */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 pt-12 max-w-5xl mx-auto px-4">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-8 md:pt-12 max-w-5xl mx-auto px-4 md:px-6">
               {[
                 { label: "Study Notes", value: stats.notes, icon: BookOpen },
                 { label: "Model Essays", value: stats.essays, icon: FileText },
                 { label: "CSQ Answers", value: stats.csqs, icon: TrendingUp },
                 { label: "Flashcards", value: stats.flashcards, icon: Sparkles }
               ].map((stat, i) => (
-                <div key={i} className="p-4 sm:p-6 rounded-3xl bg-card/50 border border-border/50 backdrop-blur-sm shadow-sm">
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-primary mb-1">
+                <div key={i} className="p-4 md:p-5 lg:p-6 rounded-2xl md:rounded-3xl bg-card/50 border border-border/50 backdrop-blur-sm shadow-sm">
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-1">
                     {stats.isLoading ? (
-                      <Loader2 className="w-8 h-8 animate-spin mx-auto" />
+                      <Loader2 className="w-6 h-6 md:w-8 md:h-8 animate-spin mx-auto" />
                     ) : (
                       `${stat.value}+`
                     )}
                   </div>
-                  <div className="text-xs sm:text-sm font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</div>
+                  <div className="text-[10px] sm:text-xs md:text-sm font-bold text-muted-foreground uppercase tracking-wider md:tracking-widest">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
