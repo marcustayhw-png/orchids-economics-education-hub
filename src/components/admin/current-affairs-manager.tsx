@@ -217,89 +217,61 @@ export function CurrentAffairsManager() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Title *</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                placeholder="e.g., Singapore Economy Grows 4.4% in 2024"
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="content">Main News Content *</Label>
-              <RichTextEditor
-                content={formData.content}
-                onChange={(html) => setFormData({ ...formData, content: html })}
-                placeholder="Write the core news details here..."
-                minHeight="200px"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="theoryDescription">Theory and Economic Ideas (JC Syllabus) *</Label>
-              <RichTextEditor
-                content={formData.theoryDescription}
-                onChange={(html) => setFormData({ ...formData, theoryDescription: html })}
-                placeholder="Link this news to specific economic theories and concepts in the JC syllabus..."
-                minHeight="200px"
-              />
-            </div>
-
-            <div className="border-t pt-4">
-              <h4 className="font-semibold mb-2">Strategy/Policy Analysis (Optional)</h4>
-              <p className="text-sm text-muted-foreground mb-4">Complete these if the article discusses a specific policy or strategy (e.g., Price Floor, Monetary Policy).</p>
-              
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="howItWorks">How It Works</Label>
-                  <RichTextEditor
-                    content={formData.howItWorks}
-                    onChange={(html) => setFormData({ ...formData, howItWorks: html })}
-                    placeholder="Explain the mechanism of the policy/strategy..."
-                    minHeight="150px"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="strengths">Strengths</Label>
-                    <RichTextEditor
-                      content={formData.strengths}
-                      onChange={(html) => setFormData({ ...formData, strengths: html })}
-                      placeholder="Positive aspects/impacts..."
-                      minHeight="150px"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="limitations">Limitations</Label>
-                    <RichTextEditor
-                      content={formData.limitations}
-                      onChange={(html) => setFormData({ ...formData, limitations: html })}
-                      placeholder="Negative aspects/limitations..."
-                      minHeight="150px"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="evaluation">Evaluations</Label>
-                  <RichTextEditor
-                    content={formData.evaluation}
-                    onChange={(html) => setFormData({ ...formData, evaluation: html })}
-                    placeholder="Synthesis and overall judgment..."
-                    minHeight="150px"
-                  />
-                </div>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="title">Title *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  placeholder="e.g., Singapore Economy Grows 4.4% in 2024"
+                  required
+                />
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="content">Main News Content *</Label>
+                <RichTextEditor
+                  content={formData.content}
+                  onChange={(html) => setFormData({ ...formData, content: html })}
+                  placeholder="Write the core news details here..."
+                  minHeight="150px"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="context">Background & Context *</Label>
+                <RichTextEditor
+                  content={formData.context}
+                  onChange={(html) => setFormData({ ...formData, context: html })}
+                  placeholder="Elaborate on the background and context of the news..."
+                  minHeight="150px"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="explanation">Economic Explanation *</Label>
+                <RichTextEditor
+                  content={formData.explanation}
+                  onChange={(html) => setFormData({ ...formData, explanation: html })}
+                  placeholder="Provide a detailed economic explanation of the events..."
+                  minHeight="150px"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="theoryConnection">Theory & Syllabus Connection *</Label>
+                <RichTextEditor
+                  content={formData.theoryConnection}
+                  onChange={(html) => setFormData({ ...formData, theoryConnection: html })}
+                  placeholder="Link this news to specific economic theories and concepts in the JC/Secondary syllabus..."
+                  minHeight="150px"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="newsCategory">Category *</Label>
                 <Select
