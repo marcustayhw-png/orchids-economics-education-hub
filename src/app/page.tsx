@@ -175,17 +175,17 @@ export default function Home() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: idx * 0.05 }}
               >
-                <Card className="group h-full border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 rounded-[2rem] overflow-hidden bg-card/50 backdrop-blur-sm">
-                  <CardHeader className="p-8 pb-4">
-                    <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className={`w-7 h-7 ${feature.color}`} />
+                <Card className="group h-full border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 rounded-2xl md:rounded-[2rem] overflow-hidden bg-card/50 backdrop-blur-sm">
+                  <CardHeader className="p-5 md:p-6 lg:p-8 pb-3 md:pb-4">
+                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${feature.bg} flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <feature.icon className={`w-6 h-6 md:w-7 md:h-7 ${feature.color}`} />
                     </div>
-                    <CardTitle className="text-xl sm:text-2xl font-bold mb-2">{feature.title}</CardTitle>
-                    <CardDescription className="text-base leading-relaxed font-medium">
+                    <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{feature.title}</CardTitle>
+                    <CardDescription className="text-sm md:text-base leading-relaxed font-medium">
                       {feature.desc}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="p-8 pt-0">
+                  <CardContent className="p-5 md:p-6 lg:p-8 pt-0">
                     {feature.href && (
                       <Button asChild variant="ghost" className="px-0 hover:bg-transparent text-primary font-bold group-hover:gap-3 transition-all">
                         <Link href={feature.href}>
