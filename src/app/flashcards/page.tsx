@@ -593,7 +593,7 @@ export default function FlashcardsPage() {
                                 className="relative w-full"
                                 style={{ 
                                   transformStyle: 'preserve-3d',
-                                  minHeight: '500px',
+                                  minHeight: '650px',
                                 }}
                                 animate={{ rotateY: isFlipped ? 180 : 0 }}
                                 transition={{
