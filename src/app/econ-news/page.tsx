@@ -140,6 +140,13 @@ export default function EconNewsPage() {
               dangerouslySetInnerHTML={{ __html: item.content }}
             />
 
+            {/* Analysis Sections Restored */}
+            <div className="grid sm:grid-cols-2 gap-6 pt-6 border-t border-border/30">
+              {renderSection("Context", item.context, <Globe className="w-4 h-4" />, "bg-blue-500/10 text-blue-500")}
+              {renderSection("Explanation", item.explanation, <BookOpen className="w-4 h-4" />, "bg-emerald-500/10 text-emerald-500")}
+              {renderSection("Theory Connection", item.theoryConnection, <Target className="w-4 h-4" />, "bg-purple-500/10 text-purple-500", true)}
+            </div>
+
             <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border/30">
               {item.topics.map((topic, idx) => (
                 <Badge 
