@@ -293,9 +293,13 @@ export function CSQManager() {
   const handleDelete = async () => {
     if (!deleteId) return;
 
+    const token = localStorage.getItem("bearer_token");
     try {
       const response = await fetch(`/api/csqs?csq_id=${deleteId}`, {
         method: "DELETE",
+        headers: { 
+          "Authorization": `Bearer ${token}`
+        },
       });
 
       if (response.ok) {
