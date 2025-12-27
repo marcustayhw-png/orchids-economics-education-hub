@@ -128,10 +128,11 @@ export function SingaporeEconomyDashboard() {
                       initial={{ width: 0 }}
                       animate={{ width: index === 1 ? "85%" : index === 0 ? "45%" : "65%" }}
                       transition={{ delay: index * 0.1 + 0.5, duration: 1.5, ease: "circOut" }}
-                      className={`h-full rounded-full relative z-10 ${
-                        item.trend === "up" ? "bg-sky-500" : 
-                        item.trend === "down" ? "bg-sky-500/60" : "bg-sky-500/40"
-                      }`} 
+                        className={`h-full rounded-full relative z-10 ${
+                          item.trend === "up" ? "bg-primary" : 
+                          item.trend === "down" ? "bg-primary/60" : "bg-primary/40"
+                        }`} 
+
                     />
                   </div>
               
