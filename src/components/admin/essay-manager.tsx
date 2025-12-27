@@ -218,9 +218,13 @@ export function EssayManager() {
   const handleDelete = async () => {
     if (!deleteId) return;
 
+    const token = localStorage.getItem("bearer_token");
     try {
       const response = await fetch(`/api/essays?essay_id=${deleteId}`, {
         method: "DELETE",
+        headers: { 
+          "Authorization": `Bearer ${token}`
+        },
       });
 
       if (response.ok) {
