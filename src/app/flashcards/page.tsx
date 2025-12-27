@@ -464,28 +464,28 @@ export default function FlashcardsPage() {
                     </motion.button>
                   </div>
 
-                  {/* Enhanced Swipe instruction for mobile */}
+                  {/* Enhanced Swipe instruction for mobile/tablet */}
                   <motion.div 
-                    className="text-center sm:hidden"
+                    className="text-center md:hidden"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                   >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-2 border-primary/20">
+                    <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 border-2 border-primary/20">
                       <motion.div
                         animate={{ x: [-3, 3, -3] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                       >
-                        <ChevronLeft className="w-4 h-4 text-primary" />
+                        <ChevronLeft className="w-3 h-3 md:w-4 md:h-4 text-primary" />
                       </motion.div>
-                      <span className="text-sm font-medium text-primary">
+                      <span className="text-xs md:text-sm font-medium text-primary">
                         Swipe to navigate • Tap to flip
                       </span>
                       <motion.div
                         animate={{ x: [3, -3, 3] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                       >
-                        <ChevronRight className="w-4 h-4 text-primary" />
+                        <ChevronRight className="w-3 h-3 md:w-4 md:h-4 text-primary" />
                       </motion.div>
                     </div>
                   </motion.div>
