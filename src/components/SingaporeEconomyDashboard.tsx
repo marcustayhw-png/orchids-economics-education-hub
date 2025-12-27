@@ -78,7 +78,7 @@ export function SingaporeEconomyDashboard() {
       icon: <Building2 className="w-4 h-4" />,
       color: "green"
     }
-  ]);
+  ];
 
   const getColorClasses = (color: string, type: "bg" | "text" | "border") => {
     const colors: Record<string, Record<string, string>> = {
