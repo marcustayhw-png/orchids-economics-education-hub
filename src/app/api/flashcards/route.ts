@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { flashcards } from '@/db/schema';
 import { eq, like, or, and, desc } from 'drizzle-orm';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
@@ -102,6 +103,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await getCurrentUser(request);
+    if (!user) {
+      return NextResponse.json({ 
+        error: 'Authentication required',
+        code: 'UNAUTHORIZED' 
+      }, { status: 401 });
+    }
+
     const body = await request.json();
     const { question, answer, level, category, topic, difficulty, economicsType, chapter } = body;
 
