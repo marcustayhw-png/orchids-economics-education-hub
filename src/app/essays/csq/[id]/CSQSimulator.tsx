@@ -148,7 +148,9 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
       </div>
 
       {/* Right Column: Questions & Answers */}
-      <div className="w-full lg:w-1/2 flex flex-col bg-card">
+      <div className={`w-full lg:w-1/2 flex flex-col bg-card ${
+        activeTabMobile === "questions" ? "flex" : "hidden lg:flex"
+      }`}>
         <div className="p-4 border-b flex items-center justify-between overflow-x-auto gap-4 scrollbar-hide">
           <div className="flex items-center gap-2 whitespace-nowrap">
             <PenTool className="w-4 h-4 text-primary" />
