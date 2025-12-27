@@ -1,5 +1,14 @@
-import { db } from "./index";
+import { createClient } from '@libsql/client';
+import { drizzle } from 'drizzle-orm/libsql';
 import { econNews } from "./schema";
+import * as schema from './schema';
+
+const client = createClient({
+  url: process.env.TURSO_CONNECTION_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN!,
+});
+
+const db = drizzle(client, { schema });
 
 const newsData = [
   // --- SINGAPORE NEWS (30 Articles) ---
@@ -781,12 +790,37 @@ const newsData = [
 async function seed() {
   console.log("Seeding econ news...");
   try {
-    // Clear existing news to avoid duplicates if re-running
-    await db.delete(econNews);
-    
+    // Drop and recreate table to ensure correct schema
+    console.log("Recreating table...");
+    await client.execute(`DROP TABLE IF EXISTS econ_news`);
+    await client.execute(\`
+      CREATE TABLE econ_news (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        theory_description TEXT,
+        how_it_works TEXT,
+        strengths TEXT,
+        limitations TEXT,
+        evaluation TEXT,
+        news_category TEXT NOT NULL DEFAULT 'International',
+        topics TEXT NOT NULL, -- JSON string
+        theories TEXT NOT NULL, -- JSON string
+        published_date TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    \`);
+
     // Insert new data
+    console.log("Inserting data...");
     for (const news of newsData) {
-      await db.insert(econNews).values(news);
+      // Need to stringify JSON fields for SQLite
+      await db.insert(econNews).values({
+        ...news,
+        topics: JSON.stringify(news.topics),
+        theories: JSON.stringify(news.theories)
+      });
     }
     console.log("Seeding completed successfully!");
     process.exit(0);
