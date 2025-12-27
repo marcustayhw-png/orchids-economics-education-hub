@@ -10,11 +10,9 @@ type EconNewsItem = {
   id: number;
   title: string;
   content: string;
-  theoryDescription: string;
-  howItWorks?: string;
-  strengths?: string;
-  limitations?: string;
-  evaluation?: string;
+  context?: string;
+  explanation?: string;
+  theoryConnection?: string;
   newsCategory: string;
   topics: string[];
   theories: string[];
@@ -63,11 +61,11 @@ export default function EconNewsPage() {
     );
   }
 
-  const renderSection = (title: string, content: string | undefined, icon: React.ReactNode, colorClass: string) => {
+  const renderSection = (title: string, content: string | undefined, icon: React.ReactNode, colorClass: string, isFullWidth: boolean = false) => {
     if (!content || content.trim() === "" || content === "<p></p>") return null;
     
     return (
-      <div className="space-y-3 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className={`space-y-3 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500 ${isFullWidth ? 'col-span-full' : ''}`}>
         <div className="flex items-center gap-2 group">
           <div className={`p-2 rounded-lg ${colorClass} transition-transform group-hover:scale-110`}>
             {icon}
@@ -77,7 +75,7 @@ export default function EconNewsPage() {
           </h4>
         </div>
         <div 
-          className="prose prose-sm sm:prose-base max-w-none text-muted-foreground bg-muted/30 p-4 rounded-xl border border-border/50"
+          className="prose prose-sm sm:prose-base max-w-none text-muted-foreground bg-muted/30 p-5 rounded-xl border border-border/50 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>
@@ -124,45 +122,49 @@ export default function EconNewsPage() {
       </CardHeader>
 
       <CardContent className="pt-8 space-y-2">
-        {/* Main Content */}
-        <div 
-          className="prose prose-base sm:prose-lg max-w-none text-foreground/90 mb-12 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: item.content }}
-        />
-
-        {/* Theory Section */}
-        {renderSection(
-          "Theory & JC Syllabus Concepts", 
-          item.theoryDescription, 
-          <BookOpen className="w-5 h-5" />, 
-          "bg-blue-500/10 text-blue-500"
-        )}
-
-        {/* Policy/Strategy Analysis Grid */}
-        {(item.howItWorks || item.strengths || item.limitations || item.evaluation) && (
-          <div className="mt-12 pt-12 border-t border-border/30">
-            <div className="flex items-center gap-3 mb-8">
-              <Layers className="w-6 h-6 text-primary" />
-              <h3 className="text-2xl font-black tracking-tight uppercase">Economic Analysis</h3>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-6">
-              {renderSection("How It Works", item.howItWorks, <Target className="w-5 h-5" />, "bg-orange-500/10 text-orange-500")}
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {renderSection("Strengths", item.strengths, <ShieldCheck className="w-5 h-5" />, "bg-green-500/10 text-green-500")}
-                {renderSection("Limitations", item.limitations, <AlertTriangle className="w-5 h-5" />, "bg-red-500/10 text-red-500")}
-              </div>
-              
-              {renderSection("Overall Evaluation", item.evaluation, <Scale className="w-5 h-5" />, "bg-purple-500/10 text-purple-500")}
-            </div>
+        {/* Main Summary */}
+        <div className="mb-10">
+          <div className="flex items-center gap-2 mb-4">
+            <Newspaper className="w-5 h-5 text-primary" />
+            <h3 className="text-xl font-bold">News Summary</h3>
           </div>
-        )}
+          <div 
+            className="prose prose-base sm:prose-lg max-w-none text-foreground/90 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: item.content }}
+          />
+        </div>
+
+        {/* Detailed Explanation and Context Sections */}
+        <div className="space-y-4 pt-8 border-t border-border/30">
+          {renderSection(
+            "Background & Context", 
+            item.context, 
+            <Globe className="w-5 h-5" />, 
+            "bg-blue-500/10 text-blue-500",
+            true
+          )}
+
+          {renderSection(
+            "Economic Explanation", 
+            item.explanation, 
+            <TrendingUp className="w-5 h-5" />, 
+            "bg-orange-500/10 text-orange-500",
+            true
+          )}
+
+          {renderSection(
+            "Theory & Syllabus Connection", 
+            item.theoryConnection, 
+            <BookOpen className="w-5 h-5" />, 
+            "bg-green-500/10 text-green-500",
+            true
+          )}
+        </div>
 
         {/* Topics Footer */}
         <div className="mt-8 pt-6 border-t border-border/30">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-4 h-4 text-primary" />
+            <Layers className="w-4 h-4 text-primary" />
             <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Key Topics</span>
           </div>
           <div className="flex flex-wrap gap-2">
