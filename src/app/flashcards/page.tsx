@@ -646,8 +646,8 @@ export default function FlashcardsPage() {
                                       zIndex: isFlipped ? 1 : 0
                                     }}
                                   >
-                                    <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20 h-full min-h-[450px]">
-                                        <CardContent className="p-6 sm:p-8 md:p-10 flex flex-col h-full justify-between min-h-[450px]">
+                                      <Card className="border-2 shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-muted/20 h-full min-h-[550px]">
+                                          <CardContent className="p-6 sm:p-8 md:p-10 flex flex-col h-full justify-between min-h-[550px]">
                                           <div className="flex-none mb-3">
                                             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                                               <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
