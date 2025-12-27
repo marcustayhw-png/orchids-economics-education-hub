@@ -38,9 +38,9 @@ export function EssaysPageClient({
     <div className="w-full">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 min-w-0">
-          {/* Tab Toggle - Aligned with content */}
-          <div className="flex justify-start mb-6">
-            <div className="inline-flex rounded-xl bg-muted p-1.5 shadow-sm border">
+            {/* Tab Toggle - Centered */}
+            <div className="flex justify-center mb-6">
+              <div className="inline-flex rounded-xl bg-muted p-1.5 shadow-sm border">
               <button
                 onClick={() => setActiveTab("essays")}
                 className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
