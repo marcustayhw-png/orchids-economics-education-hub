@@ -286,7 +286,7 @@ export default function FlashcardsPage() {
               <TabsTrigger value="JC" className="text-sm md:text-base">Junior College</TabsTrigger>
             </TabsList>
 
-          <TabsContent value={selectedLevel} className="space-y-8">
+          <TabsContent value={selectedLevel} className="space-y-6 md:space-y-8">
             <AnimatePresence mode="wait">
               {/* Step 1: Select Economics Type */}
               {currentStep === "economics-type" && (
@@ -296,18 +296,18 @@ export default function FlashcardsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="space-y-6"
+                  className="space-y-4 md:space-y-6"
                 >
-                  <div className="text-center space-y-3">
-                    <h2 className="text-2xl sm:text-3xl font-semibold">
+                  <div className="text-center space-y-2 md:space-y-3">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
                       Choose Your Focus
                     </h2>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm md:text-base text-muted-foreground">
                       Select either Microeconomics or Macroeconomics to begin
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 max-w-3xl mx-auto">
                     <motion.div
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
