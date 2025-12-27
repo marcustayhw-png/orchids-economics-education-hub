@@ -17,18 +17,6 @@ const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
 
 export async function POST(request: NextRequest) {
   try {
-    // Authentication check
-    const user = await getCurrentUser(request);
-    if (!user) {
-      return NextResponse.json(
-        { 
-          error: 'Authentication required',
-          code: 'UNAUTHORIZED'
-        },
-        { status: 401 }
-      );
-    }
-
     // Get form data
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
