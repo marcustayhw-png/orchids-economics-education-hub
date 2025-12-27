@@ -54,8 +54,8 @@ const formatAnswerAsPoints = (answer: string) => {
           
           if (content) {
             formattedPoints.push(
-              <div key={number} className="mb-8">
-                <p className="text-xl sm:text-2xl md:text-2xl leading-relaxed">
+              <div key={number} className="mb-4">
+                <p className="text-base sm:text-lg leading-relaxed">
                   <span className="font-semibold text-primary">({number})</span> {content}
                 </p>
               </div>
@@ -72,7 +72,7 @@ const formatAnswerAsPoints = (answer: string) => {
     return lines.map((line, index) => {
       const cleanedLine = line.replace(/^[•\-\*]\s*/, '');
       return (
-        <li key={index} className="text-xl sm:text-2xl md:text-2xl leading-relaxed mb-6">
+        <li key={index} className="text-base sm:text-lg leading-relaxed mb-3">
           {cleanedLine}
         </li>
       );
