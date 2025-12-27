@@ -493,21 +493,21 @@ export default function FlashcardsPage() {
                   {/* Flashcard Display */}
                   {filteredCards.length === 0 ? (
                     <Card className="border-2 border-dashed">
-                      <CardContent className="py-12 text-center">
-                        <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                        <p className="text-muted-foreground">
+                      <CardContent className="py-8 md:py-12 text-center">
+                        <BookOpen className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-4 text-muted-foreground" />
+                        <p className="text-sm md:text-base text-muted-foreground">
                           No flashcards available for the selected filters.
                         </p>
                       </CardContent>
                     </Card>
                   ) : (
-                    <div className="space-y-6">
+                    <div className="space-y-4 md:space-y-6">
                       {/* Progress */}
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <div className="flex items-center justify-between text-xs md:text-sm text-muted-foreground">
                         <span>
                           Card {currentIndex + 1} of {filteredCards.length}
                         </span>
-                        <Badge>{currentCard?.topic}</Badge>
+                        <Badge className="text-xs md:text-sm">{currentCard?.topic}</Badge>
                       </div>
 
                           {/* 3D Flip Card Container with Swipe and Animated Indicators */}
