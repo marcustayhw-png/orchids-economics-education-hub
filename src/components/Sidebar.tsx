@@ -15,9 +15,12 @@ export function Sidebar() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            When answering macro questions, always relate back to Singapore's context as a small and open economy. Mention high dependence on imports and export-led growth!
-          </p>
+          <ul className="text-xs text-muted-foreground leading-relaxed space-y-1.5">
+            <li><strong>Define</strong> – State the meaning clearly</li>
+            <li><strong>Explain</strong> – Show cause & effect with reasoning</li>
+            <li><strong>Analyse</strong> – Break down using economic theory</li>
+            <li><strong>Discuss/Evaluate</strong> – Weigh pros vs cons with judgment</li>
+          </ul>
         </CardContent>
       </Card>
 
