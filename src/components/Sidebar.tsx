@@ -170,5 +170,3 @@ export function Sidebar({ activeTab = "essays" }: SidebarProps) {
     </div>
   );
 }
-  );
-}
