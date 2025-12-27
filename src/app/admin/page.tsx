@@ -12,6 +12,7 @@ import { CSQManager } from "@/components/admin/csq-manager";
 import { NotesManager } from "@/components/admin/notes-manager";
 import { FlashcardManager } from "@/components/admin/flashcard-manager";
 import { CurrentAffairsManager } from "@/components/admin/current-affairs-manager";
+import { MarkingManager } from "@/components/admin/marking-manager";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 
@@ -88,12 +89,13 @@ export default function AdminPage() {
 
         {/* Content Management Tabs */}
         <Tabs defaultValue="essays" className="space-y-6">
-          <TabsList className="grid w-full max-w-4xl grid-cols-5">
+          <TabsList className="grid w-full max-w-5xl grid-cols-6">
             <TabsTrigger value="essays">Essays</TabsTrigger>
             <TabsTrigger value="csqs">CSQs</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
             <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
             <TabsTrigger value="current-affairs">Current Affairs</TabsTrigger>
+            <TabsTrigger value="marking">Marking</TabsTrigger>
           </TabsList>
 
           <TabsContent value="essays">
@@ -147,6 +149,17 @@ export default function AdminPage() {
               </CardHeader>
               <CardContent>
                 <CurrentAffairsManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="marking">
+            <Card>
+              <CardHeader>
+                <CardTitle>Marking & Feedback Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <MarkingManager />
               </CardContent>
             </Card>
           </TabsContent>
