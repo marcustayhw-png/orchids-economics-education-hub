@@ -115,13 +115,36 @@ export default function EconNewsPage() {
               </div>
             </CardHeader>
 
-            <CardContent className="pt-6 px-8 sm:px-12 pb-10 sm:pb-14 space-y-8 relative z-10">
-              <div 
-                className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-foreground/70 leading-relaxed font-medium selection:bg-primary/20"
-                dangerouslySetInnerHTML={{ __html: item.content }}
-              />
+              <CardContent className="pt-6 px-8 sm:px-12 pb-10 sm:pb-14 space-y-8 relative z-10">
+                <div 
+                  className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-foreground/70 leading-relaxed font-medium selection:bg-primary/20"
+                  dangerouslySetInnerHTML={{ __html: item.content }}
+                />
 
-              <div className="flex flex-wrap gap-2 pt-6 border-t border-border/20">
+                {(item.context || item.explanation || item.theoryConnection) && (
+                  <div className="grid sm:grid-cols-3 gap-6 pt-10 border-t border-border/20">
+                    {item.context && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Context</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed italic">"{item.context}"</p>
+                      </div>
+                    )}
+                    {item.explanation && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">Explanation</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed">{item.explanation}</p>
+                      </div>
+                    )}
+                    {item.theoryConnection && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-500">Syllabus Link</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed font-bold">{item.theoryConnection}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex flex-wrap gap-2 pt-6 border-t border-border/20">
                 {item.topics.map((topic, idx) => (
                   <Badge 
                     key={idx} 
