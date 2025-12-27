@@ -151,7 +151,23 @@ export const econNews = sqliteTable('econ_news', {
   newsCategory: text('news_category').notNull().default('International'),
   topics: text('topics', { mode: 'json' }).notNull(),
   theories: text('theories', { mode: 'json' }).notNull(),
-  publishedDate: text('published_date').notNull(),
-  createdAt: text('created_at').notNull(),
-  updatedAt: text('updated_at').notNull(),
-});
+    publishedDate: text('published_date').notNull(),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+  });
+  
+  // Marking Requests table
+  export const markingRequests = sqliteTable('marking_requests', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    email: text('email').notNull(),
+    phone: text('phone'),
+    level: text('level').notNull(), // Secondary, JC H1, JC H2
+    subject: text('subject'),
+    fileUrl: text('file_url').notNull(),
+    fileName: text('file_name'),
+    status: text('status').notNull().default('pending'), // pending, marking, completed, rejected
+    adminComments: text('admin_comments'),
+    markedFileUrl: text('marked_file_url'),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+  });
