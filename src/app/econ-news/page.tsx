@@ -136,47 +136,20 @@ export default function EconNewsPage() {
 
           <CardContent className="pt-0 px-6 sm:px-10 pb-8 sm:pb-10 space-y-6 sm:space-y-8 relative z-10">
             <div 
-              className="prose prose-sm sm:prose-base max-w-none text-foreground/70 leading-relaxed"
+              className="prose prose-sm sm:prose-base max-w-none text-foreground/80 leading-relaxed font-medium"
               dangerouslySetInnerHTML={{ __html: item.content }}
             />
 
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-border/50">
-              {item.explanation && (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-primary/80">
-                    <Zap className="w-3 h-3" /> The Logic
-                  </div>
-                  <div 
-                    className="text-xs text-muted-foreground leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: item.explanation }}
-                  />
-                </div>
-              )}
-              {item.theoryConnection && (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-green-600/80">
-                    <BookOpen className="w-3 h-3" /> Syllabus
-                  </div>
-                  <div 
-                    className="text-xs text-muted-foreground leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: item.theoryConnection }}
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between pt-2 sm:pt-4">
-              <div className="flex flex-wrap gap-1.5">
-                {item.topics.map((topic, idx) => (
-                  <Badge 
-                    key={idx} 
-                    variant="outline" 
-                    className="text-[8px] sm:text-[9px] font-bold px-2 sm:px-3 py-0.5 rounded-full border-border/50 bg-background/50 text-muted-foreground"
-                  >
-                    {topic}
-                  </Badge>
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border/30">
+              {item.topics.map((topic, idx) => (
+                <Badge 
+                  key={idx} 
+                  variant="outline" 
+                  className="text-[9px] font-bold px-3 py-1 rounded-full border-border/50 bg-muted/20 text-muted-foreground/80"
+                >
+                  {topic}
+                </Badge>
+              ))}
             </div>
           </CardContent>
         </div>
