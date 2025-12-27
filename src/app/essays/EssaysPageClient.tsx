@@ -37,11 +37,11 @@ export function EssaysPageClient({
   return (
     <div className="w-full">
       {/* Tab Toggle - Centered above content */}
-      <div className="flex justify-center mb-8">
-        <div className="inline-flex rounded-xl bg-muted p-1.5 shadow-sm border">
+      <div className="w-full flex justify-center mb-6 sm:mb-8 px-4">
+        <div className="inline-flex rounded-xl bg-muted p-1 sm:p-1.5 shadow-sm border">
           <button
             onClick={() => setActiveTab("essays")}
-            className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
               activeTab === "essays"
                 ? "bg-primary text-primary-foreground shadow-md"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted-foreground/10"
@@ -51,7 +51,7 @@ export function EssaysPageClient({
           </button>
           <button
             onClick={() => setActiveTab("csq")}
-            className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
               activeTab === "csq"
                 ? "bg-primary text-primary-foreground shadow-md"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted-foreground/10"
@@ -62,7 +62,7 @@ export function EssaysPageClient({
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
         <div className="flex-1 min-w-0">
           <EssaysClient 
             initialEssays={essays} 
