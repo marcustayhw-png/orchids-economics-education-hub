@@ -445,19 +445,19 @@ export default function FlashcardsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="space-y-6"
+                  className="space-y-4 md:space-y-6"
                 >
                   {/* Breadcrumb with Change Chapter button */}
-                  <div className="flex items-center justify-center gap-3 flex-wrap">
-                    <Badge variant="secondary">{selectedEconomicsType}</Badge>
+                  <div className="flex items-center justify-center gap-2 md:gap-3 flex-wrap">
+                    <Badge variant="secondary" className="text-xs md:text-sm">{selectedEconomicsType}</Badge>
                     <span className="text-muted-foreground">/</span>
-                    <Badge variant="outline">{selectedChapter}</Badge>
-                    <span className="text-muted-foreground mx-2">•</span>
+                    <Badge variant="outline" className="text-xs md:text-sm">{selectedChapter}</Badge>
+                    <span className="text-muted-foreground mx-1 md:mx-2">•</span>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={handleBackToChapter}
-                      className="py-2 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center gap-2 text-sm font-medium group"
+                      className="py-1.5 md:py-2 px-3 md:px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-300 flex items-center gap-2 text-xs md:text-sm font-medium group"
                     >
                       <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform duration-300" />
                       Change Chapter
