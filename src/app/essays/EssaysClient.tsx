@@ -32,12 +32,20 @@ interface CSQ {
 
 export function EssaysClient({ 
   initialEssays, 
-  initialCSQs 
+  initialCSQs,
+  onTabChange
 }: { 
   initialEssays: Essay[], 
-  initialCSQs: CSQ[] 
+  initialCSQs: CSQ[],
+  onTabChange?: (tab: "essays" | "csq") => void
 }) {
-  const [selectedTab, setSelectedTab] = useState("essays");
+  const [selectedTab, setSelectedTab] = useState<"essays" | "csq">("essays");
+  
+  const handleTabChange = (tab: string) => {
+    const newTab = tab as "essays" | "csq";
+    setSelectedTab(newTab);
+    onTabChange?.(newTab);
+  };
   
   // Essay filters
   const [essayLevel, setEssayLevel] = useState<string>("all");
