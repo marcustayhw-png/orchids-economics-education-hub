@@ -136,7 +136,7 @@ export default function EconNewsPage() {
 
           <CardContent className="pt-0 px-6 sm:px-10 pb-8 sm:pb-10 space-y-6 sm:space-y-8 relative z-10">
             <div 
-              className="prose prose-sm sm:prose-base max-w-none text-foreground/70 leading-relaxed line-clamp-3 sm:line-clamp-none"
+              className="prose prose-sm sm:prose-base max-w-none text-foreground/70 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: item.content }}
             />
 
@@ -147,7 +147,7 @@ export default function EconNewsPage() {
                     <Zap className="w-3 h-3" /> The Logic
                   </div>
                   <div 
-                    className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3"
+                    className="text-xs text-muted-foreground leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: item.explanation }}
                   />
                 </div>
@@ -158,7 +158,7 @@ export default function EconNewsPage() {
                     <BookOpen className="w-3 h-3" /> Syllabus
                   </div>
                   <div 
-                    className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3"
+                    className="text-xs text-muted-foreground leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: item.theoryConnection }}
                   />
                 </div>
@@ -167,7 +167,7 @@ export default function EconNewsPage() {
 
             <div className="flex items-center justify-between pt-2 sm:pt-4">
               <div className="flex flex-wrap gap-1.5">
-                {item.topics.slice(0, 1).map((topic, idx) => (
+                {item.topics.map((topic, idx) => (
                   <Badge 
                     key={idx} 
                     variant="outline" 
@@ -176,13 +176,7 @@ export default function EconNewsPage() {
                     {topic}
                   </Badge>
                 ))}
-                {item.topics.length > 1 && (
-                   <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground/50 self-center">+{item.topics.length - 1} more</span>
-                )}
               </div>
-              <Button variant="ghost" size="sm" className="h-8 text-[10px] sm:text-xs font-bold text-primary hover:bg-primary/10 rounded-full group/btn px-3">
-                Read Analysis <ArrowRight className="w-3 h-3 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-              </Button>
             </div>
           </CardContent>
         </div>
