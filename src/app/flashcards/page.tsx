@@ -619,11 +619,11 @@ export default function FlashcardsPage() {
                                           <BookOpen className="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
                                         </div>
                                       </div>
-                                      <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center justify-center text-center px-4">
+                                      <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center justify-center text-center px-6">
                                         <p className="text-sm font-semibold text-primary uppercase tracking-wide">
                                           Question
                                         </p>
-                                        <p className="text-lg sm:text-xl lg:text-2xl font-medium leading-relaxed">
+                                        <p className="text-xl sm:text-2xl lg:text-3xl font-medium leading-relaxed">
                                           {currentCard?.question}
                                         </p>
                                       </div>
