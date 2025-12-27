@@ -102,32 +102,70 @@ export function EssayManager() {
     fetchEssays();
   }, []);
 
-    const fetchEssays = async () => {
-      setIsLoading(true);
-      try {
-        const token = localStorage.getItem("bearer_token");
-        const headers: Record<string, string> = {};
-        if (token && token !== "null" && token !== "undefined") {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-
-        const response = await fetch("/api/essays?limit=100", {
-          headers
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setEssays(data);
-        } else if (response.status === 401) {
-          toast.error("Session expired. Please log in again.");
-        } else {
-          toast.error("Failed to load essays");
-        }
-      } catch (error) {
-        toast.error("Error loading essays");
-      } finally {
-        setIsLoading(false);
+  const fetchEssays = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/essays?limit=1000");
+      if (res.ok) {
+        const data = await res.json();
+        setEssays(data);
       }
-    };
+    } catch (error) {
+      toast.error("Error fetching essays");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEssays();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const method = editingEssay ? "PUT" : "POST";
+      const res = await fetch("/api/essays", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        toast.success(`Essay ${editingEssay ? "updated" : "created"} successfully`);
+        setIsOpen(false);
+        resetForm();
+        fetchEssays();
+      } else {
+        toast.error("Failed to save essay");
+      }
+    } catch (error) {
+      toast.error("Error saving essay");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this essay?")) return;
+
+    try {
+      const res = await fetch(`/api/essays?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        toast.success("Essay deleted successfully");
+        fetchEssays();
+      } else {
+        toast.error("Failed to delete essay");
+      }
+    } catch (error) {
+      toast.error("Error deleting essay");
+    }
+  };
 
   // Get unique topics for filter dropdown
   const uniqueTopics = Array.from(
