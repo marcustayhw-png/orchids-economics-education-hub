@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { db } from '@/db';
-import { essays, csqs } from '@/db/schema';
+import { essays, csqs, notes } from '@/db/schema';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://econstack.com';
@@ -56,57 +56,63 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
+  try {
+    // Fetch essays, CSQs and Notes sequentially to handle failures individually and avoid build crashes
+    let essayResults: any[] = [];
     try {
-      // Fetch essays, CSQs and Notes for dynamic routes
-      const [essayResults, csqResults, noteResults] = await Promise.all([
-        db.select({ 
-          essayId: essays.essayId, 
-          updatedAt: essays.updatedAt 
-        }).from(essays).catch(err => {
-          console.error('Sitemap: Failed to fetch essays', err);
-          return [] as any[];
-        }),
-        db.select({ 
-          csqId: csqs.csqId, 
-          updatedAt: csqs.updatedAt 
-        }).from(csqs).catch(err => {
-          console.error('Sitemap: Failed to fetch CSQs', err);
-          return [] as any[];
-        }),
-        db.select({
-          id: notes.id,
-          updatedAt: notes.updatedAt
-        }).from(notes).catch(err => {
-          console.error('Sitemap: Failed to fetch notes', err);
-          return [] as any[];
-        })
-      ]);
+      essayResults = await db.select({ 
+        essayId: essays.essayId, 
+        updatedAt: essays.updatedAt 
+      }).from(essays);
+    } catch (err) {
+      console.error('Sitemap: Failed to fetch essays', err);
+    }
 
-      const essayRoutes: MetadataRoute.Sitemap = (essayResults || []).map((essay: any) => ({
-        url: `${baseUrl}/essays/${essay.essayId}`,
-        lastModified: essay.updatedAt ? new Date(essay.updatedAt) : new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      }));
+    let csqResults: any[] = [];
+    try {
+      csqResults = await db.select({ 
+        csqId: csqs.csqId, 
+        updatedAt: csqs.updatedAt 
+      }).from(csqs);
+    } catch (err) {
+      console.error('Sitemap: Failed to fetch CSQs', err);
+    }
 
-      const csqRoutes: MetadataRoute.Sitemap = (csqResults || []).map((csq: any) => ({
-        url: `${baseUrl}/essays/csq/${csq.csqId}`,
-        lastModified: csq.updatedAt ? new Date(csq.updatedAt) : new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      }));
+    let noteResults: any[] = [];
+    try {
+      noteResults = await db.select({
+        id: notes.id,
+        updatedAt: notes.updatedAt
+      }).from(notes);
+    } catch (err) {
+      console.error('Sitemap: Failed to fetch notes', err);
+    }
 
-      const noteRoutes: MetadataRoute.Sitemap = (noteResults || []).map((note: any) => ({
-        url: `${baseUrl}/notes`, // Individual note pages don't exist yet, so we just point to the main notes page or use a placeholder if they did
-        lastModified: note.updatedAt ? new Date(note.updatedAt) : new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-      }));
+    const essayRoutes: MetadataRoute.Sitemap = (essayResults || []).map((essay: any) => ({
+      url: `${baseUrl}/essays/${essay.essayId}`,
+      lastModified: essay.updatedAt ? new Date(essay.updatedAt) : new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
 
-      return [...staticRoutes, ...essayRoutes, ...csqRoutes, ...noteRoutes];
+    const csqRoutes: MetadataRoute.Sitemap = (csqResults || []).map((csq: any) => ({
+      url: `${baseUrl}/essays/csq/${csq.csqId}`,
+      lastModified: csq.updatedAt ? new Date(csq.updatedAt) : new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
+
+    const noteRoutes: MetadataRoute.Sitemap = (noteResults || []).map((note: any) => ({
+      url: `${baseUrl}/notes`, // Individual note pages don't exist yet, but we track the last update
+      lastModified: note.updatedAt ? new Date(note.updatedAt) : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
+
+    return [...staticRoutes, ...essayRoutes, ...csqRoutes, ...noteRoutes];
 
   } catch (error) {
-    console.error('Error generating dynamic sitemap routes:', error);
+    console.error('Critical error generating dynamic sitemap routes:', error);
     return staticRoutes;
   }
 }
