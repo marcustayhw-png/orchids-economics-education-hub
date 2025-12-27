@@ -379,16 +379,16 @@ export default function FlashcardsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="space-y-6"
+                  className="space-y-4 md:space-y-6"
                 >
-                  <div className="text-center space-y-3">
+                  <div className="text-center space-y-2 md:space-y-3">
                     <Badge variant="secondary" className="mb-2">
                       {selectedEconomicsType}
                     </Badge>
-                    <h2 className="text-2xl sm:text-3xl font-semibold">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
                       Select a Chapter
                     </h2>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm md:text-base text-muted-foreground">
                       {selectedLevel === "JC"
                         ? "Choose the H2 Economics chapter from Syllabus 9570 (2026)"
                         : "Choose the O-Level Economics chapter from Syllabus 2286 (2026)"}
@@ -397,7 +397,7 @@ export default function FlashcardsPage() {
 
                   <div className="max-w-2xl mx-auto">
                     <Card className="border-2">
-                      <CardContent className="pt-6 space-y-4">
+                      <CardContent className="pt-4 md:pt-6 space-y-3 md:space-y-4">
                         {chapters.length === 0 ? (
                           <div className="text-center py-8">
                             <p className="text-muted-foreground">
