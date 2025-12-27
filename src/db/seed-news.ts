@@ -1,7 +1,35 @@
 import { db } from './index';
 import { econNews } from './schema';
+import { sql } from 'drizzle-orm';
 
 async function seed() {
+  console.log('🔄 Recreating econ_news table...');
+  
+  try {
+    // Drop and recreate table for SQLite/Turso
+    await db.run(sql`DROP TABLE IF EXISTS econ_news`);
+    await db.run(sql`
+      CREATE TABLE econ_news (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        context TEXT,
+        explanation TEXT,
+        theory_connection TEXT,
+        news_category TEXT NOT NULL DEFAULT 'International',
+        topics TEXT NOT NULL,
+        theories TEXT NOT NULL,
+        published_date TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    `);
+    console.log('✅ Table recreated successfully.');
+  } catch (error) {
+    console.error('❌ Error recreating table:', error);
+    // Continue anyway if drop fails or table exists
+  }
+
   console.log('🌱 Seeding detailed Econ News...');
 
   const newsData = [
