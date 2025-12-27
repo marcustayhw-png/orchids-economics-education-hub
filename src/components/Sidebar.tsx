@@ -7,7 +7,6 @@ import Link from "next/link";
 export function Sidebar() {
   return (
     <div className="space-y-6">
-      <SingaporeEconomyDashboard />
       
       <Card className="border-2 shadow-sm bg-card/50 backdrop-blur-sm">
         <CardHeader className="pb-2">
