@@ -27,6 +27,7 @@ export default function EconNewsPage() {
   const [news, setNews] = useState<EconNewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [displayLimit, setDisplayLimit] = useState(5);
 
   useEffect(() => {
     fetchNews();
@@ -51,6 +52,13 @@ export default function EconNewsPage() {
     if (activeCategory === "all") return true;
     return item.newsCategory === activeCategory;
   });
+
+  const displayedNews = filteredNews.slice(0, displayLimit);
+  const hasMore = filteredNews.length > displayLimit;
+
+  const handleLoadMore = () => {
+    setDisplayLimit(prev => prev + 5);
+  };
 
   const singaporeCount = news.filter(n => n.newsCategory === "Singapore").length;
   const internationalCount = news.filter(n => n.newsCategory === "International").length;
