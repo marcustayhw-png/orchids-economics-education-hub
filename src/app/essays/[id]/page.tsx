@@ -160,12 +160,12 @@ export default function EssayDetailPage() {
                 </Badge>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div 
-                className="prose prose-sm max-w-none rich-text-content break-words overflow-x-auto"
-                dangerouslySetInnerHTML={{ __html: essay.modelAnswer }}
-              />
-            </CardContent>
+              <CardContent>
+                <div 
+                  className="prose prose-sm dark:prose-invert max-w-none rich-text-content break-words overflow-x-auto"
+                  dangerouslySetInnerHTML={{ __html: essay.modelAnswer }}
+                />
+              </CardContent>
           </Card>
         )}
       </div>
