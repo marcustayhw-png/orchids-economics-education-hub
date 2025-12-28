@@ -417,16 +417,16 @@ export function NotesManager() {
                       <SelectTrigger>
                         <SelectValue placeholder="Select chapter" />
                       </SelectTrigger>
-                        <SelectContent>
-                          {formData.economicsType && 
-                            (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters] && 
-                            Array.isArray((formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters]) &&
-                            (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters]!.map((chapter) => (
-                              <SelectItem key={chapter} value={chapter}>
-                                {chapter}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
+                          <SelectContent>
+                            {formData.economicsType && 
+                              (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters] && 
+                              Array.isArray((formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters]) ?
+                              ((formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters] as string[]).map((chapter) => (
+                                <SelectItem key={chapter} value={chapter}>
+                                  {chapter}
+                                </SelectItem>
+                              )) : null}
+                          </SelectContent>
                     </Select>
                   </div>
                 </div>
