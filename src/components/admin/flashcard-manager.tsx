@@ -155,6 +155,66 @@ export function FlashcardManager() {
   });
 
 
+  const handleDelete = async (id: number) => {
+    const token = localStorage.getItem("bearer_token");
+    try {
+      const response = await fetch(`/api/flashcards?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Flashcard deleted successfully");
+        fetchFlashcards();
+      } else {
+        toast.error("Failed to delete flashcard");
+      }
+    } catch (error) {
+      toast.error("Error deleting flashcard");
+    }
+  };
+
+  const [cardToDelete, setCardToDelete] = useState<number | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const token = localStorage.getItem("bearer_token");
+    const payload = {
+      ...formData,
+    };
+
+    try {
+      const url = editingId ? `/api/flashcards?id=${editingId}` : "/api/flashcards";
+      const method = editingId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        toast.success(`Flashcard ${editingId ? "updated" : "created"} successfully`);
+        fetchFlashcards();
+        resetForm();
+      } else {
+        const error = await response.json();
+        toast.error(error.error || `Failed to ${editingId ? "update" : "create"} flashcard`);
+      }
+    } catch (error) {
+      toast.error("An error occurred");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -165,6 +225,31 @@ export function FlashcardManager() {
 
   return (
     <div className="space-y-6">
+      <AlertDialog open={!!cardToDelete} onOpenChange={(open) => !open && setCardToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the flashcard.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                if (cardToDelete) {
+                  handleDelete(cardToDelete);
+                  setCardToDelete(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Browser View */}
       {!showForm && (
         <div className="space-y-6">
@@ -344,7 +429,7 @@ export function FlashcardManager() {
                             <Button
                               size="icon"
                               variant="ghost"
-                              onClick={() => handleDelete(flashcard.id)}
+                              onClick={() => setCardToDelete(flashcard.id)}
                               className="hover:text-destructive"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -365,6 +450,181 @@ export function FlashcardManager() {
           </AnimatePresence>
         </div>
       )}
+
+      {/* Form */}
+      {showForm && (
+        <Card className="border-2 border-primary">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>{editingId ? "Edit Flashcard" : "Add New Flashcard"}</CardTitle>
+              <Button variant="ghost" size="sm" onClick={resetForm}>
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="level">Level *</Label>
+                  <Select
+                    value={formData.level}
+                    onValueChange={(value) => setFormData({ ...formData, level: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="JC">JC</SelectItem>
+                      <SelectItem value="Secondary">Secondary School</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="difficulty">Difficulty</Label>
+                  <Select
+                    value={formData.difficulty}
+                    onValueChange={(value) => setFormData({ ...formData, difficulty: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Difficulty" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Easy">Easy</SelectItem>
+                      <SelectItem value="Medium">Medium</SelectItem>
+                      <SelectItem value="Hard">Hard</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="economicsType">Economics Type *</Label>
+                  <Select
+                    value={formData.economicsType}
+                    onValueChange={(value: any) => setFormData({ ...formData, economicsType: value, chapter: "" })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Microeconomics">Microeconomics</SelectItem>
+                      <SelectItem value="Macroeconomics">Macroeconomics</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="chapter">Chapter *</Label>
+                  <Select
+                    value={formData.chapter}
+                    onValueChange={(value) => setFormData({ ...formData, chapter: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Chapter" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formData.economicsType && (formData.level === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS)[formData.economicsType as keyof typeof JC_CHAPTERS]?.map(chapter => (
+                        <SelectItem key={chapter} value={chapter}>{chapter}</SelectItem>
+                      ))}
+                      <SelectItem value="Custom">Other (Specify in Topic)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="topic">Topic / Sub-topic *</Label>
+                <Input
+                  id="topic"
+                  value={formData.topic}
+                  onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+                  placeholder="e.g. Price Elasticity of Demand"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="category">Category</Label>
+                <Input
+                  id="category"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  placeholder="e.g. Definitions, Concepts"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="question">Question *</Label>
+                <Textarea
+                  id="question"
+                  value={formData.question}
+                  onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+                  placeholder="Enter the flashcard question"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="answer">Answer *</Label>
+                <Textarea
+                  id="answer"
+                  value={formData.answer}
+                  onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+                  placeholder="Enter the answer"
+                  rows={5}
+                  required
+                />
+              </div>
+
+              <div className="flex gap-2 justify-end">
+                <Button type="button" variant="outline" onClick={resetForm}>Cancel</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                  {editingId ? "Update" : "Create"} Flashcard
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* All Flashcards List (Fallback) */}
+      {!showForm && viewStep !== "list" && (
+        <div className="pt-8 border-t">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold">All Flashcards ({flashcards.length})</h3>
+            <Button onClick={handleAddNew} size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              Quick Add
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {flashcards.slice(0, 5).map(card => (
+              <Card key={card.id} className="p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <div className="flex gap-2 mb-2">
+                      <Badge variant="outline" className="text-[10px]">{card.level}</Badge>
+                      <Badge variant="outline" className="text-[10px]">{card.economicsType}</Badge>
+                    </div>
+                    <p className="font-medium">{card.question}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button size="icon" variant="ghost" onClick={() => handleEdit(card)}><Edit className="w-3 h-3" /></Button>
+                    <Button size="icon" variant="ghost" onClick={() => setCardToDelete(card.id)} className="text-destructive"><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+            {flashcards.length > 5 && (
+              <p className="text-center text-sm text-muted-foreground">And {flashcards.length - 5} more... use browser above to find specific cards.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
