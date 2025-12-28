@@ -35,9 +35,24 @@ interface Note {
   topics: string[];
   description: string;
   pdfUrl: string | null;
+  economicsType: string | null;
+  chapter: string | null;
   createdAt: string;
   updatedAt: string;
 }
+
+const jcChapters = {
+  Micro: [
+    "Demand and Supply",
+    "Market Failure",
+    "Firms and Decisions (Market Structure)"
+  ],
+  Macro: [
+    "Introduction to Macroeconomics",
+    "Macroeconomic Objectives and Policies",
+    "Globalisation and the International Economy"
+  ]
+};
 
 export function NotesManager() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -52,6 +67,8 @@ export function NotesManager() {
     title: "",
     category: "",
     level: "JC",
+    economicsType: "Micro" as "Micro" | "Macro" | "",
+    chapter: "",
     topics: "",
     description: "",
     pdfUrl: "",
@@ -88,6 +105,8 @@ export function NotesManager() {
       title: "",
       category: "",
       level: "JC",
+      economicsType: "Micro",
+      chapter: "",
       topics: "",
       description: "",
       pdfUrl: "",
@@ -104,6 +123,8 @@ export function NotesManager() {
       title: note.title,
       category: note.category,
       level: note.level,
+      economicsType: (note.economicsType as any) || (note.level === "JC" ? "Micro" : ""),
+      chapter: note.chapter || "",
       topics: note.topics.join(", "),
       description: note.description,
       pdfUrl: note.pdfUrl || "",
@@ -169,6 +190,8 @@ export function NotesManager() {
       title: formData.title,
       category: formData.category,
       level: formData.level,
+      economicsType: formData.level === "JC" ? formData.economicsType : null,
+      chapter: formData.level === "JC" ? formData.chapter : null,
       topics: topicsArray,
       description: formData.description,
       pdfUrl: formData.pdfUrl || null,
@@ -290,19 +313,6 @@ export function NotesManager() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category *</Label>
-                  <Input
-                    id="category"
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value })
-                    }
-                    placeholder="e.g., Theory, Fundamentals"
-                    required
-                  />
-                </div>
-
-                <div>
                   <Label htmlFor="level">Level *</Label>
                   <Select
                     value={formData.level}
@@ -319,7 +329,64 @@ export function NotesManager() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div>
+                  <Label htmlFor="category">Category *</Label>
+                  <Input
+                    id="category"
+                    value={formData.category}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
+                    placeholder="e.g., Theory, Fundamentals"
+                    required
+                  />
+                </div>
               </div>
+
+              {formData.level === "JC" && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-lg border border-border">
+                  <div>
+                    <Label htmlFor="economicsType">Economics Type *</Label>
+                    <Select
+                      value={formData.economicsType}
+                      onValueChange={(value: "Micro" | "Macro") =>
+                        setFormData({ ...formData, economicsType: value, chapter: "" })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Micro">Microeconomics</SelectItem>
+                        <SelectItem value="Macro">Macroeconomics</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="chapter">Chapter *</Label>
+                    <Select
+                      value={formData.chapter}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, chapter: value })
+                      }
+                      disabled={!formData.economicsType}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select chapter" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {formData.economicsType && jcChapters[formData.economicsType as keyof typeof jcChapters].map((chapter) => (
+                          <SelectItem key={chapter} value={chapter}>
+                            {chapter}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <Label htmlFor="topics">Topics (comma-separated) *</Label>
@@ -414,6 +481,16 @@ export function NotesManager() {
                   <div className="flex gap-2 flex-wrap">
                     <Badge variant="secondary">{note.category}</Badge>
                     <Badge variant="outline">{note.level}</Badge>
+                    {note.economicsType && (
+                      <Badge variant="outline" className="border-primary/50 text-primary">
+                        {note.economicsType}
+                      </Badge>
+                    )}
+                    {note.chapter && (
+                      <Badge variant="outline" className="border-primary/30 text-primary/80">
+                        {note.chapter}
+                      </Badge>
+                    )}
                     <Badge>{note.topics.length} topics</Badge>
                     {note.pdfUrl && (
                       <Badge variant="default">
