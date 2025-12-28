@@ -150,46 +150,81 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
         </ScrollArea>
       </div>
 
-      {/* Right Column: Questions & Answers */}
-      <div className={`w-full lg:w-1/2 flex flex-col bg-card ${
-        activeTabMobile === "questions" ? "flex" : "hidden lg:flex"
-      }`}>
-        <div className="p-4 border-b flex items-center justify-between overflow-x-auto gap-4 scrollbar-hide">
-          <div className="flex items-center gap-2 whitespace-nowrap">
-            <PenTool className="w-4 h-4 text-primary" />
-            <h3 className="font-bold text-sm">Questions & Solutions</h3>
-          </div>
-          <div className="flex gap-1">
-            {csq.parts.map((_, idx) => (
-              <Button 
-                key={idx}
-                variant={selectedPartIndex === idx ? "default" : "ghost"}
-                size="sm"
-                className="h-7 w-7 p-0 text-xs"
-                onClick={() => setSelectedPartIndex(idx)}
-              >
-                {csq.parts[idx].part}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <ScrollArea className="flex-1">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedPartIndex}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="p-6 sm:p-8 space-y-8"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Badge className="bg-primary/10 text-primary border-primary/20">Part {selectedPart?.part}</Badge>
-                  <span className="text-xs font-medium text-muted-foreground">[{selectedPart?.marks} Marks]</span>
-                </div>
-                <h3 className="text-xl font-bold leading-snug">{selectedPart?.question}</h3>
+        {/* Right Column: Questions & Answers */}
+        <div className={`w-full lg:w-1/2 flex flex-col bg-card ${
+          activeTabMobile === "questions" ? "flex" : "hidden lg:flex"
+        }`}>
+          <div className="p-4 border-b flex flex-col gap-4">
+            <div className="flex items-center justify-between overflow-x-auto gap-4 scrollbar-hide">
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <PenTool className="w-4 h-4 text-primary" />
+                <h3 className="font-bold text-sm">Questions & Solutions</h3>
               </div>
+              <div className="flex gap-1">
+                {csq.parts.map((_, idx) => (
+                  <Button 
+                    key={idx}
+                    variant={selectedPartIndex === idx ? "default" : "ghost"}
+                    size="sm"
+                    className="h-7 w-7 p-0 text-xs"
+                    onClick={() => setSelectedPartIndex(idx)}
+                  >
+                    {csq.parts[idx].part}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Assessment Stats Summary */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
+                <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span className="text-[11px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-tight">
+                  {totalMarks} Total Marks
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50">
+                <Timer className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                <span className="text-[11px] font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-tight">
+                  {estimatedTotalTime} Mins Target
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <ScrollArea className="flex-1">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedPartIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="p-6 sm:p-8 space-y-8"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-primary/10 text-primary border-primary/20">Part {selectedPart?.part}</Badge>
+                      <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+                        <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
+                          {parseInt(selectedPart?.marks) <= 4 ? "Easy" : parseInt(selectedPart?.marks) <= 8 ? "Medium" : "Hard"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <Trophy className="w-3.5 h-3.5 text-amber-500" />
+                        <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{selectedPart?.marks} Marks</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-indigo-500" />
+                        <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{Math.ceil(parseInt(selectedPart?.marks) * 1.5)} Mins</span>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold leading-snug">{selectedPart?.question}</h3>
+                </div>
+
 
               <Tabs defaultValue="marking" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6">
