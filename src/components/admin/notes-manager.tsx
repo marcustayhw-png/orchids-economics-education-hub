@@ -69,25 +69,60 @@ const secondaryChapters = {
   ]
 };
 
-export function NotesManager() {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "Theory",
-    level: "JC",
-    economicsType: "Micro" as "Micro" | "Macro",
-    chapter: "",
-    topics: "",
-    description: "",
-    pdfUrl: "",
-  });
+  export function NotesManager() {
+    const [notes, setNotes] = useState<Note[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [showForm, setShowForm] = useState(false);
+    
+    const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
+    const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+    const [selectedType, setSelectedType] = useState<"Micro" | "Macro" | null>(null);
+    const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const resetForm = () => {
+    const [formData, setFormData] = useState({
+      title: "",
+      category: "Theory",
+      level: "JC",
+      economicsType: "Micro" as "Micro" | "Macro",
+      chapter: "",
+      topics: "",
+      description: "",
+      pdfUrl: "",
+    });
+
+    const fetchNotes = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/notes?limit=1000");
+        if (response.ok) {
+          const data = await response.json();
+          setNotes(Array.isArray(data) ? data : []);
+        } else {
+          toast.error("Failed to load notes");
+        }
+      } catch (error) {
+        toast.error("Error loading notes");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchNotes();
+    }, []);
+
+    const filteredNotesList = notes.filter((note) => {
+      if (selectedLevel && note.level !== selectedLevel) return false;
+      if (selectedType && note.economicsType !== selectedType) return false;
+      if (selectedChapter && note.chapter !== selectedChapter) return false;
+      return true;
+    });
+
+    const resetForm = () => {
     setFormData({
       title: "",
       category: "Theory",
