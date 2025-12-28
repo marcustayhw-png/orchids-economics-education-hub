@@ -508,10 +508,10 @@ export function FlashcardManager() {
                     <SelectTrigger>
                       <SelectValue placeholder="Select Type" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Microeconomics">Microeconomics</SelectItem>
-                      <SelectItem value="Macroeconomics">Macroeconomics</SelectItem>
-                    </SelectContent>
+                      <SelectContent>
+                        <SelectItem value="Micro">Microeconomics</SelectItem>
+                        <SelectItem value="Macro">Macroeconomics</SelectItem>
+                      </SelectContent>
                   </Select>
                 </div>
                 <div>
