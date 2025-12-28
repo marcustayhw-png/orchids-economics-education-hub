@@ -318,12 +318,149 @@ export function NotesManager() {
 
   return (
     <div className="space-y-6">
-      {/* Add Button */}
+      {/* Browser View */}
       {!showForm && (
-        <Button onClick={() => setShowForm(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Note
-        </Button>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label>Filter Level</Label>
+              <Select
+                value={selectedLevel || "all"}
+                onValueChange={(v) => setSelectedLevel(v === "all" ? null : v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All Levels" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Levels</SelectItem>
+                  <SelectItem value="JC">JC</SelectItem>
+                  <SelectItem value="Secondary">Secondary School</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Filter Focus</Label>
+              <Select
+                value={selectedType || "all"}
+                onValueChange={(v) => setSelectedType(v === "all" ? null : v as "Micro" | "Macro")}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All Focus Areas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Focus Areas</SelectItem>
+                  <SelectItem value="Micro">Microeconomics</SelectItem>
+                  <SelectItem value="Macro">Macroeconomics</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Filter Chapter</Label>
+              <Select
+                value={selectedChapter || "all"}
+                onValueChange={(v) => setSelectedChapter(v === "all" ? null : v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All Chapters" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Chapters</SelectItem>
+                  {selectedLevel && selectedType && (selectedLevel === "JC" ? jcChapters : secondaryChapters)[selectedType as keyof typeof jcChapters] ? (
+                    ((selectedLevel === "JC" ? jcChapters : secondaryChapters)[selectedType as keyof typeof jcChapters] as string[]).map(ch => (
+                      <SelectItem key={ch} value={ch}>{ch}</SelectItem>
+                    ))
+                  ) : (
+                    Array.from(new Set(notes.map(n => n.chapter).filter(Boolean))).map(ch => (
+                      <SelectItem key={ch!} value={ch!}>{ch!}</SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold">
+              {selectedLevel || selectedType || selectedChapter ? "Filtered Notes" : "All Notes"} ({filteredNotesList.length})
+            </h3>
+            <Button onClick={handleAddNew}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Note to this Category
+            </Button>
+          </div>
+          
+          <div className="space-y-4">
+            {filteredNotesList.length === 0 ? (
+              <div className="text-center py-12 border-2 border-dashed rounded-lg text-muted-foreground">
+                No notes found matching these filters.
+              </div>
+            ) : (
+              filteredNotesList.map((note) => (
+                <Card key={note.id}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex gap-2 flex-wrap">
+                          <Badge variant="secondary">{note.category}</Badge>
+                          <Badge variant="outline">{note.level}</Badge>
+                          {note.economicsType && (
+                            <Badge variant="outline" className="border-primary/50 text-primary">
+                              {note.economicsType}
+                            </Badge>
+                          )}
+                          {note.chapter && (
+                            <Badge variant="outline" className="border-primary/30 text-primary/80">
+                              {note.chapter}
+                            </Badge>
+                          )}
+                          <Badge>{note.topics.length} topics</Badge>
+                          {note.pdfUrl && (
+                            <Badge variant="default">
+                              <FileText className="w-3 h-3 mr-1" />
+                              PDF
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="font-medium">{note.title}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {note.description}
+                        </p>
+                        {note.pdfUrl && (
+                          <a
+                            href={note.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary hover:underline inline-flex items-center gap-1"
+                          >
+                            View PDF <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEdit(note)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(note.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))
+            )}
+          </div>
+        </div>
       )}
 
       {/* Form */}
