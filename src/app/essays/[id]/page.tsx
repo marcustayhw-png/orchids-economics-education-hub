@@ -89,12 +89,31 @@ export default function EssayDetailPage() {
         </Link>
 
         {/* Question Card */}
-        <Card className="border-2 overflow-hidden">
-          <CardHeader>
+        <Card className="border-2 overflow-hidden bg-card relative">
+          <div className="absolute top-0 right-0 p-4 flex gap-2">
+             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
+                <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span className="text-[11px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-tight">
+                  {essay.marks} Marks
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50">
+                <Timer className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                <span className="text-[11px] font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-tight">
+                  {Math.ceil(parseInt(essay.marks) * 1.5)} Mins
+                </span>
+              </div>
+          </div>
+          <CardHeader className="pt-16 sm:pt-6">
             <div className="space-y-3 sm:space-y-4">
               <div className="flex gap-2 flex-wrap">
-                <Badge variant="secondary" className="whitespace-nowrap">{essay.level}</Badge>
-                <Badge variant="outline" className="whitespace-nowrap">{essay.marks} marks</Badge>
+                <Badge className="bg-primary/10 text-primary border-primary/20">{essay.level}</Badge>
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+                  <Target className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
+                    {parseInt(essay.marks) <= 12 ? "Standard" : "Full Length"}
+                  </span>
+                </div>
               </div>
               <CardTitle className="text-xl sm:text-2xl break-words leading-tight">{essay.question}</CardTitle>
             </div>
