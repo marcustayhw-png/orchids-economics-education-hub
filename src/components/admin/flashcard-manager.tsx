@@ -321,26 +321,26 @@ export function FlashcardManager() {
             )}
 
             {viewStep === "type" && (
-              <motion.div
-                key="type"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4"
-              >
-                <Card className="hover:border-primary cursor-pointer transition-all" onClick={() => { setFilterType("Microeconomics"); setViewStep("chapter"); }}>
-                  <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-bold">Microeconomics</h3>
-                    <p className="text-muted-foreground">Markets and Decisions</p>
-                  </CardContent>
-                </Card>
-                <Card className="hover:border-primary cursor-pointer transition-all" onClick={() => { setFilterType("Macroeconomics"); setViewStep("chapter"); }}>
-                  <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-bold">Macroeconomics</h3>
-                    <p className="text-muted-foreground">The National Economy</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                <motion.div
+                  key="type"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                >
+                  <Card className="hover:border-primary cursor-pointer transition-all" onClick={() => { setFilterType("Micro"); setViewStep("chapter"); }}>
+                    <CardContent className="p-6 text-center">
+                      <h3 className="text-xl font-bold">Microeconomics</h3>
+                      <p className="text-muted-foreground">Markets and Decisions</p>
+                    </CardContent>
+                  </Card>
+                  <Card className="hover:border-primary cursor-pointer transition-all" onClick={() => { setFilterType("Macro"); setViewStep("chapter"); }}>
+                    <CardContent className="p-6 text-center">
+                      <h3 className="text-xl font-bold">Macroeconomics</h3>
+                      <p className="text-muted-foreground">The National Economy</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
             )}
 
             {viewStep === "chapter" && (
