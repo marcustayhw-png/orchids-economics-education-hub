@@ -110,7 +110,7 @@ export function FlashcardManager() {
       category: "",
       topic: "",
       difficulty: "",
-      economicsType: filterType || "Microeconomics",
+      economicsType: filterType || "Micro",
       chapter: filterChapter || "",
     });
     setEditingId(null);
@@ -125,7 +125,7 @@ export function FlashcardManager() {
       category: "",
       topic: "",
       difficulty: "",
-      economicsType: filterType || "Microeconomics",
+      economicsType: filterType || "Micro",
       chapter: filterChapter || "",
     });
     setEditingId(null);
