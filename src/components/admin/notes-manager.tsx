@@ -358,7 +358,7 @@ export function NotesManager() {
                 </div>
               </div>
 
-              {formData.level === "JC" && (
+              {(formData.level === "JC" || formData.level === "Secondary") && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-lg border border-border">
                   <div>
                     <Label htmlFor="economicsType">Economics Type *</Label>
@@ -391,7 +391,7 @@ export function NotesManager() {
                         <SelectValue placeholder="Select chapter" />
                       </SelectTrigger>
                       <SelectContent>
-                        {formData.economicsType && jcChapters[formData.economicsType as keyof typeof jcChapters].map((chapter) => (
+                        {formData.economicsType && (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as "Micro" | "Macro"].map((chapter) => (
                           <SelectItem key={chapter} value={chapter}>
                             {chapter}
                           </SelectItem>
