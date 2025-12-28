@@ -487,7 +487,7 @@ export function NotesManager() {
       {/* Notes List */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">All Notes ({notes.length})</h3>
-        {notes.map((note) => (
+        {Array.isArray(notes) && notes.map((note) => (
           <Card key={note.id}>
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
