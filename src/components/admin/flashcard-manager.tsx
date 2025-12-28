@@ -351,7 +351,7 @@ export function FlashcardManager() {
                 exit={{ opacity: 0, y: -10 }}
                 className="grid grid-cols-1 md:grid-cols-2 gap-3"
               >
-                {filterLevel && filterType && (filterLevel === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS)[filterType].map(chapter => (
+                {filterLevel && filterType && (filterLevel === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS)[filterType as keyof typeof JC_CHAPTERS]?.map(chapter => (
                   <Button
                     key={chapter}
                     variant="outline"
