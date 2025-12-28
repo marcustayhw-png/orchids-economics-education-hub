@@ -275,19 +275,19 @@ export function FlashcardManager() {
                 </Button>
               </>
             )}
-            {filterType && (
-              <>
-                <ChevronRight className="w-4 h-4" />
-                <Button 
-                  variant="link" 
-                  size="sm" 
-                  className="p-0 h-auto" 
-                  onClick={() => { setViewStep("chapter"); setFilterChapter(null); }}
-                >
-                  {filterType}
-                </Button>
-              </>
-            )}
+              {filterType && (
+                <>
+                  <ChevronRight className="w-4 h-4" />
+                  <Button 
+                    variant="link" 
+                    size="sm" 
+                    className="p-0 h-auto" 
+                    onClick={() => { setViewStep("chapter"); setFilterChapter(null); }}
+                  >
+                    {filterType === "Micro" ? "Microeconomics" : "Macroeconomics"}
+                  </Button>
+                </>
+              )}
             {filterChapter && (
               <>
                 <ChevronRight className="w-4 h-4" />
