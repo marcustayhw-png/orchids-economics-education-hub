@@ -104,7 +104,7 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
           <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary/70 flex-shrink-0" />
         </div>
         <CardDescription className="text-sm sm:text-base leading-relaxed break-words">{note.description}</CardDescription>
-      </Header>
+      </CardHeader>
       <CardContent className="space-y-4">
         {note.pdfUrl ? (
           <div className="p-4 sm:p-5 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl overflow-hidden border border-border/50">
