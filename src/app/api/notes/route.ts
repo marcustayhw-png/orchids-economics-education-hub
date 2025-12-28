@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, category, level, topics, description, pdfUrl } = body;
+    const { title, category, level, topics, description, pdfUrl, economicsType, chapter } = body;
 
     // Validate required fields
     if (!title || typeof title !== 'string' || title.trim() === '') {
@@ -155,6 +155,8 @@ export async function POST(request: NextRequest) {
         topics: JSON.stringify(topics),
         description: sanitizedDescription,
         pdfUrl: sanitizedPdfUrl,
+        economicsType: economicsType || null,
+        chapter: chapter || null,
         createdAt: now,
         updatedAt: now
       })
