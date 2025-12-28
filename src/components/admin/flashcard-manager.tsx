@@ -33,13 +33,13 @@ interface Flashcard {
 }
 
 const JC_CHAPTERS = {
-  Microeconomics: [
+  Micro: [
     "Scarcity as the Central Economic Problem",
     "Demand and Supply",
     "Market Failure",
     "Firms and Decisions (Market Structure)"
   ],
-  Macroeconomics: [
+  Macro: [
     "Introduction to Macroeconomics",
     "Macroeconomic Objectives and Policies",
     "Globalisation and the International Economy"
@@ -47,12 +47,12 @@ const JC_CHAPTERS = {
 };
 
 const SECONDARY_CHAPTERS = {
-  Microeconomics: [
+  Micro: [
     "The basic economic problem",
     "The allocation of resources",
     "Microeconomic decision makers"
   ],
-  Macroeconomics: [
+  Macro: [
     "Government and the macroeconomy",
     "Economic development",
     "International trade and globalisation"
