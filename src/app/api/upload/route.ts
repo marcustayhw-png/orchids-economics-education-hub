@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { existsSync } from 'fs';
-import path from 'path';
+import { supabaseAdmin } from '@/lib/supabase';
 import { getCurrentUser } from '@/lib/auth';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -13,10 +11,18 @@ const ALLOWED_MIME_TYPES = [
   'image/webp',
   'image/gif'
 ];
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
 
 export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const user = await getCurrentUser(request);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
     // Get form data
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
@@ -54,7 +60,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Sanitize original filename to prevent path traversal
+    // Sanitize original filename
     const originalFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     
     // Generate unique filename
@@ -62,30 +68,35 @@ export async function POST(request: NextRequest) {
     const randomString = Math.random().toString(36).substring(7);
     const uniqueFilename = `${timestamp}-${randomString}-${originalFilename}`;
 
-    // Ensure upload directory exists
-    if (!existsSync(UPLOAD_DIR)) {
-      await mkdir(UPLOAD_DIR, { recursive: true });
-      console.log('Created uploads directory:', UPLOAD_DIR);
-    }
-
     // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Define file path
-    const filePath = path.join(UPLOAD_DIR, uniqueFilename);
+    // Upload to Supabase Storage
+    const { data, error } = await supabaseAdmin.storage
+      .from('uploads')
+      .upload(uniqueFilename, buffer, {
+        contentType: file.type,
+        upsert: false
+      });
 
-    // Write file to disk
-    await writeFile(filePath, buffer);
-    console.log('File saved successfully:', filePath);
+    if (error) {
+      console.error('Supabase upload error:', error);
+      return NextResponse.json(
+        { error: 'Failed to upload to storage', code: 'STORAGE_ERROR' },
+        { status: 500 }
+      );
+    }
 
-    // Return success response with file URL
-    const fileUrl = `/uploads/${uniqueFilename}`;
+    // Get public URL
+    const { data: { publicUrl } } = supabaseAdmin.storage
+      .from('uploads')
+      .getPublicUrl(uniqueFilename);
     
     return NextResponse.json(
       {
         message: 'File uploaded successfully',
-        fileUrl,
+        fileUrl: publicUrl,
         filename: uniqueFilename,
         fileType: file.type
       },
@@ -94,30 +105,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('POST /api/upload error:', error);
-    
-    // Handle specific file system errors
-    if (error instanceof Error) {
-      if (error.message.includes('EACCES') || error.message.includes('EPERM')) {
-        return NextResponse.json(
-          { 
-            error: 'Permission denied. Unable to save file',
-            code: 'PERMISSION_DENIED'
-          },
-          { status: 500 }
-        );
-      }
-      
-      if (error.message.includes('ENOSPC')) {
-        return NextResponse.json(
-          { 
-            error: 'Insufficient disk space',
-            code: 'DISK_SPACE_ERROR'
-          },
-          { status: 500 }
-        );
-      }
-    }
-
     return NextResponse.json(
       { 
         error: 'Internal server error: ' + (error instanceof Error ? error.message : 'Unknown error'),
