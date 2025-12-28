@@ -76,6 +76,16 @@ export function NotesManager() {
   const [isUploading, setIsUploading] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "Theory",
+    level: "JC",
+    economicsType: "Micro" as "Micro" | "Macro",
+    chapter: "",
+    topics: "",
+    description: "",
+    pdfUrl: "",
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Browser states
