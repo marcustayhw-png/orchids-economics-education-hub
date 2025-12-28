@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
 
     const now = new Date().toISOString();
 
-    const newNote = await db.insert(notes)
+    const result = await db.insert(notes)
       .values({
         title: sanitizedTitle,
         category: sanitizedCategory,
@@ -162,7 +162,11 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
-    return NextResponse.json(parseNote(newNote[0]), { status: 201 });
+    if (!result || result.length === 0) {
+      throw new Error("Failed to insert note");
+    }
+
+    return NextResponse.json(parseNote(result[0]), { status: 201 });
 
   } catch (error) {
     console.error('POST error:', error);
