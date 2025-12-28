@@ -66,20 +66,10 @@ export function FlashcardManager() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const [filterLevel, setFilterLevel] = useState<string>("All");
-  const [filterType, setFilterType] = useState<string>("All");
-  const [filterChapter, setFilterChapter] = useState<string>("All");
-
-  const [formData, setFormData] = useState({
-    question: "",
-    answer: "",
-    level: "Secondary",
-    category: "",
-    topic: "",
-    difficulty: "",
-    economicsType: "Microeconomics",
-    chapter: "",
-  });
+  const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
+  const [filterLevel, setFilterLevel] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<"Microeconomics" | "Macroeconomics" | null>(null);
+  const [filterChapter, setFilterChapter] = useState<string | null>(null);
 
   const fetchFlashcards = async () => {
     setIsLoading(true);
@@ -106,12 +96,12 @@ export function FlashcardManager() {
     setFormData({
       question: "",
       answer: "",
-      level: filterLevel !== "All" ? filterLevel : "Secondary",
+      level: filterLevel || "Secondary",
       category: "",
       topic: "",
       difficulty: "",
-      economicsType: filterType !== "All" ? (filterType === "Microeconomics" ? "Microeconomics" : "Macroeconomics") : "Microeconomics",
-      chapter: filterChapter !== "All" ? filterChapter : "",
+      economicsType: filterType || "Microeconomics",
+      chapter: filterChapter || "",
     });
     setEditingId(null);
     setShowForm(false);
@@ -121,12 +111,12 @@ export function FlashcardManager() {
     setFormData({
       question: "",
       answer: "",
-      level: filterLevel !== "All" ? filterLevel : "Secondary",
+      level: filterLevel || "Secondary",
       category: "",
       topic: "",
       difficulty: "",
-      economicsType: filterType !== "All" ? (filterType === "Microeconomics" ? "Microeconomics" : "Macroeconomics") : "Microeconomics",
-      chapter: filterChapter !== "All" ? filterChapter : "",
+      economicsType: filterType || "Microeconomics",
+      chapter: filterChapter || "",
     });
     setEditingId(null);
     setShowForm(true);
@@ -148,18 +138,11 @@ export function FlashcardManager() {
   };
 
   const filteredFlashcards = flashcards.filter((flashcard) => {
-    const matchesLevel = filterLevel === "All" || flashcard.level === filterLevel;
-    const matchesType = filterType === "All" || flashcard.economicsType === filterType;
-    const matchesChapter = filterChapter === "All" || flashcard.chapter === filterChapter;
-    return matchesLevel && matchesType && matchesChapter;
+    if (filterLevel && flashcard.level !== filterLevel) return false;
+    if (filterType && flashcard.economicsType !== filterType) return false;
+    if (filterChapter && flashcard.chapter !== filterChapter) return false;
+    return true;
   });
-
-  const uniqueChapters = Array.from(
-    new Set(flashcards
-      .filter(f => (filterLevel === "All" || f.level === filterLevel) && (filterType === "All" || f.economicsType === filterType))
-      .map((f) => f.chapter)
-      .filter(Boolean))
-  ).sort();
 
 
   if (isLoading) {
