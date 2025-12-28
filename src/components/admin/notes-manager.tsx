@@ -8,7 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Plus, Edit, Trash2, X, Upload, FileText, ExternalLink } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, X, Upload, FileText, ExternalLink, ChevronRight, ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Select,
   SelectContent,
