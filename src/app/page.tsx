@@ -210,9 +210,9 @@ export default function Home() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10"
         >
-          <div className="space-y-3 md:space-y-4">
-            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">Access Quality <span className="text-primary">Everywhere.</span></h2>
-            <div className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground space-y-4 md:space-y-6 leading-relaxed font-medium px-4 md:px-6">
+            <div className="space-y-3 md:space-y-4">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">My <span className="text-primary">Mission.</span></h2>
+              <div className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground space-y-4 md:space-y-6 leading-relaxed font-medium px-4 md:px-6">
               <p>
                 As an aspiring economics educator, I've seen firsthand how high-quality resources can transform a student's trajectory. This platform is my commitment to democratizing that quality.
               </p>
