@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
 
     const now = new Date().toISOString();
 
-    const newFlashcard = await db.insert(flashcards)
+    const result = await db.insert(flashcards)
       .values({
         question: question.trim(),
         answer: answer.trim(),
@@ -198,7 +198,11 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
-    return NextResponse.json(newFlashcard[0], { status: 201 });
+    if (!result || result.length === 0) {
+      throw new Error("Failed to insert flashcard");
+    }
+
+    return NextResponse.json(result[0], { status: 201 });
 
   } catch (error) {
     console.error('POST error:', error);
