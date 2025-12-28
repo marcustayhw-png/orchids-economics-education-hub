@@ -40,10 +40,9 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
 
   const selectedPart = csq.parts[selectedPartIndex];
 
-  const totalMarks = csq.parts.reduce((acc, part) => acc + parseInt(part.marks || "0"), 0);
-  const estimatedTotalTime = Math.ceil(totalMarks * 1.5);
+    const totalMarks = csq.parts.reduce((acc, part) => acc + parseInt(part.marks || "0"), 0);
 
-  // Mock evidence clues for the highlighting feature
+    // Mock evidence clues for the highlighting feature
   // In a real app, these would come from the database
   const clues = [
     { text: "price of steel increased", explanation: "This indicates an increase in cost of production, leading to a leftward shift in the supply curve." },
