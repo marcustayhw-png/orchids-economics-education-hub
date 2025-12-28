@@ -391,11 +391,13 @@ export function NotesManager() {
                         <SelectValue placeholder="Select chapter" />
                       </SelectTrigger>
                       <SelectContent>
-                        {formData.economicsType && (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as "Micro" | "Macro"].map((chapter) => (
-                          <SelectItem key={chapter} value={chapter}>
-                            {chapter}
-                          </SelectItem>
-                        ))}
+                        {formData.economicsType && 
+                          (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters] && 
+                          (formData.level === "JC" ? jcChapters : secondaryChapters)[formData.economicsType as keyof typeof jcChapters].map((chapter) => (
+                            <SelectItem key={chapter} value={chapter}>
+                              {chapter}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   </div>
