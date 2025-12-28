@@ -31,77 +31,32 @@ interface Flashcard {
   updatedAt: string;
 }
 
-const SECONDARY_CHAPTERS = [
-  "1. The Basic Economic Problem",
-  "1.1 Nature of Economic Problem",
-  "1.2 Factors of Production",
-  "1.3 Opportunity Cost",
-  "1.4 Production Possibility Curve (PPC)",
-  "2. Allocation of Resources",
-  "2.1 Microeconomics vs Macroeconomics",
-  "2.2 Role of Markets",
-  "2.3 Demand",
-  "2.4 Supply",
-  "2.5 Price Determination",
-  "2.6 Price Changes",
-  "2.7 Price Elasticity of Demand (PED)",
-  "2.8 Price Elasticity of Supply (PES)",
-  "2.9 Market Economic System",
-  "2.10 Market Failure",
-  "2.11 Mixed Economic System",
-  "3. Microeconomic Decision Makers",
-  "3.1 Money and Banking",
-  "3.2 Households",
-  "3.3 Workers",
-  "3.4 Trade Unions",
-  "3.5 Firms",
-  "3.6 Firms and Production",
-  "3.7 Firms' Costs, Revenue and Objectives",
-  "3.8 Market Structure",
-  "4. Government and Macroeconomy",
-  "4.1 Role of Government",
-  "4.2 Macroeconomic Aims",
-  "4.3 Fiscal Policy",
-  "4.4 Monetary Policy",
-  "4.5 Supply-Side Policy",
-  "4.6 Economic Growth",
-  "4.7 Employment and Unemployment",
-  "4.8 Inflation and Deflation",
-  "5. Economic Development",
-  "5.1 Living Standards",
-  "5.2 Poverty",
-  "5.3 Population",
-  "5.4 Differences in Economic Development",
-  "6. International Trade and Globalisation",
-  "6.1 International Specialisation",
-  "6.2 Globalisation, Free Trade and Protection",
-  "6.3 Foreign Exchange Rates",
-  "6.4 Current Account of Balance of Payments",
-];
+const JC_CHAPTERS = {
+  Microeconomics: [
+    "Scarcity as the Central Economic Problem",
+    "Demand and Supply",
+    "Market Failure",
+    "Firms and Decisions (Market Structure)"
+  ],
+  Macroeconomics: [
+    "Introduction to Macroeconomics",
+    "Macroeconomic Objectives and Policies",
+    "Globalisation and the International Economy"
+  ]
+};
 
-const JC_CHAPTERS = [
-  "Theme 1: The Central Economic Problem",
-  "1.1 Scarcity, Choice and Resource Allocation",
-  "1.2 Decision-Making Process of Economic Agents",
-  "Theme 2: Markets",
-  "2.1 Price Mechanism and its Functions",
-  "2.2 Demand and Supply Analysis",
-  "2.3 Government Intervention in Markets",
-  "2.4 Objectives of Firms",
-  "2.5 Cost and Revenue",
-  "2.6 Firms' Decisions and Strategies",
-  "2.7 Governments' Microeconomic Objectives",
-  "2.8 Market Failure and its Causes",
-  "2.9 Microeconomic Policies",
-  "Theme 3: The National and International Economy",
-  "3.1 Circular Flow of Income",
-  "3.2 Aggregate Demand and Aggregate Supply",
-  "3.3 Standard of Living and Macroeconomic Indicators",
-  "3.4 Macroeconomic Issues",
-  "3.5 Macroeconomic Policies",
-  "3.6 Globalisation and International Trade",
-  "3.7 Economic Co-operation and Protectionism",
-];
+const SECONDARY_CHAPTERS = {
+  Microeconomics: [
+    "The basic economic problem",
+    "The allocation of resources",
+    "Microeconomic decision makers"
+  ],
+  Macroeconomics: [
+    "Government and the macroeconomy",
+    "Economic development",
+    "International trade and globalisation"
+  ]
+};
 
 export function FlashcardManager() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
