@@ -86,46 +86,6 @@ export function NotesManager() {
     description: "",
     pdfUrl: "",
   });
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Browser states
-  const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
-  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<"Micro" | "Macro" | null>(null);
-  const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
-
-  const filteredNotesList = notes.filter(note => {
-    if (selectedLevel && note.level !== selectedLevel) return false;
-    if (selectedType && note.economicsType !== selectedType) return false;
-    if (selectedChapter && note.chapter !== selectedChapter) return false;
-    return true;
-  });
-
-  const fetchNotes = async () => {
-    setIsLoading(true);
-    try {
-      const token = localStorage.getItem("bearer_token");
-      const response = await fetch("/api/notes?limit=1000", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setNotes(Array.isArray(data) ? data : []);
-      } else {
-        toast.error("Failed to load notes");
-      }
-    } catch (error) {
-      toast.error("Error loading notes");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchNotes();
-  }, []);
 
   const resetForm = () => {
     setFormData({
