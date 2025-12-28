@@ -172,18 +172,19 @@ export default function EssayDetailPage() {
 
         {/* Model Answer */}
         {essay.modelAnswer && (
-          <Card className="border-2 border-primary overflow-hidden">
-            <CardHeader>
+          <Card className="border-2 border-primary/30 overflow-hidden shadow-md bg-gradient-to-b from-primary/[0.02] to-transparent">
+            <CardHeader className="bg-primary/5 border-b border-primary/10">
               <CardTitle className="flex items-center gap-2 flex-wrap">
+                <Award className="w-5 h-5 text-primary" />
                 <span className="break-words">Model Answer</span>
-                <Badge variant="outline" className="ml-auto whitespace-nowrap">
-                  {essay.marks} marks
+                <Badge className="ml-auto bg-primary text-primary-foreground">
+                  {essay.marks} Marks
                 </Badge>
               </CardTitle>
             </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <div 
-                  className="prose prose-sm dark:prose-invert max-w-none rich-text-content break-words overflow-x-auto"
+                  className="prose prose-sm dark:prose-invert max-w-none rich-text-content break-words overflow-x-auto selection:bg-primary/20"
                   dangerouslySetInnerHTML={{ __html: essay.modelAnswer }}
                 />
               </CardContent>
