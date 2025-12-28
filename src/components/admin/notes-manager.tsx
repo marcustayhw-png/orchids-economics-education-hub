@@ -83,6 +83,34 @@ const jcChapters = {
     const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const fetchNotes = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/notes?limit=1000");
+        if (response.ok) {
+          const data = await response.json();
+          setNotes(Array.isArray(data) ? data : []);
+        } else {
+          toast.error("Failed to load notes");
+        }
+      } catch (error) {
+        toast.error("Error loading notes");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchNotes();
+    }, []);
+
+    const filteredNotesList = notes.filter((note) => {
+      if (selectedLevel && note.level !== selectedLevel) return false;
+      if (selectedType && note.economicsType !== selectedType) return false;
+      if (selectedChapter && note.chapter !== selectedChapter) return false;
+      return true;
+    });
+
     const [formData, setFormData] = useState({
       title: "",
       category: "Theory",
