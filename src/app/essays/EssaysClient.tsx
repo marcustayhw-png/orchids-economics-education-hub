@@ -133,7 +133,7 @@ export function EssaysClient({
             </CardContent>
           </Card>
 
-          {/* Essays List */}
+                  {/* Essays List */}
           {filteredEssays.length === 0 ? (
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
@@ -142,26 +142,33 @@ export function EssaysClient({
             </Card>
           ) : (
             filteredEssays.map((essay) => (
-              <Card key={essay.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
+              <Card key={essay.id} className="border-2 hover:border-primary transition-colors overflow-hidden group">
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3 sm:gap-4">
                     <div className="space-y-2 sm:space-y-3 flex-1 min-w-0">
                       <div className="flex gap-2 items-center flex-wrap">
-                        <Badge variant="secondary" className="whitespace-nowrap">{essay.level}</Badge>
-                        <Badge variant="outline" className="whitespace-nowrap">{essay.marks} marks</Badge>
-                        <Badge variant="outline" className="whitespace-nowrap">{essay.topic}</Badge>
+                        <Badge variant="secondary" className="bg-primary/5 text-primary border-primary/10 whitespace-nowrap">{essay.level}</Badge>
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
+                          <Trophy className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                          <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 uppercase">{essay.marks} Marks</span>
+                        </div>
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50">
+                          <Clock className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+                          <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300 uppercase">{Math.ceil(parseInt(essay.marks) * 1.5)} Mins</span>
+                        </div>
+                        <Badge variant="outline" className="whitespace-nowrap text-[10px] uppercase font-bold tracking-wider">{essay.topic}</Badge>
                         <Badge 
                           variant={
                             essay.difficulty === "Easy" ? "secondary" : 
                             essay.difficulty === "Hard" ? "destructive" : 
                             "default"
                           }
-                          className="whitespace-nowrap"
+                          className="whitespace-nowrap text-[10px] uppercase font-bold"
                         >
                           {essay.difficulty}
                         </Badge>
                       </div>
-                      <h3 className="text-base sm:text-lg font-semibold leading-tight break-words">{essay.question}</h3>
+                      <h3 className="text-base sm:text-lg font-semibold leading-tight break-words group-hover:text-primary transition-colors">{essay.question}</h3>
                     </div>
                     <Award className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
                   </div>
@@ -252,28 +259,35 @@ export function EssaysClient({
             </Card>
           ) : (
             filteredCSQs.map((csq) => (
-              <Card key={csq.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
+              <Card key={csq.id} className="border-2 hover:border-primary transition-colors overflow-hidden group">
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3 sm:gap-4">
                     <div className="space-y-2 sm:space-y-3 flex-1 min-w-0">
                       <div className="flex gap-2 items-center flex-wrap">
-                        <Badge variant="secondary" className="whitespace-nowrap">{csq.level}</Badge>
-                        <Badge variant="outline" className="whitespace-nowrap">{csq.totalMarks} marks</Badge>
-                        <Badge variant="outline" className="whitespace-nowrap">{csq.topic}</Badge>
+                        <Badge variant="secondary" className="bg-primary/5 text-primary border-primary/10 whitespace-nowrap">{csq.level}</Badge>
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
+                          <Trophy className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                          <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 uppercase">{csq.totalMarks} Marks</span>
+                        </div>
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50">
+                          <Clock className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+                          <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300 uppercase">{Math.ceil(csq.totalMarks * 1.5)} Mins</span>
+                        </div>
+                        <Badge variant="outline" className="whitespace-nowrap text-[10px] uppercase font-bold tracking-wider">{csq.topic}</Badge>
                         <Badge 
                           variant={
                             csq.difficulty === "Easy" ? "secondary" : 
                             csq.difficulty === "Hard" ? "destructive" : 
                             "default"
                           }
-                          className="whitespace-nowrap"
+                          className="whitespace-nowrap text-[10px] uppercase font-bold"
                         >
                           {csq.difficulty}
                         </Badge>
                       </div>
-                      <CardTitle className="text-lg sm:text-xl break-words">{csq.title}</CardTitle>
-                      <p className="text-sm text-muted-foreground break-words">
-                        {csq.parts?.length || 0} parts
+                      <CardTitle className="text-lg sm:text-xl break-words group-hover:text-primary transition-colors">{csq.title}</CardTitle>
+                      <p className="text-sm text-muted-foreground break-words font-medium">
+                        {csq.parts?.length || 0} assessment parts
                       </p>
                     </div>
                     <Award className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
