@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Info, HelpCircle, CheckCircle2, ChevronRight, BookOpen, PenTool, Award } from "lucide-react";
+import { Info, HelpCircle, CheckCircle2, ChevronRight, BookOpen, PenTool, Award, Trophy, Clock, Target, Timer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface CSQPart {
@@ -39,6 +39,9 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
   const extractRef = useRef<HTMLDivElement>(null);
 
   const selectedPart = csq.parts[selectedPartIndex];
+
+  const totalMarks = csq.parts.reduce((acc, part) => acc + parseInt(part.marks || "0"), 0);
+  const estimatedTotalTime = Math.ceil(totalMarks * 1.5);
 
   // Mock evidence clues for the highlighting feature
   // In a real app, these would come from the database
