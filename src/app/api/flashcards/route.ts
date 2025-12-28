@@ -317,9 +317,9 @@ export async function PUT(request: NextRequest) {
           code: "INVALID_ECONOMICS_TYPE" 
         }, { status: 400 });
       }
-      if (economicsType !== 'Microeconomics' && economicsType !== 'Macroeconomics') {
+      if (economicsType !== 'Micro' && economicsType !== 'Macro') {
         return NextResponse.json({ 
-          error: "economicsType must be either 'Microeconomics' or 'Macroeconomics'",
+          error: "economicsType must be either 'Micro' or 'Macro'",
           code: "INVALID_ECONOMICS_TYPE_VALUE" 
         }, { status: 400 });
       }
