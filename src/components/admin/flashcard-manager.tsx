@@ -217,67 +217,21 @@ export function FlashcardManager() {
   return (
     <div className="space-y-6">
       {!showForm && (
-        <Button onClick={() => setShowForm(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Flashcard
-        </Button>
-      )}
-
-      {showForm && (
-        <Card className="border-2 border-primary">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>
-                {editingId ? "Edit Flashcard" : "Add New Flashcard"}
-              </CardTitle>
-              <Button variant="ghost" size="sm" onClick={resetForm}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="question">Question *</Label>
-                <Textarea
-                  id="question"
-                  value={formData.question}
-                  onChange={(e) =>
-                    setFormData({ ...formData, question: e.target.value })
-                  }
-                  placeholder="Enter the question..."
-                  rows={3}
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="answer">Answer *</Label>
-                <Textarea
-                  id="answer"
-                  value={formData.answer}
-                  onChange={(e) =>
-                    setFormData({ ...formData, answer: e.target.value })
-                  }
-                  placeholder="Enter the answer (use bullet points for point form)..."
-                  rows={6}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">Browse & Filter</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="level">Level *</Label>
-                  <Select
-                    value={formData.level}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, level: value })
-                    }
-                  >
-                    <SelectTrigger>
+                  <Label htmlFor="filterLevel">Level</Label>
+                  <Select value={filterLevel} onValueChange={setFilterLevel}>
+                    <SelectTrigger id="filterLevel">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="All">All Levels</SelectItem>
                       <SelectItem value="Secondary">Secondary</SelectItem>
                       <SelectItem value="JC">JC</SelectItem>
                     </SelectContent>
@@ -285,38 +239,28 @@ export function FlashcardManager() {
                 </div>
 
                 <div>
-                  <Label htmlFor="economicsType">Economics Type *</Label>
-                  <Select
-                    value={formData.economicsType}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, economicsType: value })
-                    }
-                  >
-                    <SelectTrigger>
+                  <Label htmlFor="filterType">Focus Area</Label>
+                  <Select value={filterType} onValueChange={setFilterType}>
+                    <SelectTrigger id="filterType">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="All">All Focus Areas</SelectItem>
                       <SelectItem value="Microeconomics">Microeconomics</SelectItem>
                       <SelectItem value="Macroeconomics">Macroeconomics</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="chapter">Chapter *</Label>
-                  <Select
-                    value={formData.chapter}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, chapter: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select chapter" />
+                  <Label htmlFor="filterChapter">Chapter</Label>
+                  <Select value={filterChapter} onValueChange={setFilterChapter}>
+                    <SelectTrigger id="filterChapter">
+                      <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="max-h-[300px]">
-                      {(formData.level === "JC" ? JC_CHAPTERS : SECONDARY_CHAPTERS).map((chapter) => (
+                    <SelectContent>
+                      <SelectItem value="All">All Chapters</SelectItem>
+                      {uniqueChapters.map((chapter) => (
                         <SelectItem key={chapter} value={chapter}>
                           {chapter}
                         </SelectItem>
@@ -324,145 +268,63 @@ export function FlashcardManager() {
                     </SelectContent>
                   </Select>
                 </div>
-
-                <div>
-                  <Label htmlFor="difficulty">Difficulty</Label>
-                  <Select
-                    value={formData.difficulty}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, difficulty: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select difficulty" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Easy">Easy</SelectItem>
-                      <SelectItem value="Medium">Medium</SelectItem>
-                      <SelectItem value="Hard">Hard</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="category">Category *</Label>
-                  <Input
-                    id="category"
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value })
-                    }
-                    placeholder="e.g., Microeconomics"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="topic">Topic *</Label>
-                  <Input
-                    id="topic"
-                    value={formData.topic}
-                    onChange={(e) =>
-                      setFormData({ ...formData, topic: e.target.value })
-                    }
-                    placeholder="e.g., Demand and Supply"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Saving..." : editingId ? "Update" : "Create"}
-                </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-
-      {!showForm && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Filter Flashcards</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="filterLevel">Level</Label>
-                <Select value={filterLevel} onValueChange={setFilterLevel}>
-                  <SelectTrigger id="filterLevel">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="All">All Levels</SelectItem>
-                    <SelectItem value="Secondary">Secondary</SelectItem>
-                    <SelectItem value="JC">JC</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label htmlFor="filterChapter">Chapter</Label>
-                <Select value={filterChapter} onValueChange={setFilterChapter}>
-                  <SelectTrigger id="filterChapter">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="All">All Chapters</SelectItem>
-                    {uniqueChapters.map((chapter) => (
-                      <SelectItem key={chapter} value={chapter}>
-                        {chapter}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      <div className="space-y-4">
-        {filteredFlashcards.map((flashcard) => (
-          <Card key={flashcard.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2 flex-1">
-                  <div className="flex gap-2 flex-wrap">
-                    <Badge variant="secondary">{flashcard.economicsType}</Badge>
-                    <Badge variant="outline">{flashcard.chapter}</Badge>
-                    <Badge>{flashcard.level}</Badge>
-                  </div>
-                  <p className="font-semibold">{flashcard.question}</p>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">{flashcard.answer}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleEdit(flashcard)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(flashcard.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
+            </CardContent>
           </Card>
-        ))}
-      </div>
+
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold">
+              Flashcards ({filteredFlashcards.length})
+            </h3>
+            <Button onClick={handleAddNew}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Flashcard to this Category
+            </Button>
+          </div>
+
+          <div className="space-y-4">
+            {filteredFlashcards.length === 0 ? (
+              <div className="text-center py-12 border-2 border-dashed rounded-lg text-muted-foreground">
+                No flashcards found matching these filters.
+              </div>
+            ) : (
+              filteredFlashcards.map((flashcard) => (
+                <Card key={flashcard.id}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex gap-2 flex-wrap">
+                          <Badge variant="secondary">{flashcard.economicsType}</Badge>
+                          <Badge variant="outline">{flashcard.chapter}</Badge>
+                          <Badge>{flashcard.level}</Badge>
+                        </div>
+                        <p className="font-semibold">{flashcard.question}</p>
+                        <p className="text-sm text-muted-foreground whitespace-pre-wrap">{flashcard.answer}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEdit(flashcard)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(flashcard.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
