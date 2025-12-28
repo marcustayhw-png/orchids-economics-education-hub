@@ -1,18 +1,17 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://econstack.sg' // Assuming this is the domain, otherwise use process.env.NEXT_PUBLIC_SITE_URL
-
+  const baseUrl = 'https://econstack.sg'
+  
   const routes = [
     '',
     '/about',
     '/notes',
     '/essays',
-    '/essays/csq',
     '/flashcards',
     '/tuition',
-    '/econ-news',
     '/mark-my-work',
+    '/econ-news',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
