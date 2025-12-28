@@ -65,10 +65,20 @@ export function FlashcardManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    question: "",
+    answer: "",
+    level: "Secondary",
+    category: "",
+    topic: "",
+    difficulty: "Medium",
+    economicsType: "Micro" as "Micro" | "Macro",
+    chapter: "",
+  });
 
   const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
   const [filterLevel, setFilterLevel] = useState<string | null>(null);
-  const [filterType, setFilterType] = useState<"Microeconomics" | "Macroeconomics" | null>(null);
+  const [filterType, setFilterType] = useState<"Micro" | "Macro" | null>(null);
   const [filterChapter, setFilterChapter] = useState<string | null>(null);
 
   const fetchFlashcards = async () => {
