@@ -58,14 +58,14 @@ const JC_CHAPTERS = {
 
 const SECONDARY_CHAPTERS = {
   Micro: [
-    "The basic economic problem",
-    "The allocation of resources",
-    "Microeconomic decision makers"
+    "1. The basic economic problem",
+    "2. The allocation of resources",
+    "3. Microeconomic decision makers"
   ],
   Macro: [
-    "Government and the macroeconomy",
-    "Economic development",
-    "International trade and globalisation"
+    "4. Government and the macroeconomy",
+    "5. Economic development",
+    "6. International trade and globalisation"
   ]
 };
 
@@ -75,6 +75,8 @@ export function FlashcardManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState<number | null>(null);
+  
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
@@ -119,7 +121,7 @@ export function FlashcardManager() {
       level: filterLevel || "Secondary",
       category: "",
       topic: "",
-      difficulty: "",
+      difficulty: "Medium",
       economicsType: filterType || "Micro",
       chapter: filterChapter || "",
     });
