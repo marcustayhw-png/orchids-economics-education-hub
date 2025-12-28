@@ -43,6 +43,7 @@ interface Note {
 
 const jcChapters = {
   Micro: [
+    "Scarcity as the Central Economic Problem",
     "Demand and Supply",
     "Market Failure",
     "Firms and Decisions (Market Structure)"
