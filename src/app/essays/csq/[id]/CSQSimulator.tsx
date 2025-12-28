@@ -176,18 +176,11 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
 
             {/* Assessment Stats Summary */}
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/40 border border-amber-200 dark:border-amber-800/60 shadow-sm transition-all hover:scale-[1.02]">
-                <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 shadow-sm transition-all hover:bg-amber-500/15">
+                <Trophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 uppercase leading-none">Total Marks</span>
-                  <span className="text-xs font-black text-amber-800 dark:text-amber-200">{totalMarks}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800/60 shadow-sm transition-all hover:scale-[1.02]">
-                <Timer className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300 uppercase leading-none">Total Time</span>
-                  <span className="text-xs font-black text-indigo-800 dark:text-indigo-200">{estimatedTotalTime} Mins</span>
+                  <span className="text-[10px] font-bold text-amber-600/80 dark:text-amber-400/80 uppercase tracking-tight leading-none">Assessment Value</span>
+                  <span className="text-sm font-black text-amber-700 dark:text-amber-300">{totalMarks} Marks Total</span>
                 </div>
               </div>
             </div>
@@ -205,25 +198,21 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors">Part {selectedPart?.part}</Badge>
-                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
-                          <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
-                            {parseInt(selectedPart?.marks) <= 4 ? "Easy" : parseInt(selectedPart?.marks) <= 8 ? "Medium" : "Hard"}
-                          </span>
+                        <Badge variant="outline" className="px-3 py-1 bg-primary/5 text-primary border-primary/20 font-bold">PART {selectedPart?.part}</Badge>
+                        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-black uppercase tracking-wider ${
+                          parseInt(selectedPart?.marks) <= 4 ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600" : 
+                          parseInt(selectedPart?.marks) <= 8 ? "bg-blue-500/10 border-blue-500/20 text-blue-600" : 
+                          "bg-rose-500/10 border-rose-500/20 text-rose-600"
+                        }`}>
+                          {parseInt(selectedPart?.marks) <= 4 ? "Core" : parseInt(selectedPart?.marks) <= 8 ? "Intermediate" : "Advanced"}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 shadow-sm">
-                          <Trophy className="w-3.5 h-3.5 text-amber-500" />
-                          <span className="text-xs font-bold text-amber-700 dark:text-amber-300">{selectedPart?.marks} Marks</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 shadow-sm">
-                          <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                          <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">{Math.ceil(parseInt(selectedPart?.marks) * 1.5)} Mins</span>
-                        </div>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 shadow-sm">
+                        <Trophy className="w-4 h-4 text-amber-500" />
+                        <span className="text-sm font-black text-amber-700 dark:text-amber-300">{selectedPart?.marks} Marks</span>
                       </div>
                     </div>
-                  <h3 className="text-xl font-bold leading-snug">{selectedPart?.question}</h3>
+                  <h3 className="text-2xl font-black leading-tight tracking-tight">{selectedPart?.question}</h3>
                 </div>
 
 
