@@ -111,6 +111,7 @@ export function FlashcardManager() {
   const [showForm, setShowForm] = useState(false);
 
   const [filterLevel, setFilterLevel] = useState<string>("All");
+  const [filterType, setFilterType] = useState<string>("All");
   const [filterChapter, setFilterChapter] = useState<string>("All");
 
   const [formData, setFormData] = useState({
@@ -130,7 +131,7 @@ export function FlashcardManager() {
       const response = await fetch("/api/flashcards?limit=1000");
       if (response.ok) {
         const data = await response.json();
-        setFlashcards(data);
+        setFlashcards(Array.isArray(data) ? data : []);
       } else {
         toast.error("Failed to load flashcards");
       }
@@ -149,15 +150,30 @@ export function FlashcardManager() {
     setFormData({
       question: "",
       answer: "",
-      level: "Secondary",
+      level: filterLevel !== "All" ? filterLevel : "Secondary",
       category: "",
       topic: "",
       difficulty: "",
-      economicsType: "Microeconomics",
-      chapter: "",
+      economicsType: filterType !== "All" ? (filterType === "Microeconomics" ? "Microeconomics" : "Macroeconomics") : "Microeconomics",
+      chapter: filterChapter !== "All" ? filterChapter : "",
     });
     setEditingId(null);
     setShowForm(false);
+  };
+
+  const handleAddNew = () => {
+    setFormData({
+      question: "",
+      answer: "",
+      level: filterLevel !== "All" ? filterLevel : "Secondary",
+      category: "",
+      topic: "",
+      difficulty: "",
+      economicsType: filterType !== "All" ? (filterType === "Microeconomics" ? "Microeconomics" : "Macroeconomics") : "Microeconomics",
+      chapter: filterChapter !== "All" ? filterChapter : "",
+    });
+    setEditingId(null);
+    setShowForm(true);
   };
 
   const handleEdit = (flashcard: Flashcard) => {
@@ -175,78 +191,20 @@ export function FlashcardManager() {
     setShowForm(true);
   };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setIsSubmitting(true);
-
-      const token = localStorage.getItem("bearer_token");
-
-      try {
-        const method = editingId ? "PUT" : "POST";
-        const url = editingId ? `/api/flashcards?id=${editingId}` : "/api/flashcards";
-        
-        // Fix difficulty validation: send null instead of empty string
-        const payload = {
-          ...formData,
-          difficulty: formData.difficulty === "" ? null : formData.difficulty
-        };
-
-        const response = await fetch(url, {
-          method,
-          headers: { 
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify(payload),
-        });
-
-
-      if (response.ok) {
-        toast.success(`Flashcard ${editingId ? "updated" : "created"} successfully`);
-        fetchFlashcards();
-        resetForm();
-      } else {
-        toast.error("Failed to save flashcard");
-      }
-    } catch (error) {
-      toast.error("An error occurred");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this flashcard?")) return;
-
-    const token = localStorage.getItem("bearer_token");
-    try {
-      const response = await fetch(`/api/flashcards?id=${id}`, {
-        method: "DELETE",
-        headers: { 
-          "Authorization": `Bearer ${token}`
-        },
-      });
-
-      if (response.ok) {
-        toast.success("Flashcard deleted successfully");
-        fetchFlashcards();
-      } else {
-        toast.error("Failed to delete flashcard");
-      }
-    } catch (error) {
-      toast.error("Error deleting flashcard");
-    }
-  };
-
   const filteredFlashcards = flashcards.filter((flashcard) => {
     const matchesLevel = filterLevel === "All" || flashcard.level === filterLevel;
+    const matchesType = filterType === "All" || flashcard.economicsType === filterType;
     const matchesChapter = filterChapter === "All" || flashcard.chapter === filterChapter;
-    return matchesLevel && matchesChapter;
+    return matchesLevel && matchesType && matchesChapter;
   });
 
   const uniqueChapters = Array.from(
-    new Set(flashcards.map((f) => f.chapter).filter(Boolean))
+    new Set(flashcards
+      .filter(f => (filterLevel === "All" || f.level === filterLevel) && (filterType === "All" || f.economicsType === filterType))
+      .map((f) => f.chapter)
+      .filter(Boolean))
   ).sort();
+
 
   if (isLoading) {
     return (
