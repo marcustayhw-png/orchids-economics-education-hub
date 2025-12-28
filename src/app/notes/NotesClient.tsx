@@ -107,6 +107,71 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
     setCurrentStep("chapter");
   };
 
+  const renderNoteCard = (note: Note) => (
+    <Card key={note.id} className="overflow-hidden border-2 hover:border-primary transition-all group">
+      <div className="flex flex-col md:flex-row">
+        <div className="flex-1 p-6 space-y-4">
+          <div className="flex items-start justify-between">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-none">
+                  {note.category}
+                </Badge>
+                <Badge variant="outline" className="font-normal">
+                  {note.level}
+                </Badge>
+              </div>
+              <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
+                {note.title}
+              </h3>
+            </div>
+            {note.pdfUrl && (
+              <Button size="icon" variant="ghost" className="hidden sm:flex" asChild>
+                <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
+                  <Download className="w-5 h-5" />
+                </a>
+              </Button>
+            )}
+          </div>
+
+          <p className="text-muted-foreground line-clamp-2">
+            {note.description}
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {note.topics.map((topic, index) => (
+              <Badge key={index} variant="secondary" className="bg-muted text-muted-foreground font-normal">
+                {topic}
+              </Badge>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <FileText className="w-4 h-4" />
+                PDF Note
+              </span>
+            </div>
+            <div className="flex gap-2">
+              {note.pdfUrl ? (
+                <Button size="sm" className="rounded-full px-6" asChild>
+                  <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer">
+                    View Note
+                  </a>
+                </Button>
+              ) : (
+                <Button size="sm" variant="outline" disabled className="rounded-full px-6">
+                  Coming Soon
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+
   const renderSelectionFlow = (levelNotes: Note[]) => (
     <AnimatePresence mode="wait">
       {currentStep === "economics-type" && (
