@@ -188,8 +188,6 @@ export function FlashcardManager() {
     }
   };
 
-  const [cardToDelete, setCardToDelete] = useState<number | null>(null);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
