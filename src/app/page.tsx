@@ -216,9 +216,9 @@ export default function Home() {
               <p>
                 As an aspiring economics educator, I've seen firsthand how high-quality resources can transform a student's trajectory. This platform is my commitment to democratizing that quality.
               </p>
-              <p>
-                Whether you're struggling with Market Failure or refining your Balance of Payments evaluations, we're here to provide the structure and clarity you need.
-              </p>
+                <p>
+                  Whether you're struggling with Market Failure or refining your Balance of Payments evaluations, I'm here to provide the structure and clarity you need.
+                </p>
             </div>
           </div>
           <Button asChild size="lg" variant="outline" className="h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl border-2 font-bold shadow-sm">
