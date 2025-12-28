@@ -55,6 +55,19 @@ const jcChapters = {
   ]
 };
 
+const secondaryChapters = {
+  Micro: [
+    "The basic economic problem",
+    "The allocation of resources",
+    "Microeconomic decision makers"
+  ],
+  Macro: [
+    "Government and the macroeconomy",
+    "Economic development",
+    "International trade and globalisation"
+  ]
+};
+
 export function NotesManager() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
