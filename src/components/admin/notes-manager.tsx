@@ -88,15 +88,27 @@ export function NotesManager() {
     pdfUrl: "",
   });
 
+  // Selection states for browsing
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<"Micro" | "Macro" | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
+
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  const filteredNotesList = notes.filter(note => {
+    if (selectedLevel && note.level !== selectedLevel) return false;
+    if (selectedType && note.economicsType !== selectedType) return false;
+    if (selectedChapter && note.chapter !== selectedChapter) return false;
+    return true;
+  });
 
   const fetchNotes = async () => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("bearer_token");
-      const response = await fetch("/api/notes?limit=100", {
+      const response = await fetch("/api/notes?limit=1000", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -117,10 +129,10 @@ export function NotesManager() {
   const resetForm = () => {
     setFormData({
       title: "",
-      category: "",
-      level: "JC",
-      economicsType: "Micro",
-      chapter: "",
+      category: "Theory",
+      level: selectedLevel || "JC",
+      economicsType: selectedType || "Micro",
+      chapter: selectedChapter || "",
       topics: "",
       description: "",
       pdfUrl: "",
@@ -130,6 +142,21 @@ export function NotesManager() {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+  };
+
+  const handleAddNew = () => {
+    setFormData({
+      title: "",
+      category: "Theory",
+      level: selectedLevel || "JC",
+      economicsType: selectedType || "Micro",
+      chapter: selectedChapter || "",
+      topics: "",
+      description: "",
+      pdfUrl: "",
+    });
+    setEditingId(null);
+    setShowForm(true);
   };
 
   const handleEdit = (note: Note) => {
