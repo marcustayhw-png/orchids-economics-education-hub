@@ -16,9 +16,17 @@ export async function POST(request: NextRequest) {
   try {
     // Check authentication
     const user = await getCurrentUser(request);
+    
     if (!user) {
+      const authHeader = request.headers.get('Authorization');
+      console.error('Unauthorized upload attempt. Auth header:', authHeader ? 'Present' : 'Missing');
+      
       return NextResponse.json(
-        { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+        { 
+          error: 'Unauthorized. Please ensure you are logged in.', 
+          code: 'UNAUTHORIZED',
+          details: 'User session not found'
+        },
         { status: 401 }
       );
     }
