@@ -116,7 +116,7 @@ export default function Home() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl border-2 hover:bg-muted/50 transition-all">
-                <Link href="/about">Our Mission</Link>
+                <Link href="/about">My Mission</Link>
               </Button>
             </motion.div>
 
