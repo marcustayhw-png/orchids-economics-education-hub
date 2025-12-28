@@ -77,25 +77,11 @@ export function NotesManager() {
   const [showForm, setShowForm] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    level: "JC",
-    economicsType: "Micro" as "Micro" | "Macro" | "",
-    chapter: "",
-    topics: "",
-    description: "",
-    pdfUrl: "",
-  });
-
-  // Selection states for browsing
+  // Browser states
+  const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<"Micro" | "Macro" | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchNotes();
-  }, []);
 
   const filteredNotesList = notes.filter(note => {
     if (selectedLevel && note.level !== selectedLevel) return false;
@@ -115,7 +101,7 @@ export function NotesManager() {
       });
       if (response.ok) {
         const data = await response.json();
-        setNotes(data);
+        setNotes(Array.isArray(data) ? data : []);
       } else {
         toast.error("Failed to load notes");
       }
@@ -125,6 +111,10 @@ export function NotesManager() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
   const resetForm = () => {
     setFormData({
