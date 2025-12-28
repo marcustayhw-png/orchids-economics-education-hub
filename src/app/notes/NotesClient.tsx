@@ -139,7 +139,7 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {note.topics.map((topic, index) => (
+            {Array.isArray(note.topics) && note.topics.map((topic, index) => (
               <Badge key={index} variant="secondary" className="bg-muted text-muted-foreground font-normal">
                 {topic}
               </Badge>
