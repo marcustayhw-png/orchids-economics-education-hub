@@ -37,8 +37,8 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
   const secondaryNotes = useMemo(() => notes.filter(note => note.level === "Secondary"), [notes]);
   const jcNotes = useMemo(() => notes.filter(note => note.level === "JC"), [notes]);
 
-  const filteredJCNotes = useMemo(() => {
-    let filtered = jcNotes;
+  const filteredNotes = useMemo(() => {
+    let filtered = selectedLevel === "secondary" ? secondaryNotes : jcNotes;
     if (selectedType) {
       filtered = filtered.filter(note => note.economicsType === selectedType);
     }
@@ -46,9 +46,10 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
       filtered = filtered.filter(note => note.chapter === selectedChapter);
     }
     return filtered;
-  }, [jcNotes, selectedType, selectedChapter]);
+  }, [selectedLevel, secondaryNotes, jcNotes, selectedType, selectedChapter]);
 
-    const jcChapters = {
+  const chaptersByLevel = {
+    jc: {
       Micro: [
         "Scarcity as the Central Economic Problem",
         "Demand and Supply",
@@ -60,7 +61,22 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
         "Macroeconomic Objectives and Policies",
         "Globalisation and the International Economy"
       ]
-    };
+    },
+    secondary: {
+      Micro: [
+        "The basic economic problem",
+        "The allocation of resources",
+        "Microeconomic decision makers"
+      ],
+      Macro: [
+        "Government and the macroeconomy",
+        "Economic development",
+        "International trade and globalisation"
+      ]
+    }
+  };
+
+  const currentChapters = chaptersByLevel[selectedLevel as "jc" | "secondary"];
 
   const handleLevelChange = (value: string) => {
     setSelectedLevel(value);
