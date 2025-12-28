@@ -193,7 +193,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, category, level, topics, description, pdfUrl } = body;
+    const { title, category, level, topics, description, pdfUrl, economicsType, chapter } = body;
 
     // Check if note exists
     const existingNote = await db.select()
@@ -257,6 +257,8 @@ export async function PUT(request: NextRequest) {
     if (pdfUrl !== undefined) {
       updates.pdfUrl = pdfUrl && typeof pdfUrl === 'string' ? pdfUrl.trim() : null;
     }
+    if (economicsType !== undefined) updates.economicsType = economicsType;
+    if (chapter !== undefined) updates.chapter = chapter;
 
     const updatedNote = await db.update(notes)
       .set(updates)
