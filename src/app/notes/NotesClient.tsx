@@ -1,13 +1,12 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, BookOpen, FileText } from "lucide-react";
+import { Download, BookOpen, FileText, ArrowRight, ArrowLeft, Users, Globe } from "lucide-react";
 import { SuggestedPath } from "@/components/suggested-path";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Note = {
   id: number;
@@ -23,17 +22,71 @@ type Note = {
   updatedAt: string;
 };
 
+type Step = "economics-type" | "chapter" | "notes";
+
 export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
   const [selectedLevel, setSelectedLevel] = useState("secondary");
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState<Step>("economics-type");
   
   const notes = initialNotes;
 
-  const secondaryNotes = notes.filter(note => note.level === "Secondary");
-  const jcNotes = notes.filter(note => note.level === "JC");
+  const secondaryNotes = useMemo(() => notes.filter(note => note.level === "Secondary"), [notes]);
+  const jcNotes = useMemo(() => notes.filter(note => note.level === "JC"), [notes]);
 
-  const microNotes = jcNotes.filter(note => note.economicsType === "Micro");
-  const macroNotes = jcNotes.filter(note => note.economicsType === "Macro");
+  const filteredJCNotes = useMemo(() => {
+    let filtered = jcNotes;
+    if (selectedType) {
+      filtered = filtered.filter(note => note.economicsType === selectedType);
+    }
+    if (selectedChapter) {
+      filtered = filtered.filter(note => note.chapter === selectedChapter);
+    }
+    return filtered;
+  }, [jcNotes, selectedType, selectedChapter]);
+
+  const jcChapters = {
+    Micro: [
+      "Demand and Supply",
+      "Market Failure",
+      "Firms and Decisions (Market Structure)"
+    ],
+    Macro: [
+      "Introduction to Macroeconomics",
+      "Macroeconomic Objectives and Policies",
+      "Globalisation and the International Economy"
+    ]
+  };
+
+  const handleLevelChange = (value: string) => {
+    setSelectedLevel(value);
+    setSelectedType(null);
+    setSelectedChapter(null);
+    setCurrentStep("economics-type");
+  };
+
+  const handleTypeSelect = (type: string) => {
+    setSelectedType(type);
+    setSelectedChapter(null);
+    setCurrentStep("chapter");
+  };
+
+  const handleChapterSelect = (chapter: string) => {
+    setSelectedChapter(chapter);
+    setCurrentStep("notes");
+  };
+
+  const handleBackToType = () => {
+    setSelectedType(null);
+    setSelectedChapter(null);
+    setCurrentStep("economics-type");
+  };
+
+  const handleBackToChapter = () => {
+    setSelectedChapter(null);
+    setCurrentStep("chapter");
+  };
 
   const renderNoteCard = (note: Note) => (
     <Card key={note.id} className="border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 overflow-hidden">
@@ -51,7 +104,7 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
           <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-primary/70 flex-shrink-0" />
         </div>
         <CardDescription className="text-sm sm:text-base leading-relaxed break-words">{note.description}</CardDescription>
-      </CardHeader>
+      </Header>
       <CardContent className="space-y-4">
         {note.pdfUrl ? (
           <div className="p-4 sm:p-5 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl overflow-hidden border border-border/50">
@@ -97,22 +150,9 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
     </Card>
   );
 
-  const jcChapters = {
-    Micro: [
-      "Demand and Supply",
-      "Market Failure",
-      "Firms and Decisions (Market Structure)"
-    ],
-    Macro: [
-      "Introduction to Macroeconomics",
-      "Macroeconomic Objectives and Policies",
-      "Globalisation and the International Economy"
-    ]
-  };
-
   return (
     <div className="w-full">
-      <Tabs defaultValue="secondary" className="space-y-8 sm:space-y-10 w-full" onValueChange={setSelectedLevel}>
+      <Tabs value={selectedLevel} className="space-y-8 sm:space-y-10 w-full" onValueChange={handleLevelChange}>
         <TabsList className="flex flex-col sm:grid sm:grid-cols-2 w-full max-w-md mx-auto h-auto sm:h-11 p-1 gap-1 bg-muted/50 backdrop-blur-sm">
           <TabsTrigger 
             value="secondary" 
@@ -143,93 +183,119 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
         </TabsContent>
 
         <TabsContent value="jc" className="space-y-6 sm:space-y-8">
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button 
-              variant={selectedType === null ? "default" : "outline"}
-              onClick={() => setSelectedType(null)}
-              className="rounded-full px-8"
-            >
-              All JC Notes
-            </Button>
-            <Button 
-              variant={selectedType === "Micro" ? "default" : "outline"}
-              onClick={() => setSelectedType("Micro")}
-              className="rounded-full px-8"
-            >
-              Microeconomics
-            </Button>
-            <Button 
-              variant={selectedType === "Macro" ? "default" : "outline"}
-              onClick={() => setSelectedType("Macro")}
-              className="rounded-full px-8"
-            >
-              Macroeconomics
-            </Button>
-          </div>
+          <AnimatePresence mode="wait">
+            {currentStep === "economics-type" && (
+              <motion.div
+                key="economics-type"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto"
+              >
+                <Card 
+                  className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30 group"
+                  onClick={() => handleTypeSelect("Micro")}
+                >
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Users className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold">Microeconomics</h3>
+                    <p className="text-sm text-muted-foreground">Individual markets and consumer behavior</p>
+                    <Button className="w-full group">
+                      Select <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </CardContent>
+                </Card>
 
-          {(selectedType === null || selectedType === "Micro") && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <h3 className="text-2xl font-black tracking-tight text-primary">Microeconomics</h3>
-                <div className="h-[2px] flex-1 bg-gradient-to-r from-primary/20 to-transparent" />
-              </div>
-              
-              {jcChapters.Micro.map(chapter => {
-                const chapterNotes = microNotes.filter(n => n.chapter === chapter);
-                return (
-                  <div key={chapter} className="space-y-4">
-                    <h4 className="text-lg font-bold flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      {chapter}
-                    </h4>
-                    {chapterNotes.length === 0 ? (
-                      <p className="text-sm text-muted-foreground italic pl-4">No notes for this chapter yet.</p>
-                    ) : (
-                      <div className="grid gap-4 sm:gap-6 pl-4 border-l-2 border-muted">
-                        {chapterNotes.map(renderNoteCard)}
-                      </div>
-                    )}
+                <Card 
+                  className="border-2 cursor-pointer hover:border-primary transition-all hover:shadow-lg bg-gradient-to-br from-background to-muted/30 group"
+                  onClick={() => handleTypeSelect("Macro")}
+                >
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Globe className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold">Macroeconomics</h3>
+                    <p className="text-sm text-muted-foreground">National economies and global policies</p>
+                    <Button className="w-full group">
+                      Select <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {currentStep === "chapter" && (
+              <motion.div
+                key="chapter"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6 max-w-2xl mx-auto"
+              >
+                <div className="text-center space-y-2">
+                  <Badge className="mb-2">{selectedType === "Micro" ? "Microeconomics" : "Macroeconomics"}</Badge>
+                  <h2 className="text-2xl font-bold">Select a Chapter</h2>
+                </div>
+
+                <div className="grid gap-3">
+                  {jcChapters[selectedType as "Micro" | "Macro"].map((chapter) => (
+                    <Button
+                      key={chapter}
+                      variant="outline"
+                      className="h-auto py-4 px-6 justify-between text-left hover:border-primary hover:bg-primary/5 group"
+                      onClick={() => handleChapterSelect(chapter)}
+                    >
+                      <span className="font-medium">{chapter}</span>
+                      <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                    </Button>
+                  ))}
+                </div>
+
+                <Button variant="ghost" className="w-full" onClick={handleBackToType}>
+                  <ArrowLeft className="w-4 h-4 mr-2" /> Back to Focus Area
+                </Button>
+              </motion.div>
+            )}
+
+            {currentStep === "notes" && (
+              <motion.div
+                key="notes"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
+              >
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b pb-4">
+                  <div className="flex items-center gap-3">
+                    <Badge variant="secondary">{selectedType === "Micro" ? "Microeconomics" : "Macroeconomics"}</Badge>
+                    <span className="text-muted-foreground">/</span>
+                    <Badge variant="outline">{selectedChapter}</Badge>
                   </div>
-                );
-              })}
-            </div>
-          )}
+                  <Button variant="outline" size="sm" onClick={handleBackToChapter}>
+                    <ArrowLeft className="w-4 h-4 mr-2" /> Change Chapter
+                  </Button>
+                </div>
 
-          {(selectedType === null || selectedType === "Macro") && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-4 pt-8">
-                <h3 className="text-2xl font-black tracking-tight text-primary">Macroeconomics</h3>
-                <div className="h-[2px] flex-1 bg-gradient-to-r from-primary/20 to-transparent" />
-              </div>
-
-              {jcChapters.Macro.map(chapter => {
-                const chapterNotes = macroNotes.filter(n => n.chapter === chapter);
-                return (
-                  <div key={chapter} className="space-y-4">
-                    <h4 className="text-lg font-bold flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      {chapter}
-                    </h4>
-                    {chapterNotes.length === 0 ? (
-                      <p className="text-sm text-muted-foreground italic pl-4">No notes for this chapter yet.</p>
-                    ) : (
-                      <div className="grid gap-4 sm:gap-6 pl-4 border-l-2 border-muted">
-                        {chapterNotes.map(renderNoteCard)}
-                      </div>
-                    )}
+                {filteredJCNotes.length === 0 ? (
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="py-12 text-center">
+                      <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+                      <p className="text-muted-foreground">No notes available for this chapter yet.</p>
+                      <Button variant="link" onClick={handleBackToChapter} className="mt-2">
+                        Try another chapter
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid gap-6">
+                    {filteredJCNotes.map(renderNoteCard)}
                   </div>
-                );
-              })}
-            </div>
-          )}
-
-          {jcNotes.length === 0 && (
-            <Card className="border-2 border-dashed overflow-hidden">
-              <CardContent className="py-8 sm:py-12 text-center">
-                <p className="text-muted-foreground break-words px-2">No notes available for JC level yet.</p>
-              </CardContent>
-            </Card>
-          )}
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </TabsContent>
       </Tabs>
     </div>
