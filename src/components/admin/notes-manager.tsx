@@ -287,8 +287,6 @@ export function NotesManager() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this note?")) return;
-
     const token = localStorage.getItem("bearer_token");
     try {
       const response = await fetch(`/api/notes?id=${id}`, {
@@ -309,6 +307,8 @@ export function NotesManager() {
     }
   };
 
+  const [noteToDelete, setNoteToDelete] = useState<number | null>(null);
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -319,6 +319,30 @@ export function NotesManager() {
 
   return (
     <div className="space-y-6">
+      <AlertDialog open={!!noteToDelete} onOpenChange={(open) => !open && setNoteToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the note from the database.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                if (noteToDelete) {
+                  handleDelete(noteToDelete);
+                  setNoteToDelete(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       {/* Browser View */}
       {!showForm && (
         <div className="space-y-6">
