@@ -56,18 +56,18 @@ const jcChapters = {
   ]
 };
 
-const secondaryChapters = {
-  Micro: [
-    "The basic economic problem",
-    "The allocation of resources",
-    "Microeconomic decision makers"
-  ],
-  Macro: [
-    "Government and the macroeconomy",
-    "Economic development",
-    "International trade and globalisation"
-  ]
-};
+  const secondaryChapters = {
+    Micro: [
+      "1. The basic economic problem",
+      "2. The allocation of resources",
+      "3. Microeconomic decision makers"
+    ],
+    Macro: [
+      "4. Government and the macroeconomy",
+      "5. Economic development",
+      "6. International trade and globalisation"
+    ]
+  };
 
   export function NotesManager() {
     const [notes, setNotes] = useState<Note[]>([]);
@@ -94,51 +94,24 @@ const secondaryChapters = {
       pdfUrl: "",
     });
 
-    const fetchNotes = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch("/api/notes?limit=1000");
-        if (response.ok) {
-          const data = await response.json();
-          setNotes(Array.isArray(data) ? data : []);
-        } else {
-          toast.error("Failed to load notes");
-        }
-      } catch (error) {
-        toast.error("Error loading notes");
-      } finally {
-        setIsLoading(false);
+    const resetForm = () => {
+      setFormData({
+        title: "",
+        category: "Theory",
+        level: selectedLevel || "JC",
+        economicsType: selectedType || "Micro",
+        chapter: selectedChapter || "",
+        topics: "",
+        description: "",
+        pdfUrl: "",
+      });
+      setEditingId(null);
+      setShowForm(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
       }
     };
 
-    useEffect(() => {
-      fetchNotes();
-    }, []);
-
-    const filteredNotesList = notes.filter((note) => {
-      if (selectedLevel && note.level !== selectedLevel) return false;
-      if (selectedType && note.economicsType !== selectedType) return false;
-      if (selectedChapter && note.chapter !== selectedChapter) return false;
-      return true;
-    });
-
-    const resetForm = () => {
-    setFormData({
-      title: "",
-      category: "Theory",
-      level: selectedLevel || "JC",
-      economicsType: selectedType || "Micro",
-      chapter: selectedChapter || "",
-      topics: "",
-      description: "",
-      pdfUrl: "",
-    });
-    setEditingId(null);
-    setShowForm(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const handleAddNew = () => {
     setFormData({
