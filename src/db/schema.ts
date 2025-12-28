@@ -119,6 +119,8 @@ export const notes = sqliteTable('notes', {
   topics: text('topics', { mode: 'json' }).notNull(),
   description: text('description').notNull(),
   pdfUrl: text('pdf_url'),
+  economicsType: text('economics_type'), // Micro or Macro
+  chapter: text('chapter'),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
