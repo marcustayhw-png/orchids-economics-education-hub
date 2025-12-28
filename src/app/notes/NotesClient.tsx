@@ -48,18 +48,19 @@ export function NotesClient({ initialNotes }: { initialNotes: Note[] }) {
     return filtered;
   }, [jcNotes, selectedType, selectedChapter]);
 
-  const jcChapters = {
-    Micro: [
-      "Demand and Supply",
-      "Market Failure",
-      "Firms and Decisions (Market Structure)"
-    ],
-    Macro: [
-      "Introduction to Macroeconomics",
-      "Macroeconomic Objectives and Policies",
-      "Globalisation and the International Economy"
-    ]
-  };
+    const jcChapters = {
+      Micro: [
+        "Scarcity as the Central Economic Problem",
+        "Demand and Supply",
+        "Market Failure",
+        "Firms and Decisions (Market Structure)"
+      ],
+      Macro: [
+        "Introduction to Macroeconomics",
+        "Macroeconomic Objectives and Policies",
+        "Globalisation and the International Economy"
+      ]
+    };
 
   const handleLevelChange = (value: string) => {
     setSelectedLevel(value);
