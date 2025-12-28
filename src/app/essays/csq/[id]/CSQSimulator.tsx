@@ -177,17 +177,19 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
 
             {/* Assessment Stats Summary */}
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/40 border border-amber-200 dark:border-amber-800/60 shadow-sm transition-all hover:scale-[1.02]">
                 <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span className="text-[11px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-tight">
-                  {totalMarks} Total Marks
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 uppercase leading-none">Total Marks</span>
+                  <span className="text-xs font-black text-amber-800 dark:text-amber-200">{totalMarks}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800/60 shadow-sm transition-all hover:scale-[1.02]">
                 <Timer className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                <span className="text-[11px] font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-tight">
-                  {estimatedTotalTime} Mins Target
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300 uppercase leading-none">Total Time</span>
+                  <span className="text-xs font-black text-indigo-800 dark:text-indigo-200">{estimatedTotalTime} Mins</span>
+                </div>
               </div>
             </div>
           </div>
