@@ -5,6 +5,7 @@ import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 import { Navigation } from "@/components/ui/navigation";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "EconStack - Economics Education Platform",
@@ -45,6 +46,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <VisualEditsMessenger />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
