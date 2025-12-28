@@ -202,26 +202,26 @@ export function CSQSimulator({ csq }: { csq: CSQ }) {
                 className="p-6 sm:p-8 space-y-8"
               >
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-primary/10 text-primary border-primary/20">Part {selectedPart?.part}</Badge>
-                      <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
-                        <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
-                          {parseInt(selectedPart?.marks) <= 4 ? "Easy" : parseInt(selectedPart?.marks) <= 8 ? "Medium" : "Hard"}
-                        </span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors">Part {selectedPart?.part}</Badge>
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+                          <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
+                            {parseInt(selectedPart?.marks) <= 4 ? "Easy" : parseInt(selectedPart?.marks) <= 8 ? "Medium" : "Hard"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 shadow-sm">
+                          <Trophy className="w-3.5 h-3.5 text-amber-500" />
+                          <span className="text-xs font-bold text-amber-700 dark:text-amber-300">{selectedPart?.marks} Marks</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 shadow-sm">
+                          <Clock className="w-3.5 h-3.5 text-indigo-500" />
+                          <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">{Math.ceil(parseInt(selectedPart?.marks) * 1.5)} Mins</span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1.5">
-                        <Trophy className="w-3.5 h-3.5 text-amber-500" />
-                        <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{selectedPart?.marks} Marks</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                        <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{Math.ceil(parseInt(selectedPart?.marks) * 1.5)} Mins</span>
-                      </div>
-                    </div>
-                  </div>
                   <h3 className="text-xl font-bold leading-snug">{selectedPart?.question}</h3>
                 </div>
 
