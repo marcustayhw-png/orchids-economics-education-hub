@@ -163,7 +163,7 @@ export function MarkingManager() {
         </Button>
       </div>
 
-      <div className="rounded-md border">
+      <div className="hidden md:block rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -215,6 +215,42 @@ export function MarkingManager() {
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden space-y-4">
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin" />
+          </div>
+        ) : filteredRequests.length === 0 ? (
+          <p className="text-center py-8 text-muted-foreground">No marking requests found.</p>
+        ) : (
+          filteredRequests.map((request) => (
+            <Card key={request.id} className="overflow-hidden">
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">
+                    {format(new Date(request.createdAt), "MMM d, yyyy")}
+                  </span>
+                  {getStatusBadge(request.status)}
+                </div>
+                <div>
+                  <p className="font-bold truncate">{request.email}</p>
+                  <p className="text-sm text-muted-foreground truncate">
+                    {request.subject || "No subject"}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between pt-2">
+                  <Badge variant="outline" className="text-[10px]">{request.level}</Badge>
+                  <Button size="sm" onClick={() => handleOpenRequest(request)}>
+                    Manage
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Details Dialog */}

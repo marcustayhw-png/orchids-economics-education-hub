@@ -16,13 +16,15 @@ export default function AdminPage() {
       </div>
 
       <Tabs defaultValue="essays" className="space-y-6">
-        <TabsList className="grid w-full max-w-4xl grid-cols-5">
-          <TabsTrigger value="essays">Essays</TabsTrigger>
-          <TabsTrigger value="csqs">CSQs</TabsTrigger>
-          <TabsTrigger value="notes">Notes</TabsTrigger>
-          <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
-          <TabsTrigger value="current-affairs">Current Affairs</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+          <TabsList className="flex w-max md:grid md:w-full md:max-w-4xl md:grid-cols-5">
+            <TabsTrigger value="essays" className="px-6 md:px-3">Essays</TabsTrigger>
+            <TabsTrigger value="csqs" className="px-6 md:px-3">CSQs</TabsTrigger>
+            <TabsTrigger value="notes" className="px-6 md:px-3">Notes</TabsTrigger>
+            <TabsTrigger value="flashcards" className="px-6 md:px-3">Flashcards</TabsTrigger>
+            <TabsTrigger value="current-affairs" className="px-6 md:px-3">Current Affairs</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="essays">
           <Card>
