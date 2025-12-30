@@ -12,8 +12,6 @@ interface Essay {
   marks: string;
   topic: string;
   difficulty: string;
-  economicsType: string | null;
-  chapter: string | null;
 }
 
 interface CSQ {
@@ -25,8 +23,6 @@ interface CSQ {
   difficulty: string;
   totalMarks: number;
   parts: any[];
-  economicsType: string | null;
-  chapter: string | null;
 }
 
 export function EssaysPageClient({ 

@@ -89,8 +89,6 @@ export function EssayManager() {
     marks: "",
     topic: "",
     difficulty: "Medium",
-    economicsType: "Micro",
-    chapter: "",
     preamble: "",
     examinerComments: "",
     structureNotes: "",
@@ -124,8 +122,6 @@ export function EssayManager() {
       marks: "",
       topic: "",
       difficulty: "Medium",
-      economicsType: "Micro",
-      chapter: "",
       preamble: "",
       examinerComments: "",
       structureNotes: "",
@@ -135,7 +131,7 @@ export function EssayManager() {
     setShowForm(false);
   };
 
-  const handleEdit = (essay: any) => {
+  const handleEdit = (essay: Essay) => {
     setFormData({
       essayId: essay.essayId,
       question: essay.question,
@@ -143,8 +139,6 @@ export function EssayManager() {
       marks: essay.marks,
       topic: essay.topic || "",
       difficulty: essay.difficulty || "Medium",
-      economicsType: essay.economicsType || "Micro",
-      chapter: essay.chapter || "",
       preamble: essay.preamble || "",
       examinerComments: essay.examinerComments?.join("\n") || "",
       structureNotes: essay.structureNotes || "",
@@ -154,31 +148,28 @@ export function EssayManager() {
     setShowForm(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-    const token = localStorage.getItem("bearer_token");
+      const token = localStorage.getItem("bearer_token");
 
-    const examinerCommentsArray = formData.examinerComments
-      .split("\n")
-      .filter((line) => line.trim() !== "");
+      const examinerCommentsArray = formData.examinerComments
+        .split("\n")
+        .filter((line) => line.trim() !== "");
 
-    const payload = {
-      essayId: formData.essayId,
-      question: formData.question,
-      level: formData.level,
-      marks: formData.marks,
-      topic: formData.topic,
-      difficulty: formData.difficulty,
-      economicsType: formData.economicsType,
-      chapter: formData.chapter,
-      preamble: formData.preamble || null,
-      examinerComments: examinerCommentsArray.length > 0 ? examinerCommentsArray : null,
-      structureNotes: formData.structureNotes || null,
-      modelAnswer: formData.modelAnswer || null,
-    };
-
+      const payload = {
+        essayId: formData.essayId,
+        question: formData.question,
+        level: formData.level,
+        marks: formData.marks,
+        topic: formData.topic,
+        difficulty: formData.difficulty,
+        preamble: formData.preamble || null,
+        examinerComments: examinerCommentsArray.length > 0 ? examinerCommentsArray : null,
+        structureNotes: formData.structureNotes || null,
+        modelAnswer: formData.modelAnswer || null,
+      };
 
       try {
         if (editingId) {
@@ -322,100 +313,30 @@ export function EssayManager() {
                 </div>
               </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="economicsType">Economics Type *</Label>
-                    <Select
-                      value={formData.economicsType}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, economicsType: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Micro">Microeconomics</SelectItem>
-                        <SelectItem value="Macro">Macroeconomics</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="chapter">Chapter *</Label>
-                    <Select
-                      value={formData.chapter}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, chapter: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select chapter" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {formData.level === "JC" ? (
-                          <>
-                            {formData.economicsType === "Micro" ? (
-                              <>
-                                <SelectItem value="Scarcity as the Central Economic Problem">Scarcity as the Central Economic Problem</SelectItem>
-                                <SelectItem value="Demand and Supply">Demand and Supply</SelectItem>
-                                <SelectItem value="Market Failure">Market Failure</SelectItem>
-                                <SelectItem value="Firms and Decisions (Market Structure)">Firms and Decisions (Market Structure)</SelectItem>
-                              </>
-                            ) : (
-                              <>
-                                <SelectItem value="Introduction to Macroeconomics">Introduction to Macroeconomics</SelectItem>
-                                <SelectItem value="Macroeconomic Objectives and Policies">Macroeconomic Objectives and Policies</SelectItem>
-                                <SelectItem value="Globalisation and the International Economy">Globalisation and the International Economy</SelectItem>
-                              </>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            {formData.economicsType === "Micro" ? (
-                              <>
-                                <SelectItem value="The basic economic problem">The basic economic problem</SelectItem>
-                                <SelectItem value="The allocation of resources">The allocation of resources</SelectItem>
-                                <SelectItem value="Microeconomic decision makers">Microeconomic decision makers</SelectItem>
-                              </>
-                            ) : (
-                              <>
-                                <SelectItem value="Government and the macroeconomy">Government and the macroeconomy</SelectItem>
-                                <SelectItem value="Economic development">Economic development</SelectItem>
-                                <SelectItem value="International trade and globalisation">International trade and globalisation</SelectItem>
-                              </>
-                            )}
-                          </>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="topic">Topic *</Label>
+                  <Select
+                    value={formData.topic}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, topic: value })
+                    }
+                  >
+                    <SelectTrigger id="topic">
+                      <SelectValue placeholder="Select syllabus topic" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {SYLLABUS_TOPICS.map((topic) => (
+                        <SelectItem key={topic} value={topic}>
+                          {topic}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="topic">Topic *</Label>
-                    <Select
-                      value={formData.topic}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, topic: value })
-                      }
-                    >
-                      <SelectTrigger id="topic">
-                        <SelectValue placeholder="Select syllabus topic" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[300px]">
-                        {SYLLABUS_TOPICS.map((topic) => (
-                          <SelectItem key={topic} value={topic}>
-                            {topic}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="difficulty">Difficulty *</Label>
+                <div>
+                  <Label htmlFor="difficulty">Difficulty *</Label>
                   <Select
                     value={formData.difficulty}
                     onValueChange={(value) =>

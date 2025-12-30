@@ -41,8 +41,6 @@ export async function GET(request: NextRequest) {
     const level = searchParams.get('level');
     const topic = searchParams.get('topic');
     const difficulty = searchParams.get('difficulty');
-    const economicsType = searchParams.get('economics_type');
-    const chapter = searchParams.get('chapter');
     const minMarks = searchParams.get('min_marks');
     const maxMarks = searchParams.get('max_marks');
 
@@ -70,14 +68,6 @@ export async function GET(request: NextRequest) {
 
     if (difficulty) {
       conditions.push(eq(csqs.difficulty, difficulty));
-    }
-
-    if (economicsType) {
-      conditions.push(eq(csqs.economicsType, economicsType));
-    }
-
-    if (chapter) {
-      conditions.push(eq(csqs.chapter, chapter));
     }
 
     if (minMarks) {
@@ -150,7 +140,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { csqId, title, level, topic, difficulty, totalMarks, parts, economicsType, chapter } = body;
+    const { csqId, title, level, topic, difficulty, totalMarks, parts } = body;
 
     // Validation
     if (!csqId || typeof csqId !== 'string' || !csqId.trim()) {
@@ -265,8 +255,6 @@ export async function POST(request: NextRequest) {
         topic: topic.trim(),
         difficulty,
         totalMarks,
-        economicsType,
-        chapter,
         createdAt: now,
         updatedAt: now
       })
@@ -325,7 +313,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, level, topic, difficulty, totalMarks, parts, economicsType, chapter } = body;
+    const { title, level, topic, difficulty, totalMarks, parts } = body;
 
     // Find existing CSQ
     const existing = await db.select()
@@ -441,14 +429,6 @@ export async function PUT(request: NextRequest) {
 
     if (totalMarks !== undefined) {
       updates.totalMarks = totalMarks;
-    }
-
-    if (economicsType !== undefined) {
-      updates.economicsType = economicsType;
-    }
-
-    if (chapter !== undefined) {
-      updates.chapter = chapter;
     }
 
     const updatedCsq = await db.update(csqs)

@@ -147,68 +147,66 @@ export function MarkingManager() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-center gap-4">
-        <div className="relative flex-1 w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 max-w-sm">
+        <div className="relative flex-1">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by email, level or subject..."
-            className="pl-12 bg-white/5 border-white/10 h-12 rounded-xl focus:ring-primary"
+            className="pl-8"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Button variant="outline" onClick={fetchRequests} className="w-full sm:w-auto h-12 rounded-xl border-white/10 hover:bg-white/5 font-bold uppercase tracking-wider text-xs">
-          Refresh List
+        <Button variant="outline" onClick={fetchRequests}>
+          Refresh
         </Button>
       </div>
 
-      <div className="hidden lg:block rounded-[1.5rem] border border-white/10 overflow-hidden bg-black/40">
+      <div className="hidden md:block rounded-md border">
         <Table>
-          <TableHeader className="bg-white/5">
-            <TableRow className="hover:bg-transparent border-white/10">
-              <TableHead className="py-5 font-black uppercase tracking-wider text-[10px] text-white/40">Date</TableHead>
-              <TableHead className="py-5 font-black uppercase tracking-wider text-[10px] text-white/40">Student</TableHead>
-              <TableHead className="py-5 font-black uppercase tracking-wider text-[10px] text-white/40">Level</TableHead>
-              <TableHead className="py-5 font-black uppercase tracking-wider text-[10px] text-white/40">Subject</TableHead>
-              <TableHead className="py-5 font-black uppercase tracking-wider text-[10px] text-white/40">Status</TableHead>
-              <TableHead className="py-5 text-right font-black uppercase tracking-wider text-[10px] text-white/40">Action</TableHead>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date</TableHead>
+              <TableHead>Student</TableHead>
+              <TableHead>Level</TableHead>
+              <TableHead>Subject</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-20">
-                  <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+                <TableCell colSpan={6} className="text-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin mx-auto" />
                 </TableCell>
               </TableRow>
             ) : filteredRequests.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-20 text-white/40 font-bold uppercase tracking-widest text-xs">
+                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                   No marking requests found.
                 </TableCell>
               </TableRow>
             ) : (
               filteredRequests.map((request) => (
-                <TableRow key={request.id} className="hover:bg-white/[0.02] border-white/10 transition-colors group">
-                  <TableCell className="text-xs font-bold text-white/60">
+                <TableRow key={request.id}>
+                  <TableCell className="text-sm font-medium">
                     {format(new Date(request.createdAt), "MMM d, yyyy")}
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-primary transition-colors">{request.email}</span>
-                      {request.phone && <span className="text-[10px] text-white/40 font-medium">{request.phone}</span>}
+                      <span className="font-medium">{request.email}</span>
+                      {request.phone && <span className="text-xs text-muted-foreground">{request.phone}</span>}
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-white/5 border-white/10 text-[10px] font-black uppercase">{request.level}</Badge>
-                  </TableCell>
-                  <TableCell className="max-w-[200px] truncate text-sm font-medium text-white/60">
+                  <TableCell>{request.level}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">
                     {request.subject || "No subject"}
                   </TableCell>
                   <TableCell>{getStatusBadge(request.status)}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" onClick={() => handleOpenRequest(request)} className="rounded-lg hover:bg-primary hover:text-primary-foreground font-bold">
+                    <Button variant="ghost" size="sm" onClick={() => handleOpenRequest(request)}>
                       View & Manage
                     </Button>
                   </TableCell>
@@ -219,35 +217,33 @@ export function MarkingManager() {
         </Table>
       </div>
 
-      {/* Mobile & Tablet View */}
-      <div className="lg:hidden grid gap-4">
+      {/* Mobile View */}
+      <div className="md:hidden space-y-4">
         {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <div className="flex justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : filteredRequests.length === 0 ? (
-          <div className="text-center py-20 bg-white/5 rounded-[2rem] border border-dashed border-white/10">
-            <p className="text-white/40 font-bold uppercase tracking-widest text-xs">No marking requests found.</p>
-          </div>
+          <p className="text-center py-8 text-muted-foreground">No marking requests found.</p>
         ) : (
           filteredRequests.map((request) => (
-            <Card key={request.id} className="bg-white/[0.03] border-white/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-colors group">
-              <CardContent className="p-6 space-y-4">
+            <Card key={request.id} className="overflow-hidden">
+              <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-white/40">
+                  <span className="text-xs text-muted-foreground">
                     {format(new Date(request.createdAt), "MMM d, yyyy")}
                   </span>
                   {getStatusBadge(request.status)}
                 </div>
                 <div>
-                  <p className="font-black text-lg text-white group-hover:text-primary transition-colors truncate">{request.email}</p>
-                  <p className="text-xs text-white/40 font-medium truncate mt-1">
+                  <p className="font-bold truncate">{request.email}</p>
+                  <p className="text-sm text-muted-foreground truncate">
                     {request.subject || "No subject"}
                   </p>
                 </div>
                 <div className="flex items-center justify-between pt-2">
-                  <Badge variant="outline" className="bg-white/5 border-white/10 text-[10px] font-black uppercase">{request.level}</Badge>
-                  <Button size="sm" onClick={() => handleOpenRequest(request)} className="rounded-xl px-6 font-black uppercase tracking-wider text-[10px]">
+                  <Badge variant="outline" className="text-[10px]">{request.level}</Badge>
+                  <Button size="sm" onClick={() => handleOpenRequest(request)}>
                     Manage
                   </Button>
                 </div>
@@ -259,74 +255,74 @@ export function MarkingManager() {
 
       {/* Details Dialog */}
       <Dialog open={!!selectedRequest} onOpenChange={(open) => !open && setSelectedRequest(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-black border-white/10 text-white p-0 overflow-hidden rounded-[2rem]">
-          <DialogHeader className="p-8 border-b border-white/5 bg-white/[0.02]">
-            <DialogTitle className="text-2xl font-black uppercase tracking-tighter">Manage Marking Request</DialogTitle>
-            <DialogDescription className="text-white/40 font-medium">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Manage Marking Request</DialogTitle>
+            <DialogDescription>
               Review the submission and provide feedback.
             </DialogDescription>
           </DialogHeader>
 
           {selectedRequest && (
-            <div className="p-8 space-y-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-6 py-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Student Email</p>
+                  <p className="text-muted-foreground">Student Email</p>
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-primary" />
-                    <span className="font-bold">{selectedRequest.email}</span>
+                    <Mail className="w-3.5 h-3.5" />
+                    <span className="font-medium">{selectedRequest.email}</span>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Phone</p>
+                  <p className="text-muted-foreground">Phone</p>
                   <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-primary" />
-                    <span className="font-bold">{selectedRequest.phone || "N/A"}</span>
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>{selectedRequest.phone || "N/A"}</span>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Study Level</p>
-                  <Badge variant="outline" className="bg-primary/10 border-primary/20 text-primary font-black uppercase">{selectedRequest.level}</Badge>
+                  <p className="text-muted-foreground">Study Level</p>
+                  <Badge variant="outline">{selectedRequest.level}</Badge>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Submitted On</p>
-                  <div className="flex items-center gap-2 text-white/60 font-bold">
-                    <Clock className="w-4 h-4 text-primary" />
+                  <p className="text-muted-foreground">Submitted On</p>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Clock className="w-3.5 h-3.5" />
                     <span>{format(new Date(selectedRequest.createdAt), "PPP p")}</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Subject / Title</p>
-                <div className="p-4 bg-white/5 border border-white/10 rounded-2xl text-sm font-bold text-white/80">
+                <p className="text-sm font-medium">Subject / Title</p>
+                <div className="p-3 bg-muted rounded-md text-sm">
                   {selectedRequest.subject || "Untitiled Submission"}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Original File</p>
-                <Button variant="outline" className="w-full h-14 justify-between bg-white/5 border-white/10 rounded-2xl hover:bg-white/10 group" asChild>
+                <p className="text-sm font-medium">Original File</p>
+                <Button variant="outline" className="w-full justify-between" asChild>
                   <a href={selectedRequest.fileUrl} target="_blank" rel="noopener noreferrer">
-                    <div className="flex items-center gap-3 overflow-hidden">
-                      <FileText className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                      <span className="font-bold truncate">{selectedRequest.fileName || "View Document"}</span>
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <FileText className="w-4 h-4 shrink-0" />
+                      <span className="truncate">{selectedRequest.fileName || "View Document"}</span>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-white/40" />
+                    <ExternalLink className="w-4 h-4 shrink-0" />
                   </a>
                 </Button>
               </div>
 
-              <div className="h-px bg-white/5" />
+              <hr />
 
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-white/40">Update Status</label>
+              <div className="space-y-4 pt-2">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Update Status</label>
                   <Select value={status} onValueChange={setStatus}>
-                    <SelectTrigger className="h-12 bg-white/5 border-white/10 rounded-xl font-bold">
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-black border-white/10 text-white">
+                    <SelectContent>
                       <SelectItem value="pending">Pending Review</SelectItem>
                       <SelectItem value="marking">Marking in Progress</SelectItem>
                       <SelectItem value="completed">Completed</SelectItem>
@@ -335,19 +331,19 @@ export function MarkingManager() {
                   </Select>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-white/40">Feedback & Comments</label>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Feedback & Comments</label>
                   <Textarea
                     placeholder="Provide marking comments and advice for the student..."
-                    className="bg-white/5 border-white/10 rounded-2xl min-h-[150px] font-medium p-4 focus:ring-primary"
+                    rows={5}
                     value={adminComments}
                     onChange={(e) => setAdminComments(e.target.value)}
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-white/40">Upload Marked File (Optional)</label>
-                  <div className="flex items-center gap-3">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Upload Marked File (Optional)</label>
+                  <div className="flex items-center gap-2">
                     <Input
                       type="file"
                       className="hidden"
@@ -357,7 +353,7 @@ export function MarkingManager() {
                     />
                     <Button
                       variant="outline"
-                      className="flex-1 h-12 bg-white/5 border-white/10 rounded-xl hover:bg-white/10 font-bold"
+                      className="flex-1"
                       asChild
                       disabled={isUploadingMarked}
                     >
@@ -365,31 +361,32 @@ export function MarkingManager() {
                         {isUploadingMarked ? (
                           <Loader2 className="w-4 h-4 animate-spin mr-2" />
                         ) : (
-                          <Upload className="w-4 h-4 mr-2 text-primary" />
+                          <Upload className="w-4 h-4 mr-2" />
                         )}
                         {markedFileUrl ? "Change Marked File" : "Upload Marked Version"}
                       </label>
                     </Button>
                     {markedFileUrl && (
-                      <Button variant="ghost" size="icon" className="h-12 w-12 rounded-xl bg-white/5 hover:bg-white/10" asChild>
+                      <Button variant="ghost" size="icon" asChild>
                         <a href={markedFileUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-5 h-5 text-primary" />
+                          <ExternalLink className="w-4 h-4" />
                         </a>
                       </Button>
                     )}
                   </div>
+                  {markedFileUrl && <p className="text-xs text-muted-foreground">File uploaded: {markedFileUrl.split('/').pop()}</p>}
                 </div>
               </div>
             </div>
           )}
 
-          <div className="p-8 border-t border-white/5 bg-white/[0.02] flex flex-col sm:flex-row gap-4">
-            <Button variant="ghost" className="flex-1 h-12 rounded-xl font-bold uppercase tracking-wider text-xs" onClick={() => setSelectedRequest(null)}>Cancel</Button>
-            <Button onClick={handleUpdate} disabled={isUpdating} className="flex-1 h-12 rounded-xl font-black uppercase tracking-wider text-xs shadow-lg shadow-primary/20">
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSelectedRequest(null)}>Cancel</Button>
+            <Button onClick={handleUpdate} disabled={isUpdating}>
               {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save Changes
             </Button>
-          </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

@@ -196,8 +196,6 @@ export async function POST(request: NextRequest) {
       marks: body.marks.trim(),
       topic: body.topic.trim(),
       difficulty: body.difficulty,
-      economicsType: body.economicsType,
-      chapter: body.chapter,
       preamble: body.preamble ? body.preamble.trim() : null,
       examinerComments: body.examinerComments || null,
       structureNotes: body.structureNotes ? body.structureNotes.trim() : null,
@@ -281,8 +279,6 @@ export async function PUT(request: NextRequest) {
     if (body.marks !== undefined) updateData.marks = body.marks.trim();
     if (body.topic !== undefined) updateData.topic = body.topic.trim();
     if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
-    if (body.economicsType !== undefined) updateData.economicsType = body.economicsType;
-    if (body.chapter !== undefined) updateData.chapter = body.chapter;
     if (body.preamble !== undefined) updateData.preamble = body.preamble ? body.preamble.trim() : null;
     if (body.examinerComments !== undefined) updateData.examinerComments = body.examinerComments;
     if (body.structureNotes !== undefined) updateData.structureNotes = body.structureNotes ? body.structureNotes.trim() : null;
