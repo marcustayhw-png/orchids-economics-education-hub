@@ -10,83 +10,77 @@ import { CurrentAffairsManager } from "@/components/admin/current-affairs-manage
 
 export default function AdminPage() {
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Content Dashboard</h1>
-        <p className="text-muted-foreground">Manage your educational materials and resources.</p>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-4xl font-bold">Content Dashboard</h1>
       </div>
 
-      <Tabs defaultValue="essays" className="space-y-8">
-        <div className="relative">
-          <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-            <TabsList className="inline-flex w-auto md:grid md:w-full md:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl">
-              <TabsTrigger value="essays" className="px-6 py-2.5 md:px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all">Essays</TabsTrigger>
-              <TabsTrigger value="csqs" className="px-6 py-2.5 md:px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all">CSQs</TabsTrigger>
-              <TabsTrigger value="notes" className="px-6 py-2.5 md:px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all">Notes</TabsTrigger>
-              <TabsTrigger value="flashcards" className="px-6 py-2.5 md:px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all">Flashcards</TabsTrigger>
-              <TabsTrigger value="current-affairs" className="px-6 py-2.5 md:px-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all">News</TabsTrigger>
-            </TabsList>
-          </div>
+      <Tabs defaultValue="essays" className="space-y-6">
+        <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+          <TabsList className="flex w-max md:grid md:w-full md:max-w-4xl md:grid-cols-5">
+            <TabsTrigger value="essays" className="px-6 md:px-3">Essays</TabsTrigger>
+            <TabsTrigger value="csqs" className="px-6 md:px-3">CSQs</TabsTrigger>
+            <TabsTrigger value="notes" className="px-6 md:px-3">Notes</TabsTrigger>
+            <TabsTrigger value="flashcards" className="px-6 md:px-3">Flashcards</TabsTrigger>
+            <TabsTrigger value="current-affairs" className="px-6 md:px-3">Current Affairs</TabsTrigger>
+          </TabsList>
         </div>
 
-        <div className="mt-8 transition-all duration-300">
-          <TabsContent value="essays" className="mt-0 outline-none">
-            <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
-              <CardHeader className="px-4 md:px-6">
-                <CardTitle>Essay Management</CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 md:px-6">
-                <EssayManager />
-              </CardContent>
-            </Card>
-          </TabsContent>
+        <TabsContent value="essays">
+          <Card>
+            <CardHeader>
+              <CardTitle>Essay Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EssayManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="csqs" className="mt-0 outline-none">
-            <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
-              <CardHeader className="px-4 md:px-6">
-                <CardTitle>CSQ Management</CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 md:px-6">
-                <CSQManager />
-              </CardContent>
-            </Card>
-          </TabsContent>
+        <TabsContent value="csqs">
+          <Card>
+            <CardHeader>
+              <CardTitle>CSQ Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CSQManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="notes" className="mt-0 outline-none">
-            <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
-              <CardHeader className="px-4 md:px-6">
-                <CardTitle>Notes Management</CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 md:px-6">
-                <NotesManager />
-              </CardContent>
-            </Card>
-          </TabsContent>
+        <TabsContent value="notes">
+          <Card>
+            <CardHeader>
+              <CardTitle>Notes Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <NotesManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="flashcards" className="mt-0 outline-none">
-            <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
-              <CardHeader className="px-4 md:px-6">
-                <CardTitle>Flashcard Management</CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 md:px-6">
-                <FlashcardManager />
-              </CardContent>
-            </Card>
-          </TabsContent>
+        <TabsContent value="flashcards">
+          <Card>
+            <CardHeader>
+              <CardTitle>Flashcard Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FlashcardManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="current-affairs" className="mt-0 outline-none">
-            <Card className="border-none shadow-sm bg-card/50 backdrop-blur-sm">
-              <CardHeader className="px-4 md:px-6">
-                <CardTitle>Current Affairs Management</CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 md:px-6">
-                <CurrentAffairsManager />
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </div>
+        <TabsContent value="current-affairs">
+          <Card>
+            <CardHeader>
+              <CardTitle>Current Affairs Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CurrentAffairsManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
 }
-
