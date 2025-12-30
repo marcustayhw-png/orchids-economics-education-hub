@@ -80,8 +80,6 @@ export const essays = sqliteTable('essays', {
   examinerComments: text('examiner_comments', { mode: 'json' }),
   structureNotes: text('structure_notes'),
   modelAnswer: text('model_answer'),
-  economicsType: text('economics_type'),
-  chapter: text('chapter'),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });
@@ -95,8 +93,6 @@ export const csqs = sqliteTable('csqs', {
   topic: text('topic').notNull(),
   difficulty: text('difficulty').notNull(),
   totalMarks: integer('total_marks').notNull(),
-  economicsType: text('economics_type'),
-  chapter: text('chapter'),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });

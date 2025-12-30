@@ -125,20 +125,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </SheetContent>
             </Sheet>
             <h2 className="text-lg font-bold">Admin</h2>
-            </div>
-            <div className="flex items-center gap-1">
-              <Link href="/admin/marking">
-                <Button variant="ghost" size="icon" className="relative">
-                  <CheckSquare className="h-5 w-5" />
-                  <span className="sr-only">Marking Requests</span>
-                </Button>
-              </Link>
-              <Button variant="ghost" size="icon" onClick={handleSignOut}>
-                <LogOut className="h-5 w-5" />
-              </Button>
-            </div>
           </div>
-        </header>
+          <Button variant="ghost" size="icon" onClick={handleSignOut}>
+            <LogOut className="h-5 w-5" />
+          </Button>
+        </div>
+      </header>
 
       {/* Desktop Sidebar */}
       <aside className="w-64 border-r bg-card hidden md:flex flex-col sticky top-0 h-screen">
