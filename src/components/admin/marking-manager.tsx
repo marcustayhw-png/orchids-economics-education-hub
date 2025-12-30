@@ -220,38 +220,47 @@ export function MarkingManager() {
       {/* Mobile View */}
       <div className="md:hidden space-y-4">
         {loading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="w-6 h-6 animate-spin" />
+          <div className="flex justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
           </div>
         ) : filteredRequests.length === 0 ? (
-          <p className="text-center py-8 text-muted-foreground">No marking requests found.</p>
+          <div className="text-center py-12 bg-muted/30 rounded-2xl border-2 border-dashed">
+            <p className="text-muted-foreground">No marking requests found.</p>
+          </div>
         ) : (
-          filteredRequests.map((request) => (
-            <Card key={request.id} className="overflow-hidden">
-              <CardContent className="p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    {format(new Date(request.createdAt), "MMM d, yyyy")}
-                  </span>
-                  {getStatusBadge(request.status)}
-                </div>
-                <div>
-                  <p className="font-bold truncate">{request.email}</p>
-                  <p className="text-sm text-muted-foreground truncate">
-                    {request.subject || "No subject"}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between pt-2">
-                  <Badge variant="outline" className="text-[10px]">{request.level}</Badge>
-                  <Button size="sm" onClick={() => handleOpenRequest(request)}>
-                    Manage
+          <div className="grid gap-4">
+            {filteredRequests.map((request) => (
+              <Card key={request.id} className="overflow-hidden border-none shadow-md bg-card/50 backdrop-blur-sm group active:scale-[0.98] transition-all">
+                <CardContent className="p-5 space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                        {format(new Date(request.createdAt), "MMM d, yyyy")}
+                      </p>
+                      <h4 className="font-bold text-lg leading-tight truncate max-w-[200px]">{request.email}</h4>
+                    </div>
+                    {getStatusBadge(request.status)}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground line-clamp-2 italic">
+                      "{request.subject || "No subject provided"}"
+                    </p>
+                    <div className="flex gap-2">
+                      <Badge variant="secondary" className="text-[10px] font-semibold">{request.level}</Badge>
+                    </div>
+                  </div>
+
+                  <Button className="w-full h-11 rounded-xl shadow-lg shadow-primary/10" onClick={() => handleOpenRequest(request)}>
+                    Manage Submission
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         )}
       </div>
+
 
       {/* Details Dialog */}
       <Dialog open={!!selectedRequest} onOpenChange={(open) => !open && setSelectedRequest(null)}>
