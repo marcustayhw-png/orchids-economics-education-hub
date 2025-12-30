@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, FileText, PenTool, Award, Users, Sparkles, Loader2, ArrowRight, TrendingUp, Globe, Zap, CheckCircle2 } from "lucide-react";
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { BookOpen, FileText, PenTool, Award, Users, Sparkles, Loader2, ArrowRight, TrendingUp, Globe, Zap } from "lucide-react";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 export default function Home() {
   const [stats, setStats] = useState({
@@ -61,226 +61,158 @@ export default function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
+        staggerChildren: 0.15
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1]
+        duration: 0.6,
+        ease: "easeOut"
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-primary/30 overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-background selection:bg-primary/30 overflow-x-hidden">
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-blue-500 to-primary origin-left z-[100]"
+        className="fixed top-0 left-0 right-0 h-1 bg-primary origin-left z-50"
         style={{ scaleX }}
       />
       
-      {/* Abstract Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-blue-600/10 rounded-full blur-[100px] animate-pulse delay-1000" />
-        <div className="absolute bottom-[10%] left-[20%] w-[25%] h-[25%] bg-purple-600/10 rounded-full blur-[110px] animate-pulse delay-500" />
-      </div>
-      
       {/* Hero Section */}
-      <section className="relative pt-24 pb-20 sm:pt-32 sm:pb-32 md:pt-40 md:pb-44 lg:pt-48 lg:pb-56 px-4 sm:px-6 md:px-8 overflow-hidden">
+      <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-20 md:pt-24 md:pb-28 lg:pt-32 lg:pb-32 px-4 sm:px-6 md:px-8 lg:px-8 overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 opacity-30 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+        </div>
+
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="text-center space-y-10 sm:space-y-12"
+            className="text-center space-y-8 sm:space-y-10"
           >
-            <motion.div variants={itemVariants} className="space-y-6">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4"
-              >
-                <Sparkles className="w-4 h-4 text-primary animate-spin-slow" />
-                <span className="text-xs sm:text-sm font-bold tracking-wider uppercase opacity-80">Singapore's Premium Economics Resource</span>
-              </motion.div>
-              
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tight leading-[0.85] px-2">
-                Economics <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary via-white to-primary/80 drop-shadow-2xl">Simplified.</span>
+            <motion.div variants={itemVariants} className="space-y-4 sm:space-y-5 md:space-y-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] px-2">
+                Master Economics <br className="hidden sm:block" />
+                <span className="text-primary drop-shadow-sm">Made Simple.</span>
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-white/60 max-w-3xl mx-auto px-4 md:px-8 font-medium leading-relaxed">
-                Unlock top-tier notes, model essays, and interactive tools designed specifically for Singapore's JC and Secondary students.
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto px-4 md:px-8 font-medium leading-relaxed">
+                Unlock top-tier notes, model essays, and interactive tools designed specifically for Singapore's JC and Secondary Economics students.
               </p>
             </motion.div>
             
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-5 justify-center items-center px-4 md:px-0">
-              <Button asChild size="lg" className="w-full sm:w-auto h-14 md:h-16 px-10 md:px-12 text-base md:text-lg rounded-full shadow-2xl shadow-primary/40 hover:shadow-primary/60 transition-all hover:-translate-y-1.5 font-bold">
-                <Link href="/notes" className="flex items-center gap-3">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4 md:px-0">
+              <Button asChild size="lg" className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-1">
+                <Link href="/notes" className="flex items-center gap-2">
                   Start Learning <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-14 md:h-16 px-10 md:px-12 text-base md:text-lg rounded-full border-2 border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-md transition-all font-bold">
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl border-2 hover:bg-muted/50 transition-all">
                 <Link href="/about">My Mission</Link>
               </Button>
             </motion.div>
 
-            {/* Premium Stats Bar */}
-            <motion.div variants={itemVariants} className="pt-16 md:pt-24 max-w-6xl mx-auto">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-                {[
-                  { label: "Study Notes", value: stats.notes, icon: BookOpen, gradient: "from-blue-500/20 to-transparent" },
-                  { label: "Model Essays", value: stats.essays, icon: FileText, gradient: "from-primary/20 to-transparent" },
-                  { label: "CSQ Answers", value: stats.csqs, icon: TrendingUp, gradient: "from-purple-500/20 to-transparent" },
-                  { label: "Flashcards", value: stats.flashcards, icon: Sparkles, gradient: "from-yellow-500/20 to-transparent" }
-                ].map((stat, i) => (
-                  <motion.div 
-                    key={i} 
-                    whileHover={{ y: -5 }}
-                    className="relative group p-6 sm:p-8 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl overflow-hidden"
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                    <div className="relative z-10">
-                      <div className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tighter">
-                        {stats.isLoading ? (
-                          <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
-                        ) : (
-                          `${stat.value}+`
-                        )}
-                      </div>
-                      <div className="text-[10px] sm:text-xs font-black text-white/40 uppercase tracking-[0.2em]">{stat.label}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+            {/* Stats Grid */}
+            <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-8 md:pt-12 max-w-5xl mx-auto px-4 md:px-6">
+              {[
+                { label: "Study Notes", value: stats.notes, icon: BookOpen },
+                { label: "Model Essays", value: stats.essays, icon: FileText },
+                { label: "CSQ Answers", value: stats.csqs, icon: TrendingUp },
+                { label: "Flashcards", value: stats.flashcards, icon: Sparkles }
+              ].map((stat, i) => (
+                <div key={i} className="p-4 sm:p-5 md:p-6 rounded-2xl md:rounded-3xl bg-card/50 border border-border/50 backdrop-blur-sm shadow-sm">
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-1">
+                    {stats.isLoading ? (
+                      <Loader2 className="w-6 h-6 md:w-8 md:h-8 animate-spin mx-auto" />
+                    ) : (
+                      `${stat.value}+`
+                    )}
+                  </div>
+                  <div className="text-[10px] sm:text-xs md:text-sm font-bold text-muted-foreground uppercase tracking-wider md:tracking-widest">{stat.label}</div>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Features Section - Bento Style */}
-      <section className="py-24 sm:py-32 px-4 sm:px-6 md:px-8 relative bg-[#080808]">
+      {/* Features Grid */}
+      <section className="py-16 sm:py-20 md:py-28 lg:py-32 px-4 sm:px-6 md:px-8 lg:px-8 bg-muted/20 relative">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-16 md:mb-24"
+            className="text-center mb-10 sm:mb-14 md:mb-16 lg:mb-20"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6">Everything You Need to <span className="text-primary">Excel.</span></h2>
-            <p className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto font-medium">
-              I've built a comprehensive ecosystem to help you conquer the syllabus and ace your exams.
-            </p>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3 md:mb-4 px-2">Everything You Need to Excel</h2>
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4 md:px-6 font-medium">
+                I've built the most comprehensive resource library to help you conquer the syllabus and ace your exams.
+              </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-6 gap-4 md:gap-6 lg:gap-8">
-            {/* Featured Bento Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="md:col-span-4"
-            >
-              <Link href="/notes" className="group block relative h-full rounded-[2.5rem] bg-gradient-to-br from-primary to-primary/60 p-8 md:p-12 overflow-hidden shadow-2xl shadow-primary/20">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-white/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-700" />
-                <div className="relative z-10 flex flex-col h-full justify-between gap-12">
-                  <div className="space-y-4">
-                    <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center">
-                      <BookOpen className="w-8 h-8 text-white" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+            {[
+              { title: "Comprehensive Notes", desc: "Detailed, exam-oriented notes covering all major themes for H1/H2 and Secondary Economics.", icon: BookOpen, href: "/notes", color: "text-blue-500", bg: "bg-blue-500/10" },
+              { title: "Interactive Flashcards", desc: "Master definitions and key concepts with our specialized flashcard system designed for retention.", icon: Sparkles, href: "/flashcards", color: "text-yellow-500", bg: "bg-yellow-500/10" },
+              { title: "Model Essays", desc: "Analyze high-scoring essays with detailed examiner comments and breakdown of marking points.", icon: FileText, href: "/essays", color: "text-green-500", bg: "bg-green-500/10" },
+              { title: "CSQ Mastery", desc: "Practice Case Study Questions with curated data sets and step-by-step model answers.", icon: TrendingUp, href: "/essays/csq", color: "text-purple-500", bg: "bg-purple-500/10" },
+              { title: "Mark My Work", desc: "Get personalized, professional feedback on your practice answers from experienced tutors.", icon: PenTool, href: "/mark-my-work", color: "text-orange-500", bg: "bg-orange-500/10" },
+              { title: "Current Affairs", desc: "Stay updated with real-world economic news linked directly to your JC syllabus topics.", icon: Globe, href: "/econ-news", color: "text-pink-500", bg: "bg-pink-500/10" }
+            ].map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: idx * 0.05 }}
+              >
+                <Card className="group h-full border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 rounded-2xl md:rounded-[2rem] overflow-hidden bg-card/50 backdrop-blur-sm">
+                  <CardHeader className="p-5 md:p-6 lg:p-8 pb-3 md:pb-4">
+                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${feature.bg} flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <feature.icon className={`w-6 h-6 md:w-7 md:h-7 ${feature.color}`} />
                     </div>
-                    <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter">Comprehensive <br />Study Notes</h3>
-                    <p className="text-white/80 text-lg md:text-xl font-medium max-w-md">
-                      Detailed, exam-oriented notes covering all major themes for H1/H2 and Secondary Economics.
-                    </p>
-                  </div>
-                  <div className="inline-flex items-center gap-2 font-bold text-white text-lg group-hover:gap-4 transition-all">
-                    Access Notes <ArrowRight className="w-6 h-6" />
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-
-            {/* Smaller Bento Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="md:col-span-2"
-            >
-              <Link href="/flashcards" className="group block relative h-full rounded-[2.5rem] bg-white/5 border border-white/10 p-8 overflow-hidden hover:border-primary/50 transition-colors">
-                <div className="relative z-10 space-y-6">
-                  <div className="w-14 h-14 rounded-2xl bg-yellow-500/10 flex items-center justify-center">
-                    <Sparkles className="w-7 h-7 text-yellow-500" />
-                  </div>
-                  <h3 className="text-2xl font-black text-white tracking-tight">Interactive <br />Flashcards</h3>
-                  <p className="text-white/40 font-medium leading-relaxed">
-                    Master definitions and key concepts with our specialized system.
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="md:col-span-3"
-            >
-              <Link href="/essays" className="group block relative h-full rounded-[2.5rem] bg-white/5 border border-white/10 p-8 overflow-hidden hover:border-primary/50 transition-colors">
-                <div className="relative z-10 space-y-6">
-                  <div className="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center">
-                    <FileText className="w-7 h-7 text-green-500" />
-                  </div>
-                  <h3 className="text-2xl font-black text-white tracking-tight">Model Essays</h3>
-                  <p className="text-white/40 font-medium leading-relaxed">
-                    Analyze high-scoring essays with detailed examiner comments and breakdown of marking points.
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="md:col-span-3"
-            >
-              <Link href="/mark-my-work" className="group block relative h-full rounded-[2.5rem] bg-white/5 border border-white/10 p-8 overflow-hidden hover:border-primary/50 transition-colors">
-                <div className="relative z-10 space-y-6">
-                  <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center">
-                    <PenTool className="w-7 h-7 text-orange-500" />
-                  </div>
-                  <h3 className="text-2xl font-black text-white tracking-tight">Mark My Work</h3>
-                  <p className="text-white/40 font-medium leading-relaxed">
-                    Get personalized, professional feedback on your practice answers from experienced tutors.
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
+                    <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{feature.title}</CardTitle>
+                    <CardDescription className="text-sm md:text-base leading-relaxed font-medium">
+                      {feature.desc}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-5 md:p-6 lg:p-8 pt-0">
+                    {feature.href && (
+                      <Button asChild variant="ghost" className="px-0 hover:bg-transparent text-primary font-bold group-hover:gap-3 transition-all">
+                        <Link href={feature.href}>
+                          Explore Now <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 sm:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/5 rounded-full blur-[200px] -z-10" />
+      <section className="py-16 sm:py-20 md:py-28 lg:py-32 px-4 sm:px-6 md:px-8 lg:px-8 overflow-hidden relative border-t border-border/50">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] -z-10" />
         <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center space-y-12"
+          className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10"
         >
-            <div className="space-y-6">
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight">The <span className="text-primary">Vision.</span></h2>
-              <div className="text-lg md:text-xl text-white/60 space-y-6 leading-relaxed font-medium px-4">
+            <div className="space-y-3 md:space-y-4">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">My <span className="text-primary">Mission.</span></h2>
+              <div className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground space-y-4 md:space-y-6 leading-relaxed font-medium px-4 md:px-6">
               <p>
                 As an aspiring economics educator, I've seen firsthand how high-quality resources can transform a student's trajectory. This platform is my commitment to democratizing that quality.
               </p>
@@ -289,37 +221,36 @@ export default function Home() {
                 </p>
             </div>
           </div>
-          <Button asChild size="lg" variant="outline" className="h-16 px-12 text-lg rounded-full border-2 border-white/10 bg-white/5 hover:bg-white/10 transition-all font-bold">
+          <Button asChild size="lg" variant="outline" className="h-12 md:h-14 px-8 md:px-10 text-base md:text-lg rounded-2xl border-2 font-bold shadow-sm">
             <Link href="/about">Read the Full Story</Link>
           </Button>
         </motion.div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 sm:px-6 md:px-8">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div 
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group relative rounded-[3rem] p-12 sm:p-20 md:p-24 text-center overflow-hidden shadow-2xl"
+            className="bg-primary rounded-2xl md:rounded-[3rem] p-6 sm:p-10 md:p-14 lg:p-20 text-primary-foreground text-center relative overflow-hidden shadow-2xl shadow-primary/40"
           >
-            <div className="absolute inset-0 bg-primary" />
-            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-white/20 rounded-full blur-[100px] group-hover:scale-110 transition-transform duration-1000" />
-            <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-black/20 rounded-full blur-[100px]" />
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-black/10 rounded-full blur-3xl" />
             
-            <div className="relative z-10 space-y-10">
-              <h2 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-white">
-                Ready to Ace <br /> Your Exams?
+            <div className="relative z-10 space-y-6 md:space-y-8">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter leading-tight">
+                Ready to Ace Your <br className="hidden sm:block" /> Economics Exam?
               </h2>
-              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-medium">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 max-w-2xl mx-auto font-medium">
                 Join hundreds of students using EconStack to master the syllabus and achieve their dream grades.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Button asChild size="lg" className="w-full sm:w-auto h-16 px-12 text-lg font-black rounded-full bg-white text-primary hover:bg-white/90 shadow-2xl transition-all hover:-translate-y-1">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
+                <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto h-12 md:h-14 lg:h-16 px-8 md:px-10 lg:px-12 text-base md:text-lg font-black rounded-xl md:rounded-2xl shadow-xl hover:scale-105 transition-transform">
                   <Link href="/notes">Get Started Free</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-16 px-12 text-lg font-black rounded-full border-2 border-white text-white hover:bg-white hover:text-primary transition-all">
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-14 lg:h-16 px-8 md:px-10 lg:px-12 text-base md:text-lg font-bold rounded-xl md:rounded-2xl bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-white hover:text-primary transition-all">
                   <Link href="/flashcards">Try Flashcards</Link>
                 </Button>
               </div>
@@ -329,14 +260,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-4 md:px-6 border-t border-white/5 text-center text-white/30">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <TrendingUp className="w-4 h-4 text-primary" />
-          </div>
-          <span className="font-black tracking-tighter text-white/60">ECONSTACK</span>
-        </div>
-        <p className="text-sm font-medium">© {new Date().getFullYear()} EconStack. Built with passion for Economics education.</p>
+      <footer className="py-8 md:py-12 px-4 md:px-6 border-t border-border/50 text-center text-muted-foreground">
+        <p className="text-xs md:text-sm font-medium">© {new Date().getFullYear()} EconStack. Built with passion for Economics education.</p>
       </footer>
     </div>
   );

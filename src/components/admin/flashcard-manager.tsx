@@ -77,87 +77,87 @@ export function FlashcardManager() {
   const [showForm, setShowForm] = useState(false);
   const [cardToDelete, setCardToDelete] = useState<number | null>(null);
   
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
+    question: "",
+    answer: "",
+    level: "Secondary",
+    category: "",
+    topic: "",
+    difficulty: "Medium",
+    economicsType: "Micro" as "Micro" | "Macro",
+    chapter: "",
+  });
+
+  const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
+  const [filterLevel, setFilterLevel] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<"Micro" | "Macro" | null>(null);
+  const [filterChapter, setFilterChapter] = useState<string | null>(null);
+
+  const fetchFlashcards = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/flashcards?limit=1000");
+      if (response.ok) {
+        const data = await response.json();
+        setFlashcards(Array.isArray(data) ? data : []);
+      } else {
+        toast.error("Failed to load flashcards");
+      }
+    } catch (error) {
+      toast.error("Error loading flashcards");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFlashcards();
+  }, []);
+
+  const resetForm = () => {
+    setFormData({
       question: "",
       answer: "",
-      level: "Secondary",
+      level: filterLevel || "Secondary",
       category: "",
       topic: "",
-      difficulty: "Medium" as string | null,
-      economicsType: "Micro" as "Micro" | "Macro",
-      chapter: "",
+      difficulty: "Medium",
+      economicsType: filterType || "Micro",
+      chapter: filterChapter || "",
     });
+    setEditingId(null);
+    setShowForm(false);
+  };
 
-    const [viewStep, setViewStep] = useState<"level" | "type" | "chapter" | "list">("level");
-    const [filterLevel, setFilterLevel] = useState<string | null>(null);
-    const [filterType, setFilterType] = useState<"Micro" | "Macro" | null>(null);
-    const [filterChapter, setFilterChapter] = useState<string | null>(null);
+  const handleAddNew = () => {
+    setFormData({
+      question: "",
+      answer: "",
+      level: filterLevel || "Secondary",
+      category: "",
+      topic: "",
+      difficulty: "",
+      economicsType: filterType || "Micro",
+      chapter: filterChapter || "",
+    });
+    setEditingId(null);
+    setShowForm(true);
+  };
 
-    const fetchFlashcards = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch("/api/flashcards?limit=1000");
-        if (response.ok) {
-          const data = await response.json();
-          setFlashcards(Array.isArray(data) ? data : []);
-        } else {
-          toast.error("Failed to load flashcards");
-        }
-      } catch (error) {
-        toast.error("Error loading flashcards");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    useEffect(() => {
-      fetchFlashcards();
-    }, []);
-
-    const resetForm = () => {
-      setFormData({
-        question: "",
-        answer: "",
-        level: filterLevel || "Secondary",
-        category: "",
-        topic: "",
-        difficulty: "Medium",
-        economicsType: filterType || "Micro",
-        chapter: filterChapter || "",
-      });
-      setEditingId(null);
-      setShowForm(false);
-    };
-
-    const handleAddNew = () => {
-      setFormData({
-        question: "",
-        answer: "",
-        level: filterLevel || "Secondary",
-        category: "",
-        topic: "",
-        difficulty: "Medium",
-        economicsType: filterType || "Micro",
-        chapter: filterChapter || "",
-      });
-      setEditingId(null);
-      setShowForm(true);
-    };
-
-    const handleEdit = (flashcard: Flashcard) => {
-      setFormData({
-        question: flashcard.question,
-        answer: flashcard.answer,
-        level: flashcard.level,
-        category: flashcard.category,
-        topic: flashcard.topic,
-        difficulty: flashcard.difficulty || "Medium",
-        economicsType: flashcard.economicsType as "Micro" | "Macro",
-        chapter: flashcard.chapter,
-      });
-      setEditingId(flashcard.id);
-      setShowForm(true);
-    };
+  const handleEdit = (flashcard: Flashcard) => {
+    setFormData({
+      question: flashcard.question,
+      answer: flashcard.answer,
+      level: flashcard.level,
+      category: flashcard.category,
+      topic: flashcard.topic,
+      difficulty: flashcard.difficulty || "",
+      economicsType: flashcard.economicsType,
+      chapter: flashcard.chapter,
+    });
+    setEditingId(flashcard.id);
+    setShowForm(true);
+  };
 
   const filteredFlashcards = flashcards.filter((flashcard) => {
     if (filterLevel && flashcard.level !== filterLevel) return false;

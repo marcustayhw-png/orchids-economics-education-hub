@@ -33,6 +33,8 @@ export async function GET(request: NextRequest) {
     const level = searchParams.get('level');
     const topic = searchParams.get('topic');
     const difficulty = searchParams.get('difficulty');
+    const economicsType = searchParams.get('economics_type');
+    const chapter = searchParams.get('chapter');
     const minMarks = searchParams.get('min_marks');
     const maxMarks = searchParams.get('max_marks');
 
@@ -58,6 +60,14 @@ export async function GET(request: NextRequest) {
 
     if (difficulty) {
       conditions.push(eq(essays.difficulty, difficulty));
+    }
+
+    if (economicsType) {
+      conditions.push(eq(essays.economicsType, economicsType));
+    }
+
+    if (chapter) {
+      conditions.push(eq(essays.chapter, chapter));
     }
 
     if (minMarks) {
@@ -186,6 +196,8 @@ export async function POST(request: NextRequest) {
       marks: body.marks.trim(),
       topic: body.topic.trim(),
       difficulty: body.difficulty,
+      economicsType: body.economicsType,
+      chapter: body.chapter,
       preamble: body.preamble ? body.preamble.trim() : null,
       examinerComments: body.examinerComments || null,
       structureNotes: body.structureNotes ? body.structureNotes.trim() : null,
@@ -269,6 +281,8 @@ export async function PUT(request: NextRequest) {
     if (body.marks !== undefined) updateData.marks = body.marks.trim();
     if (body.topic !== undefined) updateData.topic = body.topic.trim();
     if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
+    if (body.economicsType !== undefined) updateData.economicsType = body.economicsType;
+    if (body.chapter !== undefined) updateData.chapter = body.chapter;
     if (body.preamble !== undefined) updateData.preamble = body.preamble ? body.preamble.trim() : null;
     if (body.examinerComments !== undefined) updateData.examinerComments = body.examinerComments;
     if (body.structureNotes !== undefined) updateData.structureNotes = body.structureNotes ? body.structureNotes.trim() : null;
